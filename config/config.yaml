@@ -1,0 +1,147 @@
+# Spark ML Pipeline Configuration
+
+# Data Configuration
+data:
+  sequence_length: 50
+  train_split: 0.85
+  target_column: "target"
+  sentiment_columns: ["Close", "Volume", "Scaled_sentiment"]
+  
+# Feature Engineering Configuration
+features:
+  # Lag features
+  price_lags: [1, 2, 3, 5]
+  volume_lags: [1]
+  sentiment_lags: [1, 3]
+  
+  # Moving averages
+  ma_windows: [5, 10, 20]
+  
+  # Technical indicators
+  enable_rsi: true
+  enable_volatility: true
+  enable_interactions: true
+  
+  # Feature selection
+  max_features: 25
+  correlation_threshold: 0.95
+
+# Model Configuration
+model:
+  algorithm: "GBTRegressor"
+  
+  # Default parameters
+  default_params:
+    maxIter: 150
+    maxDepth: 8
+    stepSize: 0.05
+    subsamplingRate: 0.8
+    featureSubsetStrategy: "sqrt"
+    seed: 42
+  
+  # Hyperparameter tuning ranges
+  hyperparameter_ranges:
+    maxIter: [100, 150, 200]
+    maxDepth: [6, 8, 10, 12]
+    stepSize: [0.01, 0.05, 0.1, 0.2]
+    subsamplingRate: [0.7, 0.8, 0.9]
+    featureSubsetStrategy: ["auto", "sqrt", "log2"]
+
+# MLflow Configuration
+mlflow:
+  experiment_name: "stock_forecasting_gbt_exp"
+  run_name_prefix: "gbt_sentiment_close_price"
+  model_name: "stock_forecast_model_gbt"
+  model_stage: "Production"
+  
+  # Tracking configuration
+  log_models: true
+  log_params: true
+  log_metrics: true
+  log_artifacts: true
+
+# Spark Configuration
+spark:
+  app_name: "StockForecastingPipeline"
+  master: "local[*]"
+  
+  # Memory settings (optimized for 32GB RAM)
+  driver_memory: "4g"
+  executor_memory: "8g"
+  executor_cores: 4
+  
+  # Additional configs
+  configs:
+    "spark.sql.adaptive.enabled": "true"
+    "spark.sql.adaptive.coalescePartitions.enabled": "true"
+    "spark.sql.execution.arrow.pyspark.enabled": "true"
+    "spark.serializer": "org.apache.spark.serializer.KryoSerializer"
+    
+    # Optimize broadcasting and memory
+    "spark.sql.broadcastTimeout": "36000"
+    "spark.sql.adaptive.advisoryPartitionSizeInBytes": "64MB"
+    "spark.sql.adaptive.maxNumPostShufflePartitions": "200"
+    "spark.rdd.compress": "true"
+    "spark.io.compression.codec": "snappy"
+    
+    # Optimize for better partitioning
+    "spark.sql.adaptive.skewJoin.enabled": "true"
+    "spark.sql.adaptive.localShuffleReader.enabled": "true"
+
+# Evaluation Configuration
+evaluation:
+  metrics: ["mae", "mse", "rmse", "r2"]
+  save_predictions: true
+  save_feature_importance: true
+  create_plots: true
+  
+  # Plot configuration
+  plots:
+    feature_importance: true
+    predictions_vs_actual: true
+    correlation_matrix: true
+    residuals: true
+
+# Hyperparameter Tuning Configuration
+hyperparameter_tuning:
+  enabled: false  # Set to false to skip hyperparameter tuning and use default parameters
+  method: "spark_cv"  # Options: "optuna" or "spark_cv" 
+                      # - "optuna": Advanced Bayesian optimization (requires optuna package)
+                      # - "spark_cv": Spark CrossValidator (recommended for stability)
+  n_trials: 10        # Number of trials (for optuna) or parameter combinations (for spark_cv)
+  direction: "minimize"  # "minimize" or "maximize" 
+  metric: "mae"       # Evaluation metric: "mae", "mse", "rmse", "r2"
+  
+  # Cross-validation
+  cv_folds: 3
+  
+  # Optuna specific (if needed)
+  optuna:
+    study_name: "gbt_hyperparameter_optimization"
+    storage: null  # Use in-memory storage
+    pruner: "MedianPruner"
+    sampler: "TPESampler"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {name} | {message}"
+  
+  # File logging
+  log_file: "logs/pipeline.log"
+  rotation: "1 week"
+  retention: "1 month"
+
+# Visualization Configuration
+visualization:
+  style: "seaborn-v0_8"
+  figure_size: [12, 8]
+  dpi: 300
+  save_format: "png"
+  
+  # Colors
+  colors:
+    primary: "#1f77b4"
+    secondary: "#ff7f0e"
+    success: "#2ca02c"
+    warning: "#d62728"
