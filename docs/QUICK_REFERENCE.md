@@ -7,15 +7,6 @@
 pip install -r requirements.txt
 ```
 
-### Start Services
-```bash
-# API Service
-uvicorn dashboard.monitoring_api:app --host 0.0.0.0 --port 8502 --reload
-
-# Dashboard
-streamlit run dashboard/monitoring_dashboard.py --server.port 8501
-```
-
 ### Run Monitoring
 ```bash
 # Training with monitoring
@@ -31,11 +22,6 @@ python scripts/load_testing_scenarios.py --scenario all --duration 120
 ## 📊 Access Points
 
 | Service | URL | Purpose |
-|---------|-----|---------|
-| Dashboard | http://localhost:8501 | Real-time monitoring dashboard |
-| API Service | http://localhost:8502 | REST API for metrics |
-| API Docs | http://localhost:8502/docs | Interactive API documentation |
-
 ## 🔧 Configuration Quick Settings
 
 ### Enable/Disable Monitoring
@@ -53,15 +39,6 @@ monitoring:
     max_memory_usage_percent: 80
     max_cpu_usage_percent: 85
     min_scalability_score: 0.7
-```
-
-### Dashboard Settings
-```yaml
-monitoring:
-  dashboard:
-    port: 8501
-    auto_refresh_seconds: 5
-    historical_data_points: 100
 ```
 
 ## 📈 Key Metrics
@@ -118,25 +95,10 @@ export SPARK_DRIVER_MEMORY=2g
 export SPARK_EXECUTOR_MEMORY=1g
 ```
 
-### Dashboard Not Loading Data
-```bash
-# Check MLflow directory
-ls -la mlflow_tracking/
-
-# Check logs
-tail -f logs/monitoring.log
-
-# Restart services
-streamlit run dashboard/monitoring_dashboard.py --server.port 8501
-```
-
 ## 📁 Directory Structure
 
 ```
 spark_ml_pipeline/
-├── dashboard/
-│   ├── monitoring_dashboard.py    # Streamlit dashboard
-│   └── monitoring_api.py         # FastAPI service
 ├── scripts/
 │   ├── train_model_with_monitoring.py
 │   ├── inference_with_monitoring.py
@@ -151,27 +113,12 @@ spark_ml_pipeline/
 └── requirements.txt             # Dependencies
 ```
 
-## 🔌 API Endpoints
+## 📊 Monitoring Results Access
 
-### REST API
-```bash
-GET  /health                     # Health check
-GET  /api/metrics/current        # Current metrics
-GET  /api/metrics/history        # Historical metrics
-GET  /api/system/health          # System health
-GET  /api/alerts                 # Current alerts
-GET  /api/experiments/recent     # Recent experiments
-```
-
-### WebSocket
-```javascript
-// Real-time metrics stream
-const ws = new WebSocket('ws://localhost:8502/ws/metrics');
-ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log('Metrics:', data);
-};
-```
+View monitoring results in:
+- MLflow UI: `mlflow ui --host 0.0.0.0 --port 5000`
+- Log files: `logs/pipeline.log`
+- JSON reports: `results/evaluation/`
 
 ## 💡 Performance Tips
 
@@ -195,23 +142,20 @@ ws.onmessage = (event) => {
 
 ```bash
 # 1. Start services
-uvicorn dashboard.monitoring_api:app --port 8502 &
-streamlit run dashboard/monitoring_dashboard.py --server.port 8501 &
-
 # 2. Run baseline test
 python scripts/load_testing_scenarios.py --scenario baseline --duration 60
 
 # 3. Run training with monitoring
 python scripts/train_model_with_monitoring.py --enable-monitoring
 
-# 4. Check results in dashboard
-open http://localhost:8501
+# 4. Check results in MLflow UI
+mlflow ui --host 0.0.0.0 --port 5000
 
 # 5. Run comprehensive load tests
 python scripts/load_testing_scenarios.py --scenario all --duration 300
 
-# 6. Review API data
-curl http://localhost:8502/api/metrics/current | jq
+# 6. Review logs and reports
+tail -f logs/pipeline.log
 ```
 
 This quick reference provides essential commands and settings for effective use of the scalability monitoring system.

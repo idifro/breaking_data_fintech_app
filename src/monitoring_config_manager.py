@@ -84,6 +84,69 @@ class MonitoringConfigManager:
         """
         self._update_monitoring_config("inference", run_id, experiment_name)
         
+    def update_scalability_monitoring_config(self, monitor_type: str, run_id: str, experiment_name: str):
+        """
+        Update scalability monitoring configuration separately from model runs
+        
+        Args:
+            monitor_type: "training" or "inference"  
+            run_id: MLflow run ID
+            experiment_name: MLflow experiment name
+        """
+        try:
+            # Set MLflow tracking URI
+            mlflow.set_tracking_uri(f"file://{Path.cwd() / self.mlflow_tracking_uri}")
+            client = MlflowClient()
+            
+            # Get run details
+            run = client.get_run(run_id)
+            
+            # Generate URLs
+            base_url = f"file://{Path.cwd() / self.mlflow_tracking_uri}"
+            metrics_url = f"{base_url}/#/experiments/{run.info.experiment_id}/runs/{run_id}"
+            artifacts_url = f"{base_url}/#/experiments/{run.info.experiment_id}/runs/{run_id}/artifacts"
+            
+            # Ensure monitoring section exists
+            if 'mlflow' not in self.config:
+                self.config['mlflow'] = {}
+            if 'monitoring' not in self.config['mlflow']:
+                self.config['mlflow']['monitoring'] = {}
+            if monitor_type not in self.config['mlflow']['monitoring']:
+                self.config['mlflow']['monitoring'][monitor_type] = {}
+            
+            # Create scalability-specific entry
+            scalability_key = f"{monitor_type}_scalability"
+            if scalability_key not in self.config['mlflow']['monitoring']:
+                self.config['mlflow']['monitoring'][scalability_key] = {}
+                
+            # Update scalability monitoring config
+            scalability_config = {
+                'experiment_name': experiment_name,
+                'latest_run_id': run_id,
+                'latest_run_name': run.info.run_name,
+                'latest_timestamp': datetime.now().isoformat(),
+                'metrics_url': metrics_url,
+                'artifacts_url': artifacts_url,
+                'experiment_id': run.info.experiment_id,
+                'run_status': run.info.status,
+                'start_time': datetime.fromtimestamp(run.info.start_time / 1000).isoformat() if run.info.start_time else None,
+                'end_time': datetime.fromtimestamp(run.info.end_time / 1000).isoformat() if run.info.end_time else None,
+                'run_type': 'scalability_monitoring'
+            }
+            
+            self.config['mlflow']['monitoring'][scalability_key].update(scalability_config)
+            
+            # Save updated config
+            self._save_config()
+            
+            self.logger.info(f"✅ Updated {monitor_type} scalability monitoring config:")
+            self.logger.info(f"   Scalability Run ID: {run_id}")
+            self.logger.info(f"   Scalability Run Name: {run.info.run_name}")
+            self.logger.info(f"   Scalability Experiment: {experiment_name}")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to update {monitor_type} scalability monitoring config: {e}")
+    
     def _update_monitoring_config(self, monitor_type: str, run_id: str, experiment_name: str):
         """
         Update monitoring configuration for training or inference
@@ -125,7 +188,8 @@ class MonitoringConfigManager:
                 'experiment_id': run.info.experiment_id,
                 'run_status': run.info.status,
                 'start_time': datetime.fromtimestamp(run.info.start_time / 1000).isoformat() if run.info.start_time else None,
-                'end_time': datetime.fromtimestamp(run.info.end_time / 1000).isoformat() if run.info.end_time else None
+                'end_time': datetime.fromtimestamp(run.info.end_time / 1000).isoformat() if run.info.end_time else None,
+                'run_type': 'model_training' if 'unified_monitoring' in experiment_name else 'scalability_monitoring'
             }
             
             self.config['mlflow']['monitoring'][monitor_type].update(monitoring_config)
@@ -167,8 +231,9 @@ class MonitoringConfigManager:
         """
         return {
             'training': self.get_monitoring_config('training'),
-            'inference': self.get_monitoring_config('inference'),
-            'dashboard': self.config.get('mlflow', {}).get('monitoring', {}).get('dashboard', {})
+            'training_scalability': self.get_monitoring_config('training_scalability'),
+            'inference': self.get_monitoring_config('inference'), 
+            'inference_scalability': self.get_monitoring_config('inference_scalability')
         }
         
     def get_mlflow_tracking_uri(self) -> str:

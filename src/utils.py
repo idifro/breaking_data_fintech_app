@@ -95,23 +95,6 @@ class MonitoringThresholds:
 
 
 @dataclass
-class MonitoringDashboard:
-    """Monitoring dashboard configuration"""
-    enabled: bool
-    port: int
-    auto_refresh_seconds: int
-    historical_data_points: int
-
-
-@dataclass
-class MonitoringAPI:
-    """Monitoring API configuration"""
-    enabled: bool
-    port: int
-    cors_origins: List[str]
-
-
-@dataclass
 class MonitoringLoadTesting:
     """Monitoring load testing configuration"""
     data_volume_multipliers: List[int]
@@ -142,8 +125,6 @@ class MonitoringConfig:
     generate_reports: bool
     save_metrics_json: bool
     console_output: bool
-    dashboard: MonitoringDashboard
-    api: MonitoringAPI
     load_testing: MonitoringLoadTesting
     alerts: MonitoringAlerts
 
@@ -207,8 +188,6 @@ class Config:
                 generate_reports=monitoring_data.get('generate_reports', True),
                 save_metrics_json=monitoring_data.get('save_metrics_json', True),
                 console_output=monitoring_data.get('console_output', True),
-                dashboard=MonitoringDashboard(**monitoring_data.get('dashboard', {})),
-                api=MonitoringAPI(**monitoring_data.get('api', {})),
                 load_testing=MonitoringLoadTesting(**monitoring_data.get('load_testing', {})),
                 alerts=MonitoringAlerts(**monitoring_data.get('alerts', {}))
             )
@@ -233,17 +212,6 @@ class Config:
                 generate_reports=True,
                 save_metrics_json=True,
                 console_output=True,
-                dashboard=MonitoringDashboard(
-                    enabled=True,
-                    port=8501,
-                    auto_refresh_seconds=5,
-                    historical_data_points=100
-                ),
-                api=MonitoringAPI(
-                    enabled=True,
-                    port=8000,
-                    cors_origins=["*"]
-                ),
                 load_testing=MonitoringLoadTesting(
                     data_volume_multipliers=[1, 2, 5, 10],
                     concurrent_users=[1, 5, 10, 20],

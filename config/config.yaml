@@ -102,29 +102,41 @@ mlflow:
   model_name: stock_forecast_model_gbt
   model_stage: Production
   monitoring:
-    dashboard:
-      auto_refresh: false
-      metrics_retention_days: 30
-      plots_directory: plots
-      refresh_interval_seconds: 30
     inference:
-      artifacts_url: null
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/c1ce5c33bb9a4e97a971a96f11e95e02/artifacts
+      end_time: '2025-11-10T23:16:47.085000'
+      experiment_id: '330953399529657715'
       experiment_name: pipeline_scalability_monitoring_inference
-      latest_run_id: null
-      latest_run_name: null
-      latest_timestamp: null
-      metrics_url: null
+      latest_run_id: c1ce5c33bb9a4e97a971a96f11e95e02
+      latest_run_name: scalability_monitoring_20251110_231646
+      latest_timestamp: '2025-11-10T23:16:47.102640'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/c1ce5c33bb9a4e97a971a96f11e95e02
+      run_status: FINISHED
+      start_time: '2025-11-10T23:16:47.030000'
     training:
-      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/0ef149fcbc754744af39e7854f3fbd17/artifacts
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/d6e152853eb64d8ebf8fd1862a563618/artifacts
       end_time: null
       experiment_id: '897954263920293505'
-      experiment_name: pipeline_scalability_monitoring_training
-      latest_run_id: 0ef149fcbc754744af39e7854f3fbd17
-      latest_run_name: unified_model_monitoring_AAPL-BABA-GOOG-NVDA-TSLA_20251110_230411
-      latest_timestamp: '2025-11-10T23:08:57.039983'
-      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/0ef149fcbc754744af39e7854f3fbd17
+      experiment_name: stock_forecasting_gbt_exp_unified_monitoring
+      latest_run_id: d6e152853eb64d8ebf8fd1862a563618
+      latest_run_name: unified_model_monitoring_AAPL-BABA-GOOG-NVDA-TSLA_20251110_232727
+      latest_timestamp: '2025-11-10T23:30:57.666198'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/d6e152853eb64d8ebf8fd1862a563618
       run_status: RUNNING
-      start_time: '2025-11-10T23:04:11.359000'
+      run_type: model_training
+      start_time: '2025-11-10T23:27:27.452000'
+    training_scalability:
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/ce1cfd2c19b041b99e603e94cc0d054e/artifacts
+      end_time: '2025-11-10T23:30:57.742000'
+      experiment_id: '897954263920293505'
+      experiment_name: stock_forecasting_gbt_exp_unified_monitoring
+      latest_run_id: ce1cfd2c19b041b99e603e94cc0d054e
+      latest_run_name: scalability_monitoring_20251110_233057
+      latest_timestamp: '2025-11-10T23:30:57.747701'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/ce1cfd2c19b041b99e603e94cc0d054e
+      run_status: FINISHED
+      run_type: scalability_monitoring
+      start_time: '2025-11-10T23:30:57.710000'
   run_name_prefix: gbt_sentiment_close_price
 model:
   algorithm: GBTRegressor
@@ -164,18 +176,8 @@ monitoring:
     enabled: true
     performance_degradation_threshold: 0.3
     slack_webhook: null
-  api:
-    cors_origins:
-    - '*'
-    enabled: true
-    port: 8000
   console_output: true
   cpu_threshold_warning_percent: 85
-  dashboard:
-    auto_refresh_seconds: 5
-    enabled: true
-    historical_data_points: 100
-    port: 8501
   detailed_metrics: true
   enabled: true
   experiment_name: pipeline_scalability_monitoring

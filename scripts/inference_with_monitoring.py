@@ -86,7 +86,7 @@ class MonitoredInferenceEngine:
                 'enabled': True,
                 'detailed_metrics': config.monitoring.detailed_metrics,
                 'resource_monitoring_interval': config.monitoring.resource_monitoring_interval,
-                'experiment_name': config.monitoring.experiment_name + "_inference"
+                'experiment_name': "stock_forecasting_gbt_exp_unified_monitoring_inference"
             }
             self.monitor = ScalabilityMonitor(config, spark, monitoring_config)
             self.logger.info("🔍 Inference monitoring enabled")
@@ -342,21 +342,23 @@ class MonitoredInferenceEngine:
                 try:
                     config_manager = get_monitoring_config_manager()
                     if hasattr(self.monitor, 'current_run_id') and self.monitor.current_run_id:
-                        experiment_name = self.config.monitoring.experiment_name + "_inference"
-                        config_manager.update_inference_monitoring_config(
+                        experiment_name = "stock_forecasting_gbt_exp_unified_monitoring_inference"
+                        config_manager.update_scalability_monitoring_config(
+                            "inference",
                             self.monitor.current_run_id, 
                             experiment_name
                         )
-                        self.logger.info(f"✅ Updated inference monitoring config - Run ID: {self.monitor.current_run_id}")
-                        self.logger.info(f"   📊 Experiment: {experiment_name}")
+                        self.logger.info(f"✅ Updated inference scalability monitoring config - Run ID: {self.monitor.current_run_id}")
+                        self.logger.info(f"   📊 Scalability Experiment: {experiment_name}")
                         
                         # Add run info to inference results
                         self.inference_metrics['mlflow_run_id'] = self.monitor.current_run_id
                         self.inference_metrics['mlflow_experiment_name'] = experiment_name
+                        self.inference_metrics['run_type'] = 'scalability_monitoring'
                     else:
                         self.logger.warning("⚠️ No MLflow run ID available from monitor for config update")
                 except Exception as e:
-                    self.logger.warning(f"⚠️ Failed to update inference monitoring config: {e}")
+                    self.logger.warning(f"⚠️ Failed to update inference scalability monitoring config: {e}")
                 
                 # Generate monitoring report
                 self._generate_inference_report(scalability_metrics)

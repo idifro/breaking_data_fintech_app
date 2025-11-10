@@ -162,6 +162,20 @@ class MonitoredModelTrainer:
             if self.monitor:
                 scalability_metrics = self.monitor.stop_monitoring()
                 
+                # Update scalability monitoring config if run ID is available
+                try:
+                    if hasattr(self.monitor, 'current_run_id') and self.monitor.current_run_id:
+                        config_manager = get_monitoring_config_manager()
+                        scalability_experiment_name = "stock_forecasting_gbt_exp_unified_monitoring"  # Use same unified experiment
+                        config_manager.update_scalability_monitoring_config(
+                            "training",
+                            self.monitor.current_run_id, 
+                            scalability_experiment_name
+                        )
+                        self.logger.info(f"✅ Updated scalability monitoring config - Run ID: {self.monitor.current_run_id}")
+                except Exception as e:
+                    self.logger.warning(f"⚠️ Failed to update scalability monitoring config: {e}")
+                
                 # Additional monitoring cleanup if needed
                 self.logger.info("🏁 Monitoring completed and stopped")
     
@@ -345,14 +359,14 @@ class MonitoredModelTrainer:
             # Update monitoring config with successful run details
             try:
                 config_manager = get_monitoring_config_manager()
-                experiment_name = self.config.monitoring.experiment_name + "_training"
+                experiment_name = "stock_forecasting_gbt_exp_unified_monitoring"  # Use actual model experiment name
                 config_manager.update_training_monitoring_config(
                     run.info.run_id, 
                     experiment_name
                 )
-                self.logger.info(f"✅ Updated training monitoring config - Run ID: {run.info.run_id}")
-                self.logger.info(f"   📊 Experiment: {experiment_name}")
-                self.logger.info(f"   🏃 Run Name: {run.info.run_name}")
+                self.logger.info(f"✅ Updated training monitoring config - Model Run ID: {run.info.run_id}")
+                self.logger.info(f"   📊 Model Experiment: {experiment_name}")
+                self.logger.info(f"   🏃 Model Run Name: {run.info.run_name}")
             except Exception as e:
                 self.logger.warning(f"⚠️ Failed to update training monitoring config: {e}")
             
@@ -365,7 +379,8 @@ class MonitoredModelTrainer:
                 'stocks_used': stock_list,
                 'model_path': model_path,
                 'mlflow_run_id': run.info.run_id,
-                'mlflow_experiment_name': experiment_name
+                'mlflow_experiment_name': experiment_name,
+                'scalability_run_id': None  # Will be set by scalability monitor separately
             }
     
     def _check_data_volume_warnings(self, data_volume_metrics: Dict):

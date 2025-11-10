@@ -194,9 +194,9 @@ Users: 8  -> Throughput: 12000 records/sec (30% efficiency)
 
 ## 🔍 Performance Analysis Examples
 
-### Dashboard Interpretation
+### Performance Metrics Interpretation
 
-**Healthy System Dashboard:**
+**Healthy System Metrics:**
 ```
 ┌─────────────────┬─────────────────┬─────────────────┬─────────────────┐
 │ Throughput      │ Scalability     │ Peak Memory     │ Processing Time │
