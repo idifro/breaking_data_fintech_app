@@ -83,6 +83,71 @@ class InferenceConfig:
     quality_checks: Dict[str, Any]
 
 
+@dataclass 
+class MonitoringThresholds:
+    """Monitoring thresholds configuration"""
+    min_throughput_records_per_second: float
+    max_processing_time_per_record_ms: float
+    min_partition_efficiency: float
+    min_scalability_score: float
+    max_memory_usage_percent: float
+    max_cpu_usage_percent: float
+
+
+@dataclass
+class MonitoringDashboard:
+    """Monitoring dashboard configuration"""
+    enabled: bool
+    port: int
+    auto_refresh_seconds: int
+    historical_data_points: int
+
+
+@dataclass
+class MonitoringAPI:
+    """Monitoring API configuration"""
+    enabled: bool
+    port: int
+    cors_origins: List[str]
+
+
+@dataclass
+class MonitoringLoadTesting:
+    """Monitoring load testing configuration"""
+    data_volume_multipliers: List[int]
+    concurrent_users: List[int]
+    benchmark_duration_minutes: int
+
+
+@dataclass
+class MonitoringAlerts:
+    """Monitoring alerts configuration"""
+    enabled: bool
+    email_notifications: bool
+    slack_webhook: Optional[str]
+    performance_degradation_threshold: float
+
+
+@dataclass
+class MonitoringConfig:
+    """Scalability monitoring configuration"""
+    enabled: bool
+    detailed_metrics: bool
+    experiment_name: str
+    separate_experiment: bool
+    resource_monitoring_interval: float
+    memory_threshold_warning_mb: int
+    cpu_threshold_warning_percent: int
+    thresholds: MonitoringThresholds
+    generate_reports: bool
+    save_metrics_json: bool
+    console_output: bool
+    dashboard: MonitoringDashboard
+    api: MonitoringAPI
+    load_testing: MonitoringLoadTesting
+    alerts: MonitoringAlerts
+
+
 class Config:
     """Main configuration class"""
     
@@ -114,6 +179,10 @@ class Config:
                 model_name="unified_stock_model",
                 model_stage="None",
                 model_version="latest",
+                predict_next_trading_day=True,
+                skip_weekends_holidays=True,
+                save_predictions=False,
+                prediction_column_name="predicted_close",
                 min_required_rows=50,
                 validate_data_quality=True,
                 quality_checks={
@@ -121,6 +190,71 @@ class Config:
                     "check_data_continuity": True,
                     "max_missing_ratio": 0.1
                 }
+            )
+        
+        # Initialize monitoring configuration if available
+        if 'monitoring' in self._config:
+            monitoring_data = self._config['monitoring']
+            self.monitoring = MonitoringConfig(
+                enabled=monitoring_data.get('enabled', True),
+                detailed_metrics=monitoring_data.get('detailed_metrics', True),
+                experiment_name=monitoring_data.get('experiment_name', 'pipeline_scalability_monitoring'),
+                separate_experiment=monitoring_data.get('separate_experiment', True),
+                resource_monitoring_interval=monitoring_data.get('resource_monitoring_interval', 1.0),
+                memory_threshold_warning_mb=monitoring_data.get('memory_threshold_warning_mb', 8192),
+                cpu_threshold_warning_percent=monitoring_data.get('cpu_threshold_warning_percent', 85),
+                thresholds=MonitoringThresholds(**monitoring_data.get('thresholds', {})),
+                generate_reports=monitoring_data.get('generate_reports', True),
+                save_metrics_json=monitoring_data.get('save_metrics_json', True),
+                console_output=monitoring_data.get('console_output', True),
+                dashboard=MonitoringDashboard(**monitoring_data.get('dashboard', {})),
+                api=MonitoringAPI(**monitoring_data.get('api', {})),
+                load_testing=MonitoringLoadTesting(**monitoring_data.get('load_testing', {})),
+                alerts=MonitoringAlerts(**monitoring_data.get('alerts', {}))
+            )
+        else:
+            # Provide default monitoring configuration
+            self.monitoring = MonitoringConfig(
+                enabled=True,
+                detailed_metrics=True,
+                experiment_name='pipeline_scalability_monitoring',
+                separate_experiment=True,
+                resource_monitoring_interval=1.0,
+                memory_threshold_warning_mb=8192,
+                cpu_threshold_warning_percent=85,
+                thresholds=MonitoringThresholds(
+                    min_throughput_records_per_second=100,
+                    max_processing_time_per_record_ms=100,
+                    min_partition_efficiency=0.7,
+                    min_scalability_score=0.6,
+                    max_memory_usage_percent=85,
+                    max_cpu_usage_percent=80
+                ),
+                generate_reports=True,
+                save_metrics_json=True,
+                console_output=True,
+                dashboard=MonitoringDashboard(
+                    enabled=True,
+                    port=8501,
+                    auto_refresh_seconds=5,
+                    historical_data_points=100
+                ),
+                api=MonitoringAPI(
+                    enabled=True,
+                    port=8000,
+                    cors_origins=["*"]
+                ),
+                load_testing=MonitoringLoadTesting(
+                    data_volume_multipliers=[1, 2, 5, 10],
+                    concurrent_users=[1, 5, 10, 20],
+                    benchmark_duration_minutes=5
+                ),
+                alerts=MonitoringAlerts(
+                    enabled=True,
+                    email_notifications=False,
+                    slack_webhook=None,
+                    performance_degradation_threshold=0.3
+                )
             )
     
     def _load_config(self) -> Dict[str, Any]:

@@ -180,3 +180,58 @@ visualization:
     secondary: "#ff7f0e"
     success: "#2ca02c"
     warning: "#d62728"
+
+# Scalability Monitoring Configuration
+monitoring:
+  # General monitoring settings
+  enabled: true
+  detailed_metrics: true
+  
+  # MLflow experiment settings
+  experiment_name: "pipeline_scalability_monitoring"
+  separate_experiment: true
+  
+  # Resource monitoring settings
+  resource_monitoring_interval: 1.0  # seconds between resource samples
+  memory_threshold_warning_mb: 8192  # Warning when memory usage exceeds this
+  cpu_threshold_warning_percent: 85  # Warning when CPU usage exceeds this
+  
+  # Performance thresholds
+  thresholds:
+    min_throughput_records_per_second: 100
+    max_processing_time_per_record_ms: 100
+    min_partition_efficiency: 0.7
+    min_scalability_score: 0.6
+    max_memory_usage_percent: 85
+    max_cpu_usage_percent: 80
+  
+  # Output settings
+  generate_reports: true
+  save_metrics_json: true
+  console_output: true
+  
+  # Dashboard settings
+  dashboard:
+    enabled: true
+    port: 8501
+    auto_refresh_seconds: 5
+    historical_data_points: 100
+  
+  # API settings
+  api:
+    enabled: true
+    port: 8000
+    cors_origins: ["*"]
+  
+  # Load testing settings
+  load_testing:
+    data_volume_multipliers: [1, 2, 5, 10]
+    concurrent_users: [1, 5, 10, 20]
+    benchmark_duration_minutes: 5
+    
+  # Alert settings
+  alerts:
+    enabled: true
+    email_notifications: false
+    slack_webhook: null
+    performance_degradation_threshold: 0.3  # Alert if performance drops 30%
