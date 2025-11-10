@@ -42,6 +42,15 @@ class DataConfig:
     train_split: float
     target_column: str
     sentiment_columns: List[str]
+    
+    # Stock selection for training and inference
+    available_stocks: List[str]
+    training_stocks: List[str]
+    inference_stocks: List[str]
+    
+    # Delta table configuration
+    stock_tables_prefix: str
+    inference_tables_prefix: str
 
 
 @dataclass
@@ -56,6 +65,22 @@ class FeatureConfig:
     enable_interactions: bool
     max_features: int
     correlation_threshold: float
+
+
+@dataclass
+class InferenceConfig:
+    """Inference configuration settings"""
+    lookback_days: int
+    model_name: str
+    model_stage: str
+    model_version: str
+    predict_next_trading_day: bool
+    skip_weekends_holidays: bool
+    save_predictions: bool
+    prediction_column_name: str
+    min_required_rows: int
+    validate_data_quality: bool
+    quality_checks: Dict[str, Any]
 
 
 class Config:
@@ -75,6 +100,28 @@ class Config:
         self.hyperparameter_tuning = self._config['hyperparameter_tuning']
         self.logging = self._config['logging']
         self.visualization = self._config['visualization']
+        
+        # Initialize path manager
+        self.paths = PathManager()
+        
+        # Initialize inference configuration if available
+        if 'inference' in self._config:
+            self.inference = InferenceConfig(**self._config['inference'])
+        else:
+            # Provide default inference configuration
+            self.inference = InferenceConfig(
+                lookback_days=49,
+                model_name="unified_stock_model",
+                model_stage="None",
+                model_version="latest",
+                min_required_rows=50,
+                validate_data_quality=True,
+                quality_checks={
+                    "check_missing_values": True,
+                    "check_data_continuity": True,
+                    "max_missing_ratio": 0.1
+                }
+            )
     
     def _load_config(self) -> Dict[str, Any]:
         """Load configuration from YAML file"""
@@ -217,7 +264,8 @@ class PathManager:
             "results/evaluation",
             "logs",
             "plots",
-            "checkpoints"
+            "checkpoints",
+            "mlflow_tracking"
         ]
         
         for directory in directories:
@@ -246,6 +294,10 @@ class PathManager:
     @property
     def logs_dir(self) -> Path:
         return self.base_dir / "logs"
+    
+    @property
+    def mlflow_tracking_dir(self) -> Path:
+        return self.base_dir / "mlflow_tracking"
     
     def get_csv_files(self) -> List[Path]:
         """Get list of CSV files"""

@@ -7,6 +7,41 @@ data:
   target_column: "target"
   sentiment_columns: ["Close", "Volume", "Scaled_sentiment"]
   
+  # Stock selection for training and inference
+  available_stocks: ["AAPL", "BABA", "GOOG", "NVDA", "TSLA"]
+  training_stocks: ["AAPL", "GOOG", "NVDA", "TSLA","BABA"]  # Stocks to include in training
+  inference_stocks: ["AAPL", "GOOG", "NVDA", "TSLA","BABA"]  # Stocks for inference
+  
+  # Delta table configuration
+  stock_tables_prefix: "stock_"        # delta_tables/stock_AAPL/
+  inference_tables_prefix: "inference_"  # delta_tables/inference_AAPL/
+
+# Inference Configuration
+inference:
+  # Data requirements for prediction
+  lookback_days: 49  # Number of recent rows needed for prediction
+  
+  # Model configuration
+  model_name: "stock_predictor_unified_5stocks"  # MLflow model name to load
+  model_stage: "None"  # Model stage: Production, Staging, None
+  model_version: "latest"    # specific version number or "latest"
+  
+  # Prediction settings
+  predict_next_trading_day: true
+  skip_weekends_holidays: true
+  
+  # Output configuration
+  save_predictions: false
+  prediction_column_name: "predicted_close"
+  
+  # Validation settings
+  min_required_rows: 49
+  validate_data_quality: true
+  quality_checks:
+    check_missing_values: true
+    check_data_continuity: true
+    max_missing_ratio: 0.1
+  
 # Feature Engineering Configuration
 features:
   # Lag features
