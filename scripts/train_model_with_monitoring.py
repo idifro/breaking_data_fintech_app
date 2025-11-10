@@ -44,6 +44,7 @@ from src.utils import Config, Logger, MLflowManager, PathManager, load_environme
 from src.data_processing import DataProcessor
 from src.model_training import ModelTrainer
 from src.scalability_monitor import ScalabilityMonitor, PerformanceBenchmark
+from src.monitoring_config_manager import get_monitoring_config_manager
 
 
 class MonitoredModelTrainer:
@@ -159,7 +160,10 @@ class MonitoredModelTrainer:
             raise RuntimeError(error_msg)
         finally:
             if self.monitor:
-                self.monitor.stop_monitoring()
+                scalability_metrics = self.monitor.stop_monitoring()
+                
+                # Additional monitoring cleanup if needed
+                self.logger.info("🏁 Monitoring completed and stopped")
     
     def train_models(self, stock_selection: List[str], run_load_test: bool = False) -> Dict:
         """Enhanced training with comprehensive monitoring (wrapper for unified approach)"""
@@ -338,6 +342,20 @@ class MonitoredModelTrainer:
             
             self.logger.info(f"💾 Unified model saved: {model_path}")
             
+            # Update monitoring config with successful run details
+            try:
+                config_manager = get_monitoring_config_manager()
+                experiment_name = self.config.monitoring.experiment_name + "_training"
+                config_manager.update_training_monitoring_config(
+                    run.info.run_id, 
+                    experiment_name
+                )
+                self.logger.info(f"✅ Updated training monitoring config - Run ID: {run.info.run_id}")
+                self.logger.info(f"   📊 Experiment: {experiment_name}")
+                self.logger.info(f"   🏃 Run Name: {run.info.run_name}")
+            except Exception as e:
+                self.logger.warning(f"⚠️ Failed to update training monitoring config: {e}")
+            
             return {
                 'model_info': model_info,
                 'metrics': evaluation_results,
@@ -345,7 +363,9 @@ class MonitoredModelTrainer:
                 'test_samples': test_samples, 
                 'features_count': len(feature_names),
                 'stocks_used': stock_list,
-                'model_path': model_path
+                'model_path': model_path,
+                'mlflow_run_id': run.info.run_id,
+                'mlflow_experiment_name': experiment_name
             }
     
     def _check_data_volume_warnings(self, data_volume_metrics: Dict):

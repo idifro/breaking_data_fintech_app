@@ -109,6 +109,7 @@ class ScalabilityMonitor:
         # Monitoring state
         self.monitoring_active = False
         self.start_time = None
+        self.current_run_id = None  # Track current MLflow run ID
         
         # MLflow setup for monitoring
         self.monitoring_experiment_name = self.monitoring_config.get(
@@ -593,7 +594,10 @@ class ScalabilityMonitor:
     def _log_metrics_to_mlflow(self):
         """Log scalability metrics to MLflow"""
         try:
-            with mlflow.start_run(run_name=f"scalability_monitoring_{datetime.now().strftime('%Y%m%d_%H%M%S')}"):
+            with mlflow.start_run(run_name=f"scalability_monitoring_{datetime.now().strftime('%Y%m%d_%H%M%S')}") as run:
+                # Store run ID for config updates
+                self.current_run_id = run.info.run_id
+                
                 # Set tags
                 mlflow.set_tag("monitoring_type", "scalability")
                 mlflow.set_tag("pipeline_version", "1.0")

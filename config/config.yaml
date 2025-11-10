@@ -1,237 +1,235 @@
-# Spark ML Pipeline Configuration
-
-# Data Configuration
 data:
+  available_stocks:
+  - AAPL
+  - BABA
+  - GOOG
+  - NVDA
+  - TSLA
+  inference_stocks:
+  - AAPL
+  - GOOG
+  - NVDA
+  - TSLA
+  - BABA
+  inference_tables_prefix: inference_
+  sentiment_columns:
+  - Close
+  - Volume
+  - Scaled_sentiment
   sequence_length: 50
+  stock_tables_prefix: stock_
+  target_column: target
   train_split: 0.85
-  target_column: "target"
-  sentiment_columns: ["Close", "Volume", "Scaled_sentiment"]
-  
-  # Stock selection for training and inference
-  available_stocks: ["AAPL", "BABA", "GOOG", "NVDA", "TSLA"]
-  training_stocks: ["AAPL", "GOOG", "NVDA", "TSLA","BABA"]  # Stocks to include in training
-  inference_stocks: ["AAPL", "GOOG", "NVDA", "TSLA","BABA"]  # Stocks for inference
-  
-  # Delta table configuration
-  stock_tables_prefix: "stock_"        # delta_tables/stock_AAPL/
-  inference_tables_prefix: "inference_"  # delta_tables/inference_AAPL/
-
-# Inference Configuration
-inference:
-  # Data requirements for prediction
-  lookback_days: 49  # Number of recent rows needed for prediction
-  
-  # Model configuration
-  model_name: "stock_predictor_unified_5stocks"  # MLflow model name to load
-  model_stage: "None"  # Model stage: Production, Staging, None
-  model_version: "latest"    # specific version number or "latest"
-  
-  # Prediction settings
-  predict_next_trading_day: true
-  skip_weekends_holidays: true
-  
-  # Output configuration
-  save_predictions: false
-  prediction_column_name: "predicted_close"
-  
-  # Validation settings
-  min_required_rows: 49
-  validate_data_quality: true
-  quality_checks:
-    check_missing_values: true
-    check_data_continuity: true
-    max_missing_ratio: 0.1
-  
-# Feature Engineering Configuration
-features:
-  # Lag features
-  price_lags: [1, 2, 3, 5]
-  volume_lags: [1]
-  sentiment_lags: [1, 3]
-  
-  # Moving averages
-  ma_windows: [5, 10, 20]
-  
-  # Technical indicators
-  enable_rsi: true
-  enable_volatility: true
-  enable_interactions: true
-  
-  # Feature selection
-  max_features: 25
-  correlation_threshold: 0.95
-
-# Model Configuration
-model:
-  algorithm: "GBTRegressor"
-  
-  # Default parameters
-  default_params:
-    maxIter: 150
-    maxDepth: 8
-    stepSize: 0.05
-    subsamplingRate: 0.8
-    featureSubsetStrategy: "sqrt"
-    seed: 42
-  
-  # Hyperparameter tuning ranges
-  hyperparameter_ranges:
-    maxIter: [100, 150, 200]
-    maxDepth: [6, 8, 10, 12]
-    stepSize: [0.01, 0.05, 0.1, 0.2]
-    subsamplingRate: [0.7, 0.8, 0.9]
-    featureSubsetStrategy: ["auto", "sqrt", "log2"]
-
-# MLflow Configuration
-mlflow:
-  experiment_name: "stock_forecasting_gbt_exp"
-  run_name_prefix: "gbt_sentiment_close_price"
-  model_name: "stock_forecast_model_gbt"
-  model_stage: "Production"
-  
-  # Tracking configuration
-  log_models: true
-  log_params: true
-  log_metrics: true
-  log_artifacts: true
-
-# Spark Configuration
-spark:
-  app_name: "StockForecastingPipeline"
-  master: "local[*]"
-  
-  # Memory settings (optimized for 32GB RAM)
-  driver_memory: "4g"
-  executor_memory: "8g"
-  executor_cores: 4
-  
-  # Additional configs
-  configs:
-    "spark.sql.adaptive.enabled": "true"
-    "spark.sql.adaptive.coalescePartitions.enabled": "true"
-    "spark.sql.execution.arrow.pyspark.enabled": "true"
-    "spark.serializer": "org.apache.spark.serializer.KryoSerializer"
-    
-    # Optimize broadcasting and memory
-    "spark.sql.broadcastTimeout": "36000"
-    "spark.sql.adaptive.advisoryPartitionSizeInBytes": "64MB"
-    "spark.sql.adaptive.maxNumPostShufflePartitions": "200"
-    "spark.rdd.compress": "true"
-    "spark.io.compression.codec": "snappy"
-    
-    # Optimize for better partitioning
-    "spark.sql.adaptive.skewJoin.enabled": "true"
-    "spark.sql.adaptive.localShuffleReader.enabled": "true"
-
-# Evaluation Configuration
+  training_stocks:
+  - AAPL
+  - GOOG
+  - NVDA
+  - TSLA
+  - BABA
 evaluation:
-  metrics: ["mae", "mse", "rmse", "r2"]
-  save_predictions: true
-  save_feature_importance: true
   create_plots: true
-  
-  # Plot configuration
+  metrics:
+  - mae
+  - mse
+  - rmse
+  - r2
   plots:
+    correlation_matrix: true
     feature_importance: true
     predictions_vs_actual: true
-    correlation_matrix: true
     residuals: true
-
-# Hyperparameter Tuning Configuration
+  save_feature_importance: true
+  save_predictions: true
+features:
+  correlation_threshold: 0.95
+  enable_interactions: true
+  enable_rsi: true
+  enable_volatility: true
+  ma_windows:
+  - 5
+  - 10
+  - 20
+  max_features: 25
+  price_lags:
+  - 1
+  - 2
+  - 3
+  - 5
+  sentiment_lags:
+  - 1
+  - 3
+  volume_lags:
+  - 1
 hyperparameter_tuning:
-  enabled: false  # Set to false to skip hyperparameter tuning and use default parameters
-  method: "spark_cv"  # Options: "optuna" or "spark_cv" 
-                      # - "optuna": Advanced Bayesian optimization (requires optuna package)
-                      # - "spark_cv": Spark CrossValidator (recommended for stability)
-  n_trials: 10        # Number of trials (for optuna) or parameter combinations (for spark_cv)
-  direction: "minimize"  # "minimize" or "maximize" 
-  metric: "mae"       # Evaluation metric: "mae", "mse", "rmse", "r2"
-  
-  # Cross-validation
   cv_folds: 3
-  
-  # Optuna specific (if needed)
+  direction: minimize
+  enabled: false
+  method: spark_cv
+  metric: mae
+  n_trials: 10
   optuna:
-    study_name: "gbt_hyperparameter_optimization"
-    storage: null  # Use in-memory storage
-    pruner: "MedianPruner"
-    sampler: "TPESampler"
-
-# Logging Configuration
+    pruner: MedianPruner
+    sampler: TPESampler
+    storage: null
+    study_name: gbt_hyperparameter_optimization
+inference:
+  lookback_days: 49
+  min_required_rows: 49
+  model_name: stock_predictor_unified_5stocks
+  model_stage: None
+  model_version: latest
+  predict_next_trading_day: true
+  prediction_column_name: predicted_close
+  quality_checks:
+    check_data_continuity: true
+    check_missing_values: true
+    max_missing_ratio: 0.1
+  save_predictions: false
+  skip_weekends_holidays: true
+  validate_data_quality: true
 logging:
-  level: "INFO"
-  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {name} | {message}"
-  
-  # File logging
-  log_file: "logs/pipeline.log"
-  rotation: "1 week"
-  retention: "1 month"
-
-# Visualization Configuration
-visualization:
-  style: "seaborn-v0_8"
-  figure_size: [12, 8]
-  dpi: 300
-  save_format: "png"
-  
-  # Colors
-  colors:
-    primary: "#1f77b4"
-    secondary: "#ff7f0e"
-    success: "#2ca02c"
-    warning: "#d62728"
-
-# Scalability Monitoring Configuration
+  format: '{time:YYYY-MM-DD HH:mm:ss} | {level} | {name} | {message}'
+  level: INFO
+  log_file: logs/pipeline.log
+  retention: 1 month
+  rotation: 1 week
+mlflow:
+  experiment_name: stock_forecasting_gbt_exp
+  log_artifacts: true
+  log_metrics: true
+  log_models: true
+  log_params: true
+  model_name: stock_forecast_model_gbt
+  model_stage: Production
+  monitoring:
+    dashboard:
+      auto_refresh: false
+      metrics_retention_days: 30
+      plots_directory: plots
+      refresh_interval_seconds: 30
+    inference:
+      artifacts_url: null
+      experiment_name: pipeline_scalability_monitoring_inference
+      latest_run_id: null
+      latest_run_name: null
+      latest_timestamp: null
+      metrics_url: null
+    training:
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/0ef149fcbc754744af39e7854f3fbd17/artifacts
+      end_time: null
+      experiment_id: '897954263920293505'
+      experiment_name: pipeline_scalability_monitoring_training
+      latest_run_id: 0ef149fcbc754744af39e7854f3fbd17
+      latest_run_name: unified_model_monitoring_AAPL-BABA-GOOG-NVDA-TSLA_20251110_230411
+      latest_timestamp: '2025-11-10T23:08:57.039983'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/0ef149fcbc754744af39e7854f3fbd17
+      run_status: RUNNING
+      start_time: '2025-11-10T23:04:11.359000'
+  run_name_prefix: gbt_sentiment_close_price
+model:
+  algorithm: GBTRegressor
+  default_params:
+    featureSubsetStrategy: sqrt
+    maxDepth: 8
+    maxIter: 150
+    seed: 42
+    stepSize: 0.05
+    subsamplingRate: 0.8
+  hyperparameter_ranges:
+    featureSubsetStrategy:
+    - auto
+    - sqrt
+    - log2
+    maxDepth:
+    - 6
+    - 8
+    - 10
+    - 12
+    maxIter:
+    - 100
+    - 150
+    - 200
+    stepSize:
+    - 0.01
+    - 0.05
+    - 0.1
+    - 0.2
+    subsamplingRate:
+    - 0.7
+    - 0.8
+    - 0.9
 monitoring:
-  # General monitoring settings
-  enabled: true
+  alerts:
+    email_notifications: false
+    enabled: true
+    performance_degradation_threshold: 0.3
+    slack_webhook: null
+  api:
+    cors_origins:
+    - '*'
+    enabled: true
+    port: 8000
+  console_output: true
+  cpu_threshold_warning_percent: 85
+  dashboard:
+    auto_refresh_seconds: 5
+    enabled: true
+    historical_data_points: 100
+    port: 8501
   detailed_metrics: true
-  
-  # MLflow experiment settings
-  experiment_name: "pipeline_scalability_monitoring"
+  enabled: true
+  experiment_name: pipeline_scalability_monitoring
+  generate_reports: true
+  load_testing:
+    benchmark_duration_minutes: 5
+    concurrent_users:
+    - 1
+    - 5
+    - 10
+    - 20
+    data_volume_multipliers:
+    - 1
+    - 2
+    - 5
+    - 10
+  memory_threshold_warning_mb: 8192
+  resource_monitoring_interval: 1.0
+  save_metrics_json: true
   separate_experiment: true
-  
-  # Resource monitoring settings
-  resource_monitoring_interval: 1.0  # seconds between resource samples
-  memory_threshold_warning_mb: 8192  # Warning when memory usage exceeds this
-  cpu_threshold_warning_percent: 85  # Warning when CPU usage exceeds this
-  
-  # Performance thresholds
   thresholds:
-    min_throughput_records_per_second: 100
+    max_cpu_usage_percent: 80
+    max_memory_usage_percent: 85
     max_processing_time_per_record_ms: 100
     min_partition_efficiency: 0.7
     min_scalability_score: 0.6
-    max_memory_usage_percent: 85
-    max_cpu_usage_percent: 80
-  
-  # Output settings
-  generate_reports: true
-  save_metrics_json: true
-  console_output: true
-  
-  # Dashboard settings
-  dashboard:
-    enabled: true
-    port: 8501
-    auto_refresh_seconds: 5
-    historical_data_points: 100
-  
-  # API settings
-  api:
-    enabled: true
-    port: 8000
-    cors_origins: ["*"]
-  
-  # Load testing settings
-  load_testing:
-    data_volume_multipliers: [1, 2, 5, 10]
-    concurrent_users: [1, 5, 10, 20]
-    benchmark_duration_minutes: 5
-    
-  # Alert settings
-  alerts:
-    enabled: true
-    email_notifications: false
-    slack_webhook: null
-    performance_degradation_threshold: 0.3  # Alert if performance drops 30%
+    min_throughput_records_per_second: 100
+spark:
+  app_name: StockForecastingPipeline
+  configs:
+    spark.io.compression.codec: snappy
+    spark.rdd.compress: 'true'
+    spark.serializer: org.apache.spark.serializer.KryoSerializer
+    spark.sql.adaptive.advisoryPartitionSizeInBytes: 64MB
+    spark.sql.adaptive.coalescePartitions.enabled: 'true'
+    spark.sql.adaptive.enabled: 'true'
+    spark.sql.adaptive.localShuffleReader.enabled: 'true'
+    spark.sql.adaptive.maxNumPostShufflePartitions: '200'
+    spark.sql.adaptive.skewJoin.enabled: 'true'
+    spark.sql.broadcastTimeout: '36000'
+    spark.sql.execution.arrow.pyspark.enabled: 'true'
+  driver_memory: 4g
+  executor_cores: 4
+  executor_memory: 8g
+  master: local[*]
+visualization:
+  colors:
+    primary: '#1f77b4'
+    secondary: '#ff7f0e'
+    success: '#2ca02c'
+    warning: '#d62728'
+  dpi: 300
+  figure_size:
+  - 12
+  - 8
+  save_format: png
+  style: seaborn-v0_8
