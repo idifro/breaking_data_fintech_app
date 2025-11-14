@@ -1,16 +1,45 @@
 data:
   available_stocks:
+  - AAL
   - AAPL
+  - ABBV
+  - AMD
+  - AMGN
   - BABA
+  - BIIB
+  - CMCSA
+  - CMG
+  - COP
+  - COST
+  - CRM
+  - CVX
+  - EBAY
+  - GE
   - GOOG
+  - GSK
+  - MRK
+  - NKE
   - NVDA
+  - ORCL
+  - PEP
+  - PYPL
+  - QCOM
+  - QQQ
   - TSLA
+  - TSM
+  - USO
+  - WFC
   inference_stocks:
   - AAPL
+  - BABA
   - GOOG
   - NVDA
   - TSLA
-  - BABA
+  - AMD
+  - COST
+  - CVX
+  - QQQ
+  - TSM
   inference_tables_prefix: inference_
   sentiment_columns:
   - Close
@@ -22,10 +51,15 @@ data:
   train_split: 0.85
   training_stocks:
   - AAPL
+  - BABA
   - GOOG
   - NVDA
   - TSLA
-  - BABA
+  - AMD
+  - COST
+  - CVX
+  - QQQ
+  - TSM
 evaluation:
   create_plots: true
   metrics:
