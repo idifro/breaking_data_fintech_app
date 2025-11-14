@@ -2,7 +2,7 @@
 
 ## 📊 Overview
 
-This comprehensive monitoring system provides real-time scalability metrics, performance tracking, and automated load testing for the ML pipeline. It's designed for the "Data Engineering at Scale" academic project to demonstrate enterprise-level monitoring capabilities.
+This comprehensive monitoring system provides real-time scalability metrics, performance tracking, and automated load testing for the ML pipeline. It's designed for the "Data Engineering at Scale" academic project to demonstrate enterprise-level monitoring capabilities without external dashboard dependencies.
 
 ## 🏗️ Architecture
 
@@ -10,13 +10,13 @@ This comprehensive monitoring system provides real-time scalability metrics, per
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   ML Pipeline   │───▶│ Scalability      │───▶│   MLflow        │
 │   (Training/    │    │ Monitor          │    │   Experiments   │
-│   Inference)    │    │                  │    │                 │
+│   Inference)    │    │ (810 lines)      │    │   Tracking      │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
                                │
                                ▼
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Streamlit     │◀───│   FastAPI        │───▶│   Load Testing  │
-│   Dashboard     │    │   API Service    │    │   Scenarios     │
+│   JSON Reports  │◀───│   Performance    │───▶│   Load Testing  │
+│   & Metrics     │    │   Benchmarking   │    │   Framework     │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
@@ -28,106 +28,131 @@ This comprehensive monitoring system provides real-time scalability metrics, per
 # Install monitoring dependencies
 pip install -r requirements.txt
 
-# Or install specific monitoring packages
-pip install streamlit fastapi uvicorn psutil plotly pydantic websockets
+# Verify core monitoring components
+python -c "
+from src.scalability_monitor import ScalabilityMonitor
+from src.monitoring_config_manager import get_monitoring_config_manager
+print('✅ Monitoring components loaded successfully')
+"
 ```
 
 ### 2. Start Monitoring Services
 
 ```bash
-# Terminal 1: Start FastAPI monitoring service
-uvicorn dashboard.monitoring_api:app --host 0.0.0.0 --port 8502 --reload
+# Run ML pipeline with enhanced monitoring
+python scripts/train_model_with_monitoring.py --enable-monitoring
 
-# Terminal 2: Start Streamlit dashboard
-streamlit run dashboard/monitoring_dashboard.py --server.port 8501
+# Run inference with performance tracking
+python scripts/inference_with_monitoring.py --enable-monitoring --concurrent-testing
 
-# Terminal 3: Run ML pipeline with monitoring
-python scripts/train_model_with_monitoring.py --enable-monitoring --concurrent-load-test
+# Execute comprehensive load testing
+python scripts/load_testing_scenarios.py --scenario all --duration 300
 ```
 
-### 3. Access Interfaces
+### 3. Access Results
 
-- **Streamlit Dashboard**: http://localhost:8501
-- **FastAPI Service**: http://localhost:8502
-- **API Documentation**: http://localhost:8502/docs
+- **MLflow Tracking**: `mlflow ui --host 0.0.0.0 --port 5000` → http://localhost:5000
+- **JSON Reports**: `results/evaluation/` directory
+- **Log Files**: `logs/pipeline.log`
+- **Performance Artifacts**: MLflow experiment artifacts
 
 ## 📈 Monitoring Components
 
 ### 🔧 Core Monitoring Module (`src/scalability_monitor.py`)
 
-The central monitoring system that tracks:
+The central monitoring system (810 lines) that provides comprehensive tracking:
 
-- **Data Volume Metrics**: Processing throughput, data size scaling
-- **Performance Metrics**: Response times, processing efficiency
-- **Resource Utilization**: CPU, memory, disk usage
-- **Scalability Scores**: Linear scalability assessment
+- **Data Volume Metrics**: Processing throughput, partition efficiency, data size scaling
+- **Performance Metrics**: Response times, processing efficiency, bottleneck detection  
+- **Resource Utilization**: CPU, memory, disk I/O monitoring with real-time tracking
+- **Scalability Scores**: Linear scalability assessment and efficiency analysis
 
 ```python
 # Example usage
 from src.scalability_monitor import ScalabilityMonitor
 
-monitor = ScalabilityMonitor(config)
+monitor = ScalabilityMonitor(config, spark, monitoring_config)
 metrics = monitor.monitor_data_volume(spark_df)
 performance = monitor.monitor_performance()
 resources = monitor.monitor_resource_usage()
+scalability_score = monitor.calculate_linear_scalability_score(volume_metrics)
 ```
 
-### 📊 Streamlit Dashboard (`dashboard/monitoring_dashboard.py`)
+### 📊 MLflow Integration (`src/monitoring_config_manager.py`)
 
-Real-time visualization dashboard featuring:
+Comprehensive MLflow integration for experiment tracking:
 
-- **Overview Metrics Cards**: Key performance indicators
-- **Alert System**: Threshold violation notifications
-- **Performance Trends**: Interactive time-series charts
-- **Resource Utilization**: Real-time system monitoring
-- **Experiment Comparison**: Side-by-side run analysis
+- **Experiment Management**: Separate monitoring and training experiments
+- **Metrics Logging**: Performance, scalability, and resource utilization metrics
+- **Artifact Storage**: Monitoring reports, performance plots, and analysis results
+- **Run Tracking**: Automated experiment organization with timestamped runs
 
 **Key Features:**
-- Auto-refresh every 5 seconds (configurable)
-- Historical data visualization
-- Interactive filtering and controls
-- Responsive design for various screen sizes
+- Automatic experiment creation and management
+- Structured artifact organization
+- Historical performance tracking
+- Integration with monitoring workflows
 
-### 🌐 FastAPI Service (`dashboard/monitoring_api.py`)
+### 🏋️ Load Testing Framework (`scripts/load_testing_scenarios.py`)
 
-RESTful API service providing:
+Comprehensive load testing system (875 lines) with multiple scenarios:
 
-- **Current Metrics**: `/api/metrics/current`
-- **Historical Data**: `/api/metrics/history`
-- **System Health**: `/api/system/health`
-- **Alerts**: `/api/alerts`
-- **WebSocket Streaming**: `/ws/metrics`
+1. **Baseline Testing**: Single-user performance measurement
+2. **Concurrency Testing**: Multi-user concurrent load simulation
+3. **Volume Testing**: Data size scaling performance analysis
+4. **Stress Testing**: System breaking point identification
+5. **Regression Testing**: Performance comparison and trend analysis
 
-**API Examples:**
 ```bash
-# Get current metrics
-curl http://localhost:8502/api/metrics/current
+# Run comprehensive load testing
+python scripts/load_testing_scenarios.py --scenario all --duration 300
 
-# Get historical data
-curl "http://localhost:8502/api/metrics/history?hours=24&limit=100"
-
-# Check system health
-curl http://localhost:8502/api/system/health
+# Individual testing scenarios
+python scripts/load_testing_scenarios.py --scenario baseline --duration 60
+python scripts/load_testing_scenarios.py --scenario stress --duration 180
+python scripts/load_testing_scenarios.py --scenario volume --max-volume 1000
 ```
 
-### 🏋️ Load Testing (`scripts/load_testing_scenarios.py`)
+### 🚀 Enhanced Training (`scripts/train_model_with_monitoring.py`)
 
-Comprehensive load testing with multiple scenarios:
+Production training pipeline (757 lines) with integrated monitoring:
 
-1. **Baseline**: Single-user performance measurement
-2. **Concurrency**: Multi-user concurrent testing
-3. **Volume**: Data size scaling tests
-4. **Stress**: System limit identification
-5. **Regression**: Performance comparison analysis
+- **Real-time Performance Tracking**: During model training execution
+- **Resource Monitoring**: CPU, memory, and processing efficiency
+- **MLflow Integration**: Automatic experiment logging with monitoring metrics
+- **Load Testing Integration**: Optional concurrent training load testing
 
+**Usage Examples:**
 ```bash
-# Run individual scenarios
-python scripts/load_testing_scenarios.py --scenario baseline --duration 60
-python scripts/load_testing_scenarios.py --scenario concurrency --max-users 20
-python scripts/load_testing_scenarios.py --scenario stress --duration 300
+# Enhanced training with monitoring
+python scripts/train_model_with_monitoring.py --enable-monitoring
 
-# Run comprehensive test suite
-python scripts/load_testing_scenarios.py --scenario all --duration 120
+# Training with load testing
+python scripts/train_model_with_monitoring.py --load-test --concurrent-users 5
+
+# Specific stocks with detailed monitoring
+python scripts/train_model_with_monitoring.py --stocks AAPL,GOOG,NVDA --enable-monitoring
+```
+
+### ⚡ Enhanced Inference (`scripts/inference_with_monitoring.py`)
+
+Production inference pipeline (1415 lines) with scalability monitoring:
+
+- **Real-time Inference Monitoring**: Performance tracking during predictions
+- **Concurrent Testing**: Multi-threaded inference load testing
+- **Quality Checks**: Data validation and prediction quality monitoring
+- **Throughput Analysis**: Records/second processing with efficiency metrics
+
+**Usage Examples:**
+```bash
+# Monitored inference with performance tracking
+python scripts/inference_with_monitoring.py --enable-monitoring
+
+# Concurrent inference testing
+python scripts/inference_with_monitoring.py --concurrent-testing --max-users 10
+
+# Load testing with quality checks
+python scripts/inference_with_monitoring.py --load-test --validate-quality
 ```
 
 ## ⚙️ Configuration
@@ -137,30 +162,49 @@ python scripts/load_testing_scenarios.py --scenario all --duration 120
 ```yaml
 monitoring:
   enabled: true
+  detailed_metrics: true
+  experiment_name: pipeline_scalability_monitoring
   
   # Performance thresholds
   thresholds:
-    min_throughput_records_per_second: 1000
-    max_memory_usage_percent: 80
-    max_cpu_usage_percent: 85
-    min_scalability_score: 0.7
+    min_throughput_records_per_second: 100
+    max_memory_usage_percent: 85
+    max_cpu_usage_percent: 80
+    min_scalability_score: 0.6
+    max_processing_time_per_record_ms: 100
+    min_partition_efficiency: 0.7
   
-  # Dashboard settings
-  dashboard:
-    port: 8501
-    auto_refresh_seconds: 5
-    historical_data_points: 100
+  # Resource monitoring settings
+  resource_monitoring_interval: 1.0
+  cpu_threshold_warning_percent: 85
+  memory_threshold_warning_mb: 8192
   
-  # API settings
-  api:
-    port: 8502
-    enable_cors: true
-  
-  # Load testing parameters
+  # Load testing configuration
   load_testing:
-    max_concurrent_users: 20
-    stress_test_duration_minutes: 5
-    data_volume_sizes_mb: [1, 5, 10, 20, 50, 100]
+    concurrent_users: [1, 5, 10, 20]
+    data_volume_multipliers: [1, 2, 5, 10]
+    benchmark_duration_minutes: 5
+  
+  # Output settings
+  generate_reports: true
+  save_metrics_json: true
+  console_output: true
+  separate_experiment: true
+  
+  # Alert settings
+  alerts:
+    enabled: true
+    performance_degradation_threshold: 0.3
+    email_notifications: false
+    slack_webhook: null
+
+# MLflow Integration
+mlflow:
+  experiment_name: stock_forecasting_gbt_exp
+  log_artifacts: true
+  log_metrics: true
+  log_models: true
+  log_params: true
 ```
 
 ### Environment Variables (`.env`)
@@ -172,11 +216,18 @@ MLFLOW_EXPERIMENT_NAME=pipeline_scalability_monitoring
 
 # Spark settings
 SPARK_LOCAL_DIRS=/tmp/spark
+SPARK_DRIVER_MEMORY=4g
+SPARK_EXECUTOR_MEMORY=8g
 PYSPARK_PYTHON=python
 
 # Monitoring settings
 MONITORING_ENABLED=true
 MONITORING_LOG_LEVEL=INFO
+MONITORING_SEPARATE_EXPERIMENT=true
+
+# Performance settings
+ENABLE_DETAILED_METRICS=true
+RESOURCE_MONITORING_INTERVAL=1.0
 ```
 
 ## 📊 Metrics Reference
@@ -185,40 +236,54 @@ MONITORING_LOG_LEVEL=INFO
 
 | Metric | Description | Unit | Good Range |
 |--------|-------------|------|------------|
-| `throughput_records_per_second` | Data processing rate | records/sec | >1000 |
-| `total_processing_time` | End-to-end processing time | seconds | <60 |
-| `linear_scalability_score` | How well system scales linearly | 0.0-1.0 | >0.7 |
-| `peak_memory_usage_mb` | Maximum memory consumption | MB | <80% total |
-| `avg_cpu_usage_percent` | Average CPU utilization | % | <85% |
-| `data_volume_gb` | Amount of data processed | GB | Variable |
+| `throughput_records_per_second` | Data processing rate | records/sec | >100 |
+| `total_processing_time` | End-to-end processing time | seconds | <300 |
+| `linear_scalability_score` | How well system scales linearly | 0.0-1.0 | >0.6 |
+| `peak_memory_usage_mb` | Maximum memory consumption | MB | <85% total |
+| `avg_cpu_usage_percent` | Average CPU utilization | % | <80% |
+| `partition_efficiency_score` | Data partitioning efficiency | 0.0-1.0 | >0.7 |
+| `resource_efficiency_score` | Overall resource utilization efficiency | 0.0-1.0 | >0.6 |
+
+### Performance Benchmarking Metrics
+
+| Metric | Description | Unit | Alert Threshold |
+|--------|-------------|------|-----------------|
+| `feature_engineering_time` | Time for feature processing | seconds | >60s |
+| `model_inference_time` | Model prediction time | seconds | >30s |
+| `avg_processing_time_per_record` | Per-record processing time | milliseconds | >100ms |
+| `disk_io_read_mb` | Disk read operations | MB | Variable |
+| `disk_io_write_mb` | Disk write operations | MB | Variable |
 
 ### System Health Metrics
 
 | Metric | Description | Unit | Alert Threshold |
 |--------|-------------|------|-----------------|
-| `cpu_percent` | Current CPU usage | % | >90% |
+| `cpu_percent` | Current CPU usage | % | >85% |
 | `memory_percent` | Current memory usage | % | >85% |
 | `disk_percent` | Current disk usage | % | >90% |
 | `load_average` | System load average | float | >CPU cores |
 
 ### Performance Benchmarks
 
-Based on typical performance expectations:
+Based on typical performance expectations for different data volumes:
 
 **Small Dataset (1-10 MB):**
-- Throughput: >5000 records/sec
-- Processing Time: <10 seconds
-- Memory Usage: <500 MB
+- Throughput: >1000 records/sec
+- Processing Time: <30 seconds
+- Memory Usage: <1 GB
+- Scalability Score: >0.8
 
 **Medium Dataset (10-100 MB):**
-- Throughput: >2000 records/sec
-- Processing Time: <60 seconds
-- Memory Usage: <2 GB
+- Throughput: >500 records/sec  
+- Processing Time: <120 seconds
+- Memory Usage: <4 GB
+- Scalability Score: >0.7
 
 **Large Dataset (100+ MB):**
-- Throughput: >1000 records/sec
+- Throughput: >100 records/sec
 - Processing Time: <300 seconds
 - Memory Usage: <8 GB
+- Scalability Score: >0.6
 
 ## 🔍 Usage Examples
 
@@ -230,16 +295,18 @@ from scripts.train_model_with_monitoring import MonitoredModelTrainer
 # Initialize monitored trainer
 trainer = MonitoredModelTrainer(config_path="config/config.yaml")
 
-# Run training with monitoring
+# Run training with comprehensive monitoring
 results = trainer.train_models_with_monitoring(
+    stocks=['AAPL', 'GOOG', 'NVDA'],
     enable_monitoring=True,
     run_load_tests=True,
     concurrent_users=5
 )
 
-# Access monitoring metrics
-print(f"Training efficiency: {results['efficiency_metrics']['processing_efficiency']:.2f}")
-print(f"Scalability score: {results['scalability_metrics']['linear_scalability_score']:.3f}")
+# Access monitoring results
+print(f"Processing efficiency: {results['scalability_metrics']['resource_efficiency_score']:.3f}")
+print(f"Linear scalability: {results['scalability_metrics']['linear_scalability_score']:.3f}")
+print(f"Peak memory usage: {results['scalability_metrics']['peak_memory_usage_mb']:.1f} MB")
 ```
 
 ### Monitored Inference
@@ -250,34 +317,63 @@ from scripts.inference_with_monitoring import MonitoredInferenceEngine
 # Initialize monitored inference
 engine = MonitoredInferenceEngine(config_path="config/config.yaml")
 
-# Run inference with monitoring
+# Run inference with performance tracking
 predictions = engine.run_monitored_inference(
+    stocks=['AAPL', 'TSLA'],
     enable_monitoring=True,
     concurrent_testing=True,
     max_concurrent_users=10
 )
 
 # View performance metrics
-print(f"Inference throughput: {predictions['performance']['throughput']:.1f} predictions/sec")
+performance = predictions['monitoring_results']['performance_metrics']
+print(f"Throughput: {performance['throughput_records_per_second']:.1f} records/sec")
+print(f"Processing time: {performance['total_processing_time']:.2f}s")
+print(f"Scalability score: {performance['linear_scalability_score']:.3f}")
 ```
 
-### Load Testing Integration
+### Comprehensive Load Testing
 
 ```python
 from scripts.load_testing_scenarios import LoadTestRunner
 
-# Run comprehensive load tests
+# Initialize load test runner
 runner = LoadTestRunner()
 
-# Individual scenario
-baseline_results = await runner.run_scenario("baseline", duration_seconds=60)
+# Run individual scenario
+baseline_results = runner.run_scenario("baseline", duration_seconds=60)
 
-# Full test suite
-all_results = await runner.run_all_scenarios(duration_per_scenario=90)
+# Run comprehensive testing suite
+all_results = runner.run_all_scenarios(duration_per_scenario=90)
 
-# Analyze results
-print(f"Maximum throughput: {baseline_results['throughput']['max']:.2f} MB/s")
-print(f"P95 response time: {baseline_results['response_time']['p95']:.2f}s")
+# Analyze performance results
+print(f"Maximum throughput: {baseline_results['max_throughput']:.2f} records/sec")
+print(f"P95 response time: {baseline_results['response_time_p95']:.2f}s")
+print(f"Resource efficiency: {baseline_results['resource_efficiency']:.3f}")
+
+# Performance regression analysis
+regression_detected = runner.detect_performance_regression(
+    current_results=baseline_results,
+    baseline_file="results/baseline_metrics.json"
+)
+```
+
+### MLflow Integration Examples
+
+```python
+from src.monitoring_config_manager import get_monitoring_config_manager
+
+# Access monitoring configuration
+cm = get_monitoring_config_manager()
+
+# View recent monitoring experiments
+training_config = cm.get_monitoring_config('training_scalability')
+print(f"Latest run: {training_config['latest_run_id']}")
+print(f"Experiment: {training_config['experiment_name']}")
+
+# Access experiment artifacts
+artifacts_url = training_config['artifacts_url']
+metrics_url = training_config['metrics_url']
 ```
 
 ## 📈 Interpreting Results
@@ -312,7 +408,30 @@ Expected throughput ranges by data volume:
 
 ## 🚨 Troubleshooting
 
+## 🚨 Troubleshooting
+
 ### Common Issues
+
+#### Monitoring Not Starting
+```bash
+# Check monitoring configuration
+python -c "
+from src.utils import get_config
+config = get_config()
+print(f'Monitoring enabled: {config.monitoring.enabled}')
+print(f'Thresholds: {config.monitoring.thresholds}')
+"
+
+# Verify scalability monitor initialization
+python -c "
+from src.scalability_monitor import ScalabilityMonitor
+from src.utils import get_config, get_spark_session
+config = get_config()
+spark = get_spark_session(config)
+monitor = ScalabilityMonitor(config, spark)
+print('✅ Monitoring components initialized successfully')
+"
+```
 
 #### High Memory Usage
 ```bash
@@ -323,8 +442,11 @@ free -h
 watch -n 1 'free -h'
 
 # Reduce Spark memory allocation
-export SPARK_DRIVER_MEMORY=4g
-export SPARK_EXECUTOR_MEMORY=2g
+export SPARK_DRIVER_MEMORY=2g
+export SPARK_EXECUTOR_MEMORY=4g
+
+# Run with reduced memory settings
+python scripts/train_model_with_monitoring.py --enable-monitoring
 ```
 
 #### Slow Performance
@@ -332,128 +454,169 @@ export SPARK_EXECUTOR_MEMORY=2g
 # Check CPU utilization
 htop
 
-# Monitor disk I/O
+# Monitor I/O performance
 iostat -x 1
 
-# Check for competing processes
-ps aux --sort=-%cpu | head -10
+# Check Spark configuration
+python -c "
+from src.utils import get_config
+config = get_config()
+print('Spark configs:', config.spark.configs)
+"
+
+# Optimize for performance
+export SPARK_SQL_ADAPTIVE_ENABLED=true
+export SPARK_SQL_ADAPTIVE_COALESCEPARTITIONS_ENABLED=true
 ```
 
-#### Dashboard Not Loading
+#### MLflow Tracking Issues
 ```bash
-# Check if services are running
-netstat -tulpn | grep -E '8501|8502'
+# Check MLflow setup
+mlflow doctor
 
-# Restart dashboard
-streamlit run dashboard/monitoring_dashboard.py --server.port 8501
+# Verify tracking URI
+echo $MLFLOW_TRACKING_URI
 
-# Check logs
-tail -f logs/monitoring.log
+# Test MLflow connectivity
+python -c "
+import mlflow
+from mlflow.tracking import MlflowClient
+client = MlflowClient()
+experiments = client.search_experiments()
+print(f'Found {len(experiments)} experiments')
+"
+
+# Check monitoring experiments
+python -c "
+from src.monitoring_config_manager import get_monitoring_config_manager
+cm = get_monitoring_config_manager()
+configs = cm.get_all_monitoring_configs()
+print('Available experiments:', list(configs.keys()))
+"
 ```
 
 ### Log Analysis
 
 Monitor logs for performance insights:
 ```bash
-# Real-time monitoring
-tail -f logs/monitoring.log | grep -E "WARNING|ERROR"
+# Real-time monitoring logs
+tail -f logs/pipeline.log | grep -E "MONITOR|SCALABILITY"
 
-# Performance patterns
-grep "throughput" logs/monitoring.log | tail -20
+# Performance metrics patterns
+grep "throughput\|scalability\|efficiency" logs/pipeline.log | tail -20
 
-# Memory warnings
-grep -i "memory" logs/monitoring.log
+# Memory and resource warnings
+grep -i -E "memory|cpu|resource" logs/pipeline.log
+
+# Error analysis
+grep -E "ERROR|CRITICAL|WARNING" logs/pipeline.log | tail -10
 ```
 
 ### Performance Optimization
 
-#### Spark Tuning
+#### Spark Configuration Tuning
 ```python
-# Optimize Spark configuration
-spark_config = {
+# Optimal Spark settings for monitoring
+spark_optimizations = {
     "spark.sql.adaptive.enabled": "true",
     "spark.sql.adaptive.coalescePartitions.enabled": "true",
     "spark.sql.adaptive.skewJoin.enabled": "true",
-    "spark.serializer": "org.apache.spark.serializer.KryoSerializer"
+    "spark.serializer": "org.apache.spark.serializer.KryloSerializer",
+    "spark.sql.execution.arrow.pyspark.enabled": "true",
+    "spark.sql.adaptive.advisoryPartitionSizeInBytes": "64MB"
 }
+
+# Apply via environment or config.yaml
 ```
 
 #### Memory Management
 ```python
-# Monitor memory usage in code
+# Monitor memory usage in monitoring code
 import psutil
+from src.scalability_monitor import ScalabilityMonitor
 
-def monitor_memory():
+def check_memory_efficiency():
     memory = psutil.virtual_memory()
     print(f"Memory usage: {memory.percent:.1f}%")
     
     if memory.percent > 85:
         print("Warning: High memory usage detected")
+        print("Consider reducing data volume or increasing memory allocation")
+```
+
+#### Resource Monitoring Optimization
+```bash
+# Reduce monitoring overhead
+export MONITORING_RESOURCE_INTERVAL=2.0  # Increase interval
+export MONITORING_DETAILED_METRICS=false  # Disable detailed metrics
+
+# Run with optimized monitoring
+python scripts/train_model_with_monitoring.py --enable-monitoring
 ```
 
 ## 🎯 Best Practices
 
 ### Development Workflow
 
-1. **Start with Baseline**: Always establish baseline metrics
-2. **Incremental Testing**: Test with gradually increasing loads
-3. **Monitor Continuously**: Keep dashboard running during development
-4. **Document Changes**: Record configuration changes and their impact
-5. **Regular Load Testing**: Run weekly performance regression tests
+1. **Start with Baseline Metrics**: Always establish performance baselines before optimization
+2. **Incremental Load Testing**: Test with gradually increasing data volumes and concurrency
+3. **Monitor Continuously**: Keep monitoring enabled during development iterations
+4. **Document Performance Changes**: Record configuration changes and their performance impact
+5. **Regular Regression Testing**: Run weekly load testing to detect performance degradation
+6. **Resource Planning**: Size infrastructure based on monitoring results and load testing
 
 ### Production Deployment
 
-1. **Threshold Tuning**: Adjust alert thresholds based on production data
-2. **Resource Planning**: Size infrastructure based on load test results
-3. **Monitoring Alerts**: Set up automated alerting for threshold violations
-4. **Regular Reporting**: Generate weekly performance reports
-5. **Capacity Planning**: Use trend data for infrastructure scaling
+1. **Threshold Configuration**: Adjust monitoring thresholds based on production requirements
+2. **Automated Monitoring**: Enable monitoring in all production pipelines
+3. **Alert Management**: Configure appropriate alert thresholds for production workloads
+4. **Performance Reporting**: Generate regular monitoring reports for stakeholder review
+5. **Capacity Planning**: Use scalability metrics for infrastructure sizing decisions
+6. **Historical Analysis**: Maintain monitoring history for trend analysis
 
-### Data Management
+### Monitoring Data Management
 
-1. **Historical Retention**: Keep 30+ days of monitoring data
-2. **Backup Strategy**: Regular backup of MLflow experiments
-3. **Data Archiving**: Archive old test results but maintain summaries
-4. **Cleanup Policies**: Automated cleanup of temporary monitoring files
+1. **MLflow Experiment Organization**: Separate monitoring and training experiments
+2. **Artifact Retention**: Keep monitoring artifacts for historical analysis
+3. **Data Archiving**: Archive old monitoring data while maintaining performance summaries
+4. **Report Generation**: Automated generation of monitoring reports and analysis
+5. **Backup Strategy**: Regular backup of MLflow tracking data and monitoring results
 
 ## 📚 Additional Resources
 
-### Documentation
-- [MLflow Tracking](https://mlflow.org/docs/latest/tracking.html)
-- [Streamlit Documentation](https://docs.streamlit.io/)
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [PySpark Performance Tuning](https://spark.apache.org/docs/latest/sql-performance-tuning.html)
+### Documentation References
+- [Apache Spark Performance Tuning](https://spark.apache.org/docs/latest/sql-performance-tuning.html)
+- [MLflow Tracking Documentation](https://mlflow.org/docs/latest/tracking.html)
+- [Delta Lake Performance Guide](https://docs.delta.io/latest/optimizations-oss.html)
+- [PySpark Monitoring Guide](https://spark.apache.org/docs/latest/monitoring.html)
 
-### Monitoring Tools
-- [Grafana](https://grafana.com/) - Advanced dashboarding
-- [Prometheus](https://prometheus.io/) - Metrics collection
-- [Jaeger](https://www.jaegertracing.io/) - Distributed tracing
-- [New Relic](https://newrelic.com/) - APM monitoring
+### Monitoring Best Practices
+- [Observability Patterns](https://martinfowler.com/articles/domain-oriented-observability.html)
+- [Performance Monitoring Guide](https://sre.google/sre-book/monitoring-distributed-systems/)
+- [Scalability Testing Patterns](https://martinfowler.com/articles/practical-test-pyramid.html)
 
-### Load Testing Tools
-- [Locust](https://locust.io/) - Python-based load testing
-- [Artillery](https://artillery.io/) - Modern load testing toolkit
-- [JMeter](https://jmeter.apache.org/) - Traditional load testing
-- [K6](https://k6.io/) - Developer-centric load testing
+### Load Testing Resources
+- [Performance Testing Strategies](https://martinfowler.com/articles/load-testing.html)
+- [Scalability Testing Guide](https://www.perfmatrix.com/scalability-testing/)
 
 ## 🤝 Contributing
 
-This monitoring system is designed for academic demonstration but can be extended:
+This monitoring system can be extended with additional capabilities:
 
-1. **New Metrics**: Add custom metrics in `ScalabilityMonitor`
-2. **Dashboard Widgets**: Create new Streamlit components
-3. **API Endpoints**: Extend FastAPI service with new routes
-4. **Load Test Scenarios**: Add specialized testing scenarios
-5. **Visualization**: Enhance charts and graphs with Plotly
+1. **Custom Metrics**: Add domain-specific metrics in `ScalabilityMonitor`
+2. **New Scenarios**: Create specialized load testing scenarios 
+3. **Enhanced Reporting**: Develop additional analysis and reporting features
+4. **Integration Points**: Add monitoring hooks in custom pipeline components
+5. **Visualization Enhancement**: Create additional monitoring plots and analysis
 
 ## 📞 Support
 
-For issues or questions about the monitoring system:
+For issues with the monitoring system:
 
-1. Check logs in `logs/monitoring.log`
-2. Review configuration in `config/config.yaml`
-3. Verify dependencies in `requirements.txt`
-4. Test individual components separately
-5. Consult troubleshooting section above
+1. **Check Configuration**: Verify `config/config.yaml` monitoring settings
+2. **Review Logs**: Examine `logs/pipeline.log` for error messages
+3. **Test Components**: Verify individual monitoring components separately
+4. **MLflow Verification**: Ensure MLflow tracking is working correctly
+5. **Resource Monitoring**: Check system resources and Spark configuration
 
-This monitoring system provides comprehensive observability for ML pipeline scalability, enabling data-driven optimization and performance analysis for academic and production use cases.
+This monitoring system provides comprehensive observability for ML pipeline scalability, enabling data-driven optimization and performance analysis for production Data Engineering at Scale projects.
