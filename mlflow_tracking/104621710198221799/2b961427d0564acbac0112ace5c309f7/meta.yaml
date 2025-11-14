@@ -1,0 +1,14 @@
+artifact_uri: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/artifacts/stock_prediction_experiments/2b961427d0564acbac0112ace5c309f7/artifacts
+end_time: 1762671549925
+entry_point_name: ''
+experiment_id: '104621710198221799'
+lifecycle_stage: active
+run_id: 2b961427d0564acbac0112ace5c309f7
+run_name: test_run
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762671549915
+status: 3
+tags: []
+user_id: mha2cob

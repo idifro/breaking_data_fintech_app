@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-11-09T21:42:24.406591",
+  "duration_seconds": 135.898655,
+  "stocks_processed": [
+    "AAPL",
+    "GOOG"
+  ],
+  "summary": {
+    "stocks_used": [
+      "AAPL",
+      "GOOG"
+    ],
+    "model_type": "unified",
+    "training_samples": 1358,
+    "test_samples": 241,
+    "features_count": 25,
+    "performance": {
+      "mae": 0.012039136939073491,
+      "mse": 0.0002594800948422942,
+      "rmse": 0.016108385854650187,
+      "r2": -0.23638557186592069,
+      "sample_count": 241
+    },
+    "success_rate": 1.0,
+    "invalid_stocks": []
+  },
+  "models": {
+    "unified": {
+      "name": "stock_predictor_AAPL_GOOG",
+      "version": "latest"
+    }
+  },
+  "errors": []
+}

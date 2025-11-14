@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-09T15:02:37.818476",
+  "duration_seconds": 25.153295,
+  "stocks_processed": [
+    "AAPL",
+    "GOOG"
+  ],
+  "summary": {},
+  "models": {},
+  "errors": [
+    "Failed to train AAPL: Run with UUID ccb24f3007ba4854b77e18a8f6f04435 is already active. To start a new run, first end the current run with mlflow.end_run(). To start a nested run, call start_run with nested=True",
+    "Failed to train GOOG: Run with UUID b1fe9024601b4099b11b1c8cce64c81b is already active. To start a new run, first end the current run with mlflow.end_run(). To start a nested run, call start_run with nested=True"
+  ]
+}

@@ -1,0 +1,2 @@
+model_name: stock_forecast_model_gbt
+model_version: '1'

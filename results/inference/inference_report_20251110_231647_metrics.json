@@ -1,0 +1,40 @@
+{
+  "total_rows_processed": 4902,
+  "data_size_mb": 0.603883975982666,
+  "avg_partition_size_mb": 0.1207767951965332,
+  "partition_count": 5,
+  "partition_efficiency_score": 0.262837113308546,
+  "total_processing_time": 28.829873,
+  "avg_processing_time_per_record": 1533.1429958343506,
+  "throughput_records_per_second": 0.6522548794972584,
+  "feature_engineering_time": 0.0,
+  "model_inference_time": 0.0,
+  "peak_memory_usage_mb": 22301.48828125,
+  "avg_memory_usage_mb": 21896.290140086207,
+  "peak_cpu_usage_percent": 72.5,
+  "avg_cpu_usage_percent": 35.90344827586207,
+  "disk_io_read_mb": 0.5859375,
+  "disk_io_write_mb": 135.92578125,
+  "linear_scalability_score": 0.0006522548794972583,
+  "resource_efficiency_score": 0.4519318011554787,
+  "cost_efficiency_score": 1.0,
+  "bottleneck_indicators": {
+    "memory_pressure": {
+      "severity": "high",
+      "description": "High memory usage: 98.2%",
+      "recommendation": "Consider increasing executor memory or optimizing data structures"
+    },
+    "low_throughput": {
+      "severity": "high",
+      "description": "Low throughput: 0.7 records/sec",
+      "recommendation": "Optimize data processing or increase parallelism"
+    },
+    "partition_skew": {
+      "severity": "medium",
+      "description": "Partition inefficiency: 0.26",
+      "recommendation": "Consider repartitioning data for better load distribution"
+    }
+  },
+  "start_time": "2025-11-10T23:16:18.154830",
+  "end_time": "2025-11-10T23:16:46.984703"
+}

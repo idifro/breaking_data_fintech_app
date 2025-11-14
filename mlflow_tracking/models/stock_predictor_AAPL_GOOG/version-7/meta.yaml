@@ -1,0 +1,15 @@
+creation_timestamp: 1762772575576
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1762772575576
+model_id: null
+name: stock_predictor_AAPL_GOOG
+run_id: f06b043f1b4f413c8527ec188a1f1eeb
+run_link: null
+source: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/897954263920293505/f06b043f1b4f413c8527ec188a1f1eeb/artifacts/model
+status: READY
+status_message: null
+storage_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/897954263920293505/f06b043f1b4f413c8527ec188a1f1eeb/artifacts/model
+user_id: null
+version: 7

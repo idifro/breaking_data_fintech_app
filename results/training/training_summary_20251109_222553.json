@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-11-09T22:25:53.737473",
+  "duration_seconds": 191.191353,
+  "stocks_processed": [
+    "AAPL",
+    "GOOG",
+    "NVDA",
+    "TSLA"
+  ],
+  "summary": {
+    "stocks_used": [
+      "AAPL",
+      "GOOG",
+      "NVDA",
+      "TSLA"
+    ],
+    "model_type": "unified",
+    "training_samples": 2195,
+    "test_samples": 390,
+    "features_count": 25,
+    "performance": {
+      "mae": 0.01579111841375367,
+      "mse": 0.0004651138839796162,
+      "rmse": 0.021566499112735386,
+      "r2": -0.1481294807670137,
+      "sample_count": 390
+    },
+    "success_rate": 1.0,
+    "invalid_stocks": []
+  },
+  "model": "stock_predictor_unified_4stocks",
+  "model_version": 3,
+  "stocks_included": [
+    "AAPL",
+    "GOOG",
+    "NVDA",
+    "TSLA"
+  ],
+  "errors": []
+}

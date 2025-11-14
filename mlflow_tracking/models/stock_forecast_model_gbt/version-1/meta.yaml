@@ -1,0 +1,15 @@
+creation_timestamp: 1762673321124
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1762673321124
+model_id: null
+name: stock_forecast_model_gbt
+run_id: bc1fe9d77463452fbbf2ccbcfd13d568
+run_link: null
+source: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/682257865880459596/bc1fe9d77463452fbbf2ccbcfd13d568/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/682257865880459596/bc1fe9d77463452fbbf2ccbcfd13d568/artifacts/model
+user_id: null
+version: 1

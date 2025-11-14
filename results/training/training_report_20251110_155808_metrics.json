@@ -1,0 +1,35 @@
+{
+  "total_rows_processed": 4902,
+  "data_size_mb": 0.603883975982666,
+  "avg_partition_size_mb": 0.1207767951965332,
+  "partition_count": 5,
+  "partition_efficiency_score": 0.262837113308546,
+  "total_processing_time": 52.314827,
+  "avg_processing_time_per_record": 13.387144768932282,
+  "throughput_records_per_second": 74.69852737536034,
+  "feature_engineering_time": 33.44816732406616,
+  "model_inference_time": 0.0,
+  "peak_memory_usage_mb": 0.0,
+  "avg_memory_usage_mb": 0.0,
+  "peak_cpu_usage_percent": 0.0,
+  "avg_cpu_usage_percent": 0.0,
+  "disk_io_read_mb": 0.0,
+  "disk_io_write_mb": 0.0,
+  "linear_scalability_score": 0.07469852737536034,
+  "resource_efficiency_score": 0.0,
+  "cost_efficiency_score": 1.0,
+  "bottleneck_indicators": {
+    "low_throughput": {
+      "severity": "high",
+      "description": "Low throughput: 74.7 records/sec",
+      "recommendation": "Optimize data processing or increase parallelism"
+    },
+    "partition_skew": {
+      "severity": "medium",
+      "description": "Partition inefficiency: 0.26",
+      "recommendation": "Consider repartitioning data for better load distribution"
+    }
+  },
+  "start_time": "2025-11-10T15:57:15.949501",
+  "end_time": "2025-11-10T15:58:08.264328"
+}

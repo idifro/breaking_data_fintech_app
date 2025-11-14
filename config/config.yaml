@@ -113,6 +113,18 @@ mlflow:
       metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/c1ce5c33bb9a4e97a971a96f11e95e02
       run_status: FINISHED
       start_time: '2025-11-10T23:16:47.030000'
+    inference_scalability:
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/ef292269c3164311a82d50a7ffc73943/artifacts
+      end_time: '2025-11-11T09:58:41.744000'
+      experiment_id: '330953399529657715'
+      experiment_name: pipeline_scalability_monitoring_inference
+      latest_run_id: ef292269c3164311a82d50a7ffc73943
+      latest_run_name: scalability_monitoring_20251111_095841
+      latest_timestamp: '2025-11-11T09:58:41.761337'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/ef292269c3164311a82d50a7ffc73943
+      run_status: FINISHED
+      run_type: scalability_monitoring
+      start_time: '2025-11-11T09:58:41.688000'
     training:
       artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/d6e152853eb64d8ebf8fd1862a563618/artifacts
       end_time: null

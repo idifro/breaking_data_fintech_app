@@ -1,0 +1,6 @@
+artifact_location: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/459947367460078997
+creation_time: 1762680756663
+experiment_id: '459947367460078997'
+last_update_time: 1762680756663
+lifecycle_stage: active
+name: stock_forecasting_gbt_exp_GOOG

@@ -1,0 +1,14 @@
+artifact_uri: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/897954263920293505/028840bd02f74bc39b3072af6005ed81/artifacts
+end_time: 1762776093358
+entry_point_name: ''
+experiment_id: '897954263920293505'
+lifecycle_stage: active
+run_id: 028840bd02f74bc39b3072af6005ed81
+run_name: unified_model_monitoring_AAPL-BABA-GOOG-NVDA-TSLA_20251110_172510
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762775713150
+status: 3
+tags: []
+user_id: mha2cob

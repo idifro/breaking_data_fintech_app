@@ -1,0 +1,6 @@
+artifact_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/897954263920293505
+creation_time: 1762771796106
+experiment_id: '897954263920293505'
+last_update_time: 1762771796106
+lifecycle_stage: active
+name: stock_forecasting_gbt_exp_unified_monitoring

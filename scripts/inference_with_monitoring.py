@@ -86,7 +86,7 @@ class MonitoredInferenceEngine:
                 'enabled': True,
                 'detailed_metrics': config.monitoring.detailed_metrics,
                 'resource_monitoring_interval': config.monitoring.resource_monitoring_interval,
-                'experiment_name': "stock_forecasting_gbt_exp_unified_monitoring_inference"
+                'experiment_name': config.monitoring.experiment_name + "_inference"
             }
             self.monitor = ScalabilityMonitor(config, spark, monitoring_config)
             self.logger.info("🔍 Inference monitoring enabled")
@@ -342,7 +342,7 @@ class MonitoredInferenceEngine:
                 try:
                     config_manager = get_monitoring_config_manager()
                     if hasattr(self.monitor, 'current_run_id') and self.monitor.current_run_id:
-                        experiment_name = "stock_forecasting_gbt_exp_unified_monitoring_inference"
+                        experiment_name = self.config.monitoring.experiment_name + "_inference"
                         config_manager.update_scalability_monitoring_config(
                             "inference",
                             self.monitor.current_run_id, 

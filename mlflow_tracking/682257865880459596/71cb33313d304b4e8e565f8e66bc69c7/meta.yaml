@@ -1,0 +1,14 @@
+artifact_uri: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/682257865880459596/71cb33313d304b4e8e565f8e66bc69c7/artifacts
+end_time: 1762710001057
+entry_point_name: ''
+experiment_id: '682257865880459596'
+lifecycle_stage: active
+run_id: 71cb33313d304b4e8e565f8e66bc69c7
+run_name: inference_20251109_230959
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1762710000005
+status: 3
+tags: []
+user_id: mha2cob
