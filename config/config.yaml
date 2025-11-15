@@ -30,16 +30,35 @@ data:
   - USO
   - WFC
   inference_stocks:
+  - AAL
   - AAPL
-  - BABA
-  - GOOG
-  - NVDA
-  - TSLA
+  - ABBV
   - AMD
+  - AMGN
+  - BABA
+  - BIIB
+  - CMCSA
+  - CMG
+  - COP
   - COST
+  - CRM
   - CVX
+  - EBAY
+  - GE
+  - GOOG
+  - GSK
+  - MRK
+  - NKE
+  - NVDA
+  - ORCL
+  - PEP
+  - PYPL
+  - QCOM
   - QQQ
+  - TSLA
   - TSM
+  - USO
+  - WFC
   inference_tables_prefix: inference_
   sentiment_columns:
   - Close
@@ -50,16 +69,35 @@ data:
   target_column: target
   train_split: 0.85
   training_stocks:
+  - AAL
   - AAPL
-  - BABA
-  - GOOG
-  - NVDA
-  - TSLA
+  - ABBV
   - AMD
+  - AMGN
+  - BABA
+  - BIIB
+  - CMCSA
+  - CMG
+  - COP
   - COST
+  - CRM
   - CVX
+  - EBAY
+  - GE
+  - GOOG
+  - GSK
+  - MRK
+  - NKE
+  - NVDA
+  - ORCL
+  - PEP
+  - PYPL
+  - QCOM
   - QQQ
+  - TSLA
   - TSM
+  - USO
+  - WFC
 evaluation:
   create_plots: true
   metrics:
@@ -109,7 +147,7 @@ hyperparameter_tuning:
 inference:
   lookback_days: 49
   min_required_rows: 49
-  model_name: stock_predictor_unified_5stocks
+  model_name: stock_predictor_unified_29stocks
   model_stage: None
   model_version: latest
   predict_next_trading_day: true
@@ -128,12 +166,12 @@ logging:
   retention: 1 month
   rotation: 1 week
 mlflow:
-  experiment_name: stock_forecasting_gbt_exp
+  experiment_name: close_gain_forecasting
   log_artifacts: true
   log_metrics: true
   log_models: true
   log_params: true
-  model_name: stock_forecast_model_gbt
+  model_name: close_gain_forecast_model_gbt
   model_stage: Production
   monitoring:
     inference:
@@ -148,41 +186,41 @@ mlflow:
       run_status: FINISHED
       start_time: '2025-11-10T23:16:47.030000'
     inference_scalability:
-      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/ef292269c3164311a82d50a7ffc73943/artifacts
-      end_time: '2025-11-11T09:58:41.744000'
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/7d016d7de6924661a0f1a711eb302e28/artifacts
+      end_time: '2025-11-15T09:47:26.904000'
       experiment_id: '330953399529657715'
       experiment_name: pipeline_scalability_monitoring_inference
-      latest_run_id: ef292269c3164311a82d50a7ffc73943
-      latest_run_name: scalability_monitoring_20251111_095841
-      latest_timestamp: '2025-11-11T09:58:41.761337'
-      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/ef292269c3164311a82d50a7ffc73943
+      latest_run_id: 7d016d7de6924661a0f1a711eb302e28
+      latest_run_name: scalability_monitoring_20251115_094726
+      latest_timestamp: '2025-11-15T09:47:26.929445'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/330953399529657715/runs/7d016d7de6924661a0f1a711eb302e28
       run_status: FINISHED
       run_type: scalability_monitoring
-      start_time: '2025-11-11T09:58:41.688000'
+      start_time: '2025-11-15T09:47:26.852000'
     training:
-      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/d6e152853eb64d8ebf8fd1862a563618/artifacts
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/7184de7c82e6417dabfd38789599c2a9/artifacts
       end_time: null
-      experiment_id: '897954263920293505'
+      experiment_id: '608535781630392078'
       experiment_name: stock_forecasting_gbt_exp_unified_monitoring
-      latest_run_id: d6e152853eb64d8ebf8fd1862a563618
-      latest_run_name: unified_model_monitoring_AAPL-BABA-GOOG-NVDA-TSLA_20251110_232727
-      latest_timestamp: '2025-11-10T23:30:57.666198'
-      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/d6e152853eb64d8ebf8fd1862a563618
+      latest_run_id: 7184de7c82e6417dabfd38789599c2a9
+      latest_run_name: unified_model_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP-COST-CRM-CVX-EBAY-GE-GOOG-GSK-MRK-NKE-NVDA-ORCL-PEP-PYPL-QCOM-QQQ-TSLA-TSM-USO-WFC_20251115_015624
+      latest_timestamp: '2025-11-15T02:57:05.478635'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/7184de7c82e6417dabfd38789599c2a9
       run_status: RUNNING
       run_type: model_training
-      start_time: '2025-11-10T23:27:27.452000'
+      start_time: '2025-11-15T01:56:24.948000'
     training_scalability:
-      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/ce1cfd2c19b041b99e603e94cc0d054e/artifacts
-      end_time: '2025-11-10T23:30:57.742000'
-      experiment_id: '897954263920293505'
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/20a648e2172a4fa79bf76c4ef9cf9ab6/artifacts
+      end_time: '2025-11-15T02:57:05.546000'
+      experiment_id: '608535781630392078'
       experiment_name: stock_forecasting_gbt_exp_unified_monitoring
-      latest_run_id: ce1cfd2c19b041b99e603e94cc0d054e
-      latest_run_name: scalability_monitoring_20251110_233057
-      latest_timestamp: '2025-11-10T23:30:57.747701'
-      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/897954263920293505/runs/ce1cfd2c19b041b99e603e94cc0d054e
+      latest_run_id: 20a648e2172a4fa79bf76c4ef9cf9ab6
+      latest_run_name: scalability_monitoring_20251115_025705
+      latest_timestamp: '2025-11-15T02:57:05.550895'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/20a648e2172a4fa79bf76c4ef9cf9ab6
       run_status: FINISHED
       run_type: scalability_monitoring
-      start_time: '2025-11-10T23:30:57.710000'
+      start_time: '2025-11-15T02:57:05.517000'
   run_name_prefix: gbt_sentiment_close_price
 model:
   algorithm: GBTRegressor

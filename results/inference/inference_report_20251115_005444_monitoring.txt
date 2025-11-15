@@ -1,0 +1,51 @@
+================================================================================
+🔍 SCALABILITY MONITORING REPORT
+================================================================================
+Monitoring Period: 2025-11-15 00:53:40.145267 to 2025-11-15 00:54:44.737604
+Total Processing Time: 64.59 seconds
+
+📊 DATA VOLUME METRICS:
+----------------------------------------
+Total Rows Processed: 81,127
+Data Size: 9.9 MB
+Partition Count: 29
+Avg Partition Size: 0.3 MB
+Partition Efficiency: 0.629
+
+⚡ PERFORMANCE METRICS:
+----------------------------------------
+Throughput: 0.8 records/sec
+Avg Time per Record: 1273.91 ms
+Feature Engineering Time: 0.00 sec
+Model Inference Time: 0.00 sec
+
+💾 RESOURCE UTILIZATION:
+----------------------------------------
+Peak Memory Usage: 20506.8 MB
+Avg Memory Usage: 19407.2 MB
+Peak CPU Usage: 80.6%
+Avg CPU Usage: 34.1%
+Disk I/O Read: 1.1 MB
+Disk I/O Write: 237.2 MB
+
+🎯 SCALABILITY SCORES:
+----------------------------------------
+Linear Scalability Score: 0.001
+Resource Efficiency Score: 0.419
+Cost Efficiency Score: 1.000
+
+⚠️  BOTTLENECK ANALYSIS:
+----------------------------------------
+🔴 MEMORY_PRESSURE:
+  High memory usage: 94.6%
+  Recommendation: Consider increasing executor memory or optimizing data structures
+
+🔴 LOW_THROUGHPUT:
+  Low throughput: 0.8 records/sec
+  Recommendation: Optimize data processing or increase parallelism
+
+🟡 PARTITION_SKEW:
+  Partition inefficiency: 0.63
+  Recommendation: Consider repartitioning data for better load distribution
+
+================================================================================

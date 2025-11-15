@@ -1,0 +1,161 @@
+
+================================================================================
+🔮 INFERENCE PIPELINE REPORT
+================================================================================
+Inference Start: 2025-11-15 00:53:40.145224
+Inference End: None
+Total Inference Time: 0.00 seconds
+
+� MODEL CONFIGURATION:
+----------------------------------------
+Model Architecture: unified
+Model Name: stock_predictor_unified_10stocks
+Model Version: latest
+Model Stage: None
+Lookback Days: 49
+Unified Model Stocks: AAPL, BABA, GOOG, NVDA, TSLA, AMD, COST, CVX, QQQ, TSM
+
+�📊 INFERENCE RESULTS:
+----------------------------------------
+Stocks Processed: 10
+Successful Predictions: 10
+Failed Predictions: 0
+
+📈 AAPL (unified model):
+  Last Close: $197.57
+  Predicted Close: $197.38
+  Predicted Gain: -0.0010 (-0.10%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+📈 BABA (unified model):
+  Last Close: $74.51
+  Predicted Close: $75.03
+  Predicted Gain: 0.0070 (0.70%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+📈 GOOG (unified model):
+  Last Close: $133.84
+  Predicted Close: $133.81
+  Predicted Gain: -0.0002 (-0.02%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+📈 NVDA (unified model):
+  Last Close: $488.90
+  Predicted Close: $488.69
+  Predicted Gain: -0.0004 (-0.04%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+📈 TSLA (unified model):
+  Last Close: $253.50
+  Predicted Close: $249.38
+  Predicted Gain: -0.0163 (-1.63%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+📈 AMD (unified model):
+  Last Close: $148.76
+  Predicted Close: $149.85
+  Predicted Gain: 0.0073 (0.73%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-29
+  Rows Used: 59
+
+📈 COST (unified model):
+  Last Close: $658.82
+  Predicted Close: $660.30
+  Predicted Gain: 0.0022 (0.22%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+📈 CVX (unified model):
+  Last Close: $149.35
+  Predicted Close: $149.35
+  Predicted Gain: -0.0000 (-0.00%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+📈 QQQ (unified model):
+  Last Close: $405.34
+  Predicted Close: $402.84
+  Predicted Gain: -0.0062 (-0.62%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+📈 TSM (unified model):
+  Last Close: $102.54
+  Predicted Close: $102.87
+  Predicted Gain: 0.0032 (0.32%)
+  Confidence: 0.80
+  Next Trading Date: 2023-12-18
+  Rows Used: 59
+
+⚡ INFERENCE EFFICIENCY:
+----------------------------------------
+latency_efficiency: 1.000
+throughput_efficiency: 0.500
+resource_efficiency: 0.500
+prediction_quality_efficiency: 1.000
+
+================================================================================
+🔍 SCALABILITY MONITORING REPORT
+================================================================================
+Monitoring Period: 2025-11-15 00:53:40.145267 to 2025-11-15 00:54:44.737604
+Total Processing Time: 64.59 seconds
+
+📊 DATA VOLUME METRICS:
+----------------------------------------
+Total Rows Processed: 81,127
+Data Size: 9.9 MB
+Partition Count: 29
+Avg Partition Size: 0.3 MB
+Partition Efficiency: 0.629
+
+⚡ PERFORMANCE METRICS:
+----------------------------------------
+Throughput: 0.8 records/sec
+Avg Time per Record: 1273.91 ms
+Feature Engineering Time: 0.00 sec
+Model Inference Time: 0.00 sec
+
+💾 RESOURCE UTILIZATION:
+----------------------------------------
+Peak Memory Usage: 20506.8 MB
+Avg Memory Usage: 19407.2 MB
+Peak CPU Usage: 80.6%
+Avg CPU Usage: 34.1%
+Disk I/O Read: 1.1 MB
+Disk I/O Write: 237.2 MB
+
+🎯 SCALABILITY SCORES:
+----------------------------------------
+Linear Scalability Score: 0.001
+Resource Efficiency Score: 0.419
+Cost Efficiency Score: 1.000
+
+⚠️  BOTTLENECK ANALYSIS:
+----------------------------------------
+🔴 MEMORY_PRESSURE:
+  High memory usage: 94.6%
+  Recommendation: Consider increasing executor memory or optimizing data structures
+
+🔴 LOW_THROUGHPUT:
+  Low throughput: 0.8 records/sec
+  Recommendation: Optimize data processing or increase parallelism
+
+🟡 PARTITION_SKEW:
+  Partition inefficiency: 0.63
+  Recommendation: Consider repartitioning data for better load distribution
+
+================================================================================

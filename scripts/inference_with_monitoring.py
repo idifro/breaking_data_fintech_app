@@ -201,8 +201,10 @@ class MonitoredInferenceEngine:
             
             # Extract stock information from model name
             if 'unified' in model_name_lower:
-                # Extract number or list of stocks from name like "stock_predictor_unified_5stocks"
-                if '5stocks' in model_name_lower:
+                # Extract number or list of stocks from name like "stock_predictor_unified_10stocks"
+                if '10stocks' in model_name_lower:
+                    self.unified_stocks = self.config.data.training_stocks[:10]
+                elif '5stocks' in model_name_lower:
                     self.unified_stocks = self.config.data.training_stocks[:5]
                 elif '4stocks' in model_name_lower:
                     self.unified_stocks = self.config.data.training_stocks[:4]

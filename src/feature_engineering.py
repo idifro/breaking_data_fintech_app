@@ -38,11 +38,14 @@ class FeatureEngineer:
         """
         logger.info("Starting feature engineering...")
         
+        # Clean input data first to prevent division by zero errors
+        df_clean = self._filter_problematic_rows(df)
+        
         # Define window for each stock
         window_spec = Window.partitionBy("stock_symbol").orderBy("Date")
         
-        # Start with original dataframe
-        df_features = df
+        # Start with cleaned dataframe
+        df_features = df_clean
         
         # Create features step by step
         df_features = self._create_price_features(df_features, window_spec)
@@ -62,6 +65,71 @@ class FeatureEngineer:
         
         return df_features, final_feature_names
     
+    def _filter_problematic_rows(self, df: DataFrame) -> DataFrame:
+        """
+        Filter out rows that can cause division by zero errors during feature engineering
+        
+        Args:
+            df: Input DataFrame with stock data
+            
+        Returns:
+            Filtered DataFrame with problematic rows removed
+        """
+        logger.info("Filtering problematic rows to prevent division by zero...")
+        
+        initial_count = df.count()
+        
+        # Remove rows where essential price columns are null or zero
+        df_filtered = df.filter(
+            col("Close").isNotNull() & (col("Close") > 0) &
+            col("High").isNotNull() & (col("High") > 0) &
+            col("Low").isNotNull() & (col("Low") > 0) &
+            col("Open").isNotNull() & (col("Open") > 0) &
+            col("Volume").isNotNull() & (col("Volume") >= 0) &  # Volume can be 0 but not null/negative
+            col("Scaled_sentiment").isNotNull()  # Sentiment can be around zero but not null
+        )
+        
+        # Ensure market data consistency (High >= Low, Close within range)
+        df_filtered = df_filtered.filter(
+            (col("High") >= col("Low")) &
+            (col("Close") >= col("Low")) &
+            (col("Close") <= col("High"))
+        )
+        
+        # Remove extreme outliers that could indicate data quality issues
+        # Filter out rows where price changes are more than 1000% (likely data errors)
+        window_spec = Window.partitionBy("stock_symbol").orderBy("Date")
+        df_with_prev = df_filtered.withColumn("prev_close", lag("Close", 1).over(window_spec))
+        
+        df_filtered = df_with_prev.filter(
+            col("prev_close").isNull() |  # Keep first row for each stock
+            (
+                (col("Close") / col("prev_close") <= 10.0) &  # Max 10x increase
+                (col("Close") / col("prev_close") >= 0.1)     # Max 90% decrease
+            )
+        ).drop("prev_close")
+        
+        # Additional safety: Remove any remaining rows with extreme values
+        df_filtered = df_filtered.filter(
+            (col("Close") < 1000000) &  # Reasonable price limit
+            (col("Volume") < 1e12) &    # Reasonable volume limit
+            (col("Scaled_sentiment") >= -10) & (col("Scaled_sentiment") <= 10)  # Reasonable sentiment range
+        )
+        
+        final_count = df_filtered.count()
+        removed_count = initial_count - final_count
+        removal_pct = (removed_count / initial_count * 100) if initial_count > 0 else 0
+        
+        logger.info(f"Data filtering completed:")
+        logger.info(f"  Initial rows: {initial_count}")
+        logger.info(f"  Final rows: {final_count}")
+        logger.info(f"  Removed rows: {removed_count} ({removal_pct:.2f}%)")
+        
+        if removal_pct > 20:
+            logger.warning(f"High removal rate ({removal_pct:.2f}%) - check data quality!")
+        
+        return df_filtered
+    
     def _create_price_features(self, df: DataFrame, window_spec: Window) -> DataFrame:
         """Create price-based features"""
         logger.info("Creating price features...")
@@ -72,13 +140,19 @@ class FeatureEngineer:
             df = df.withColumn(col_name, lag("Close", lag_days).over(window_spec))
             self.feature_names.append(col_name)
         
-        # Price changes and momentum
+        # Price changes and momentum with zero-division protection
         df = df.withColumn("price_change_1d", 
-                          (col("Close") - lag("Close", 1).over(window_spec)) / lag("Close", 1).over(window_spec))
+                          when(lag("Close", 1).over(window_spec) > 0,
+                               (col("Close") - lag("Close", 1).over(window_spec)) / lag("Close", 1).over(window_spec))
+                          .otherwise(lit(0.0)))
         df = df.withColumn("price_change_3d", 
-                          (col("Close") - lag("Close", 3).over(window_spec)) / lag("Close", 3).over(window_spec))
+                          when(lag("Close", 3).over(window_spec) > 0,
+                               (col("Close") - lag("Close", 3).over(window_spec)) / lag("Close", 3).over(window_spec))
+                          .otherwise(lit(0.0)))
         df = df.withColumn("price_change_5d", 
-                          (col("Close") - lag("Close", 5).over(window_spec)) / lag("Close", 5).over(window_spec))
+                          when(lag("Close", 5).over(window_spec) > 0,
+                               (col("Close") - lag("Close", 5).over(window_spec)) / lag("Close", 5).over(window_spec))
+                          .otherwise(lit(0.0)))
         
         self.feature_names.extend(["price_change_1d", "price_change_3d", "price_change_5d"])
         
@@ -87,21 +161,29 @@ class FeatureEngineer:
             ma_col = f"ma_{window_size}"
             df = df.withColumn(ma_col, avg("Close").over(window_spec.rowsBetween(-window_size+1, 0)))
             
-            # Price relative to moving average
+            # Price relative to moving average with zero-division protection
             ratio_col = f"close_vs_ma{window_size}"
-            df = df.withColumn(ratio_col, col("Close") / col(ma_col) - 1)
+            df = df.withColumn(ratio_col, 
+                              when(col(ma_col) > 0, col("Close") / col(ma_col) - 1)
+                              .otherwise(lit(0.0)))
             
             self.feature_names.extend([ma_col, ratio_col])
         
-        # High-Low spread
-        df = df.withColumn("high_low_spread", (col("High") - col("Low")) / col("Close"))
+        # High-Low spread with zero-division protection
+        df = df.withColumn("high_low_spread", 
+                          when(col("Close") > 0, (col("High") - col("Low")) / col("Close"))
+                          .otherwise(lit(0.0)))
         self.feature_names.append("high_low_spread")
         
-        # Normalized price features (CNN-style)
+        # Normalized price features (CNN-style) with zero-division protection
         df = df.withColumn("close_normalized_vs_lag1", 
-                          col("Close") / lag("Close", 1).over(window_spec) - 1)
+                          when(lag("Close", 1).over(window_spec) > 0,
+                               col("Close") / lag("Close", 1).over(window_spec) - 1)
+                          .otherwise(lit(0.0)))
         df = df.withColumn("close_normalized_vs_lag5", 
-                          col("Close") / lag("Close", 5).over(window_spec) - 1)
+                          when(lag("Close", 5).over(window_spec) > 0,
+                               col("Close") / lag("Close", 5).over(window_spec) - 1)
+                          .otherwise(lit(0.0)))
         
         self.feature_names.extend(["close_normalized_vs_lag1", "close_normalized_vs_lag5"])
         
@@ -121,15 +203,25 @@ class FeatureEngineer:
         df = df.withColumn("volume_ma_5", avg("Volume").over(window_spec.rowsBetween(-4, 0)))
         df = df.withColumn("volume_ma_20", avg("Volume").over(window_spec.rowsBetween(-19, 0)))
         
-        # Volume changes and ratios
+        # Volume changes and ratios with zero-division protection
         df = df.withColumn("volume_change_1d", 
-                          (col("Volume") - lag("Volume", 1).over(window_spec)) / lag("Volume", 1).over(window_spec))
-        df = df.withColumn("volume_vs_ma5", col("Volume") / col("volume_ma_5") - 1)
-        df = df.withColumn("volume_vs_ma20", col("Volume") / col("volume_ma_20") - 1)
+                          when(lag("Volume", 1).over(window_spec) > 0,
+                               (col("Volume") - lag("Volume", 1).over(window_spec)) / lag("Volume", 1).over(window_spec))
+                          .otherwise(lit(0.0)))
         
-        # Volume normalization (CNN-style)
+        df = df.withColumn("volume_vs_ma5", 
+                          when(col("volume_ma_5") > 0, col("Volume") / col("volume_ma_5") - 1)
+                          .otherwise(lit(0.0)))
+        
+        df = df.withColumn("volume_vs_ma20", 
+                          when(col("volume_ma_20") > 0, col("Volume") / col("volume_ma_20") - 1)
+                          .otherwise(lit(0.0)))
+        
+        # Volume normalization (CNN-style) with zero-division protection
         df = df.withColumn("volume_normalized_vs_lag1", 
-                          col("Volume") / lag("Volume", 1).over(window_spec) - 1)
+                          when(lag("Volume", 1).over(window_spec) > 0,
+                               col("Volume") / lag("Volume", 1).over(window_spec) - 1)
+                          .otherwise(lit(0.0)))
         
         self.feature_names.extend([
             "volume_ma_5", "volume_ma_20", "volume_change_1d", 
@@ -263,9 +355,11 @@ class FeatureEngineer:
         """Create target variable (next day's return)"""
         logger.info("Creating target variable...")
         
-        # Target: next day's return (like CNN approach)
+        # Target: next day's return (like CNN approach) with zero-division protection
         df = df.withColumn("target", 
-                          (lead("Close", 1).over(window_spec) / col("Close") - 1))
+                          when(col("Close") > 0,
+                               lead("Close", 1).over(window_spec) / col("Close") - 1)
+                          .otherwise(lit(None)))
         
         return df
     

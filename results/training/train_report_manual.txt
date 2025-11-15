@@ -1,0 +1,241 @@
+🚂 Starting Monitored Model Training Pipeline
+================================================================================
+WARNING: Using incubator modules: jdk.incubator.vector
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+25/11/15 01:45:18 WARN Utils: Your hostname, KOR-C-0159R, resolves to a loopback address: 127.0.1.1; using 192.168.29.79 instead (on interface wlp0s20f3)
+25/11/15 01:45:18 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+:: loading settings :: url = jar:file:/home/mha2cob/anaconda3/envs/breaking_data/lib/python3.12/site-packages/pyspark/jars/ivy-2.5.3.jar!/org/apache/ivy/core/settings/ivysettings.xml
+Ivy Default Cache set to: /home/mha2cob/.ivy2.5.2/cache
+The jars for the packages stored in: /home/mha2cob/.ivy2.5.2/jars
+io.delta#delta-spark_2.13 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-93fb1ae2-a571-461d-b963-2c5a017e11f9;1.0
+        confs: [default]
+        found io.delta#delta-spark_2.13;4.0.0 in central
+        found io.delta#delta-storage;4.0.0 in central
+        found org.antlr#antlr4-runtime;4.13.1 in central
+:: resolution report :: resolve 116ms :: artifacts dl 5ms
+        :: modules in use:
+        io.delta#delta-spark_2.13;4.0.0 from central in [default]
+        io.delta#delta-storage;4.0.0 from central in [default]
+        org.antlr#antlr4-runtime;4.13.1 from central in [default]
+        ---------------------------------------------------------------------
+        |                  |            modules            ||   artifacts   |
+        |       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+        ---------------------------------------------------------------------
+        |      default     |   3   |   0   |   0   |   0   ||   3   |   0   |
+        ---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-93fb1ae2-a571-461d-b963-2c5a017e11f9
+        confs: [default]
+        0 artifacts copied, 3 already retrieved (0kB/6ms)
+25/11/15 01:45:18 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+🔧 Spark session created successfully
+2025-11-15 01:45:21,365 - INFO - Spark StatusTracker.getExecutorInfos() not available - using fallback executor estimation
+2025-11-15 01:45:21,365 - INFO - Monitoring compatible with Spark version: 4.0.1
+2025-11-15 01:45:21,369 - INFO - Using existing monitoring experiment: pipeline_scalability_monitoring
+2025-11-15 01:45:21,372 - INFO - 🔍 Scalability monitoring enabled
+🎯 Training all available stocks: ['AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN', 'BABA', 'BIIB', 'CMCSA', 'CMG', 'COP', 'COST', 'CRM', 'CVX', 'EBAY', 'GE', 'GOOG', 'GSK', 'MRK', 'NKE', 'NVDA', 'ORCL', 'PEP', 'PYPL', 'QCOM', 'QQQ', 'TSLA', 'TSM', 'USO', 'WFC']
+2025-11-15 01:45:21,372 - INFO - � Starting unified model training with monitoring for stocks: ['AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN', 'BABA', 'BIIB', 'CMCSA', 'CMG', 'COP', 'COST', 'CRM', 'CVX', 'EBAY', 'GE', 'GOOG', 'GSK', 'MRK', 'NKE', 'NVDA', 'ORCL', 'PEP', 'PYPL', 'QCOM', 'QQQ', 'TSLA', 'TSM', 'USO', 'WFC']
+2025-11-15 01:45:21,372 - INFO - 🔍 Starting scalability monitoring for training_unified
+2025-11-15 01:45:21,373 - INFO - 📊 Monitoring data volume for ['AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN', 'BABA', 'BIIB', 'CMCSA', 'CMG', 'COP', 'COST', 'CRM', 'CVX', 'EBAY', 'GE', 'GOOG', 'GSK', 'MRK', 'NKE', 'NVDA', 'ORCL', 'PEP', 'PYPL', 'QCOM', 'QQQ', 'TSLA', 'TSM', 'USO', 'WFC']
+25/11/15 01:45:23 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+2025-11-15 01:46:05,847 - INFO - 📊 Data volume: 81,127 rows, 9.9 MB, 29 tables 
+2025-11-15 01:46:05,847 - WARNING - ⚠️  Partition inefficiency detected: 0.63. Consider repartitioning data.
+📊 Available stocks in Delta tables: ['AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN', 'BABA', 'BIIB', 'CMCSA', 'CMG', 'COP', 'COST', 'CRM', 'CVX', 'EBAY', 'GE', 'GOOG', 'GSK', 'MRK', 'NKE', 'NVDA', 'ORCL', 'PEP', 'PYPL', 'QCOM', 'QQQ', 'TSLA', 'TSM', 'USO', 'WFC']
+2025-11-15 01:46:05,848 - INFO - 📊 Training unified model with 29 stocks: ['AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN', 'BABA', 'BIIB', 'CMCSA', 'CMG', 'COP', 'COST', 'CRM', 'CVX', 'EBAY', 'GE', 'GOOG', 'GSK', 'MRK', 'NKE', 'NVDA', 'ORCL', 'PEP', 'PYPL', 'QCOM', 'QQQ', 'TSLA', 'TSM', 'USO', 'WFC']
+2025-11-15 01:46:05,848 - INFO - 📊 Loading and combining data from 29 stocks with monitoring...
+📊 Loading stock data for stocks: ['AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN', 'BABA', 'BIIB', 'CMCSA', 'CMG', 'COP', 'COST', 'CRM', 'CVX', 'EBAY', 'GE', 'GOOG', 'GSK', 'MRK', 'NKE', 'NVDA', 'ORCL', 'PEP', 'PYPL', 'QCOM', 'QQQ', 'TSLA', 'TSM', 'USO', 'WFC']
+   ✅ stock_AAL: 3,458 rows
+   ✅ stock_AAPL: 387 rows
+   ✅ stock_ABBV: 2,758 rows
+   ✅ stock_AMD: 1,773 rows
+   ✅ stock_AMGN: 3,488 rows
+   ✅ stock_BABA: 2,292 rows
+   ✅ stock_BIIB: 3,488 rows
+   ✅ stock_CMCSA: 3,544 rows
+   ✅ stock_CMG: 3,566 rows
+   ✅ stock_COP: 3,544 rows
+   ✅ stock_COST: 3,483 rows
+   ✅ stock_CRM: 3,526 rows
+   ✅ stock_CVX: 1,856 rows
+   ✅ stock_EBAY: 3,567 rows
+   ✅ stock_GE: 2,934 rows
+   ✅ stock_GOOG: 1,225 rows
+   ✅ stock_GSK: 3,555 rows
+   ✅ stock_MRK: 3,553 rows
+   ✅ stock_NKE: 3,540 rows
+   ✅ stock_NVDA: 588 rows
+   ✅ stock_ORCL: 3,540 rows
+   ✅ stock_PEP: 3,549 rows
+   ✅ stock_PYPL: 2,119 rows
+   ✅ stock_QCOM: 3,494 rows
+   ✅ stock_QQQ: 2,749 rows
+   ✅ stock_TSLA: 410 rows
+   ✅ stock_TSM: 3,443 rows
+   ✅ stock_USO: 3,658 rows
+   ✅ stock_WFC: 2,040 rows
+✅ Combined data: 81,127 total rows from 29 stocks
+🔧 Preparing training data...
+2025-11-15 01:46:14.235 | INFO     | src.feature_engineering:create_all_features:39 - Starting feature engineering...
+2025-11-15 01:46:14.235 | INFO     | src.feature_engineering:_filter_problematic_rows:78 - Filtering problematic rows to prevent division by zero...
+2025-11-15 01:46:23.074 | INFO     | src.feature_engineering:_filter_problematic_rows:123 - Data filtering completed:
+2025-11-15 01:46:23.074 | INFO     | src.feature_engineering:_filter_problematic_rows:124 -   Initial rows: 81127
+2025-11-15 01:46:23.074 | INFO     | src.feature_engineering:_filter_problematic_rows:125 -   Final rows: 68326
+2025-11-15 01:46:23.074 | INFO     | src.feature_engineering:_filter_problematic_rows:126 -   Removed rows: 12801 (15.78%)
+2025-11-15 01:46:23.077 | INFO     | src.feature_engineering:_create_price_features:135 - Creating price features...
+2025-11-15 01:46:23.235 | INFO     | src.feature_engineering:_create_volume_features:194 - Creating volume features...
+2025-11-15 01:46:23.321 | INFO     | src.feature_engineering:_create_sentiment_features:235 - Creating sentiment features...
+2025-11-15 01:46:23.403 | INFO     | src.feature_engineering:_create_technical_features:267 - Creating technical features...
+2025-11-15 01:46:23.476 | INFO     | src.feature_engineering:_create_interaction_features:298 - Creating interaction features...
+2025-11-15 01:46:23.514 | INFO     | src.feature_engineering:_create_volatility_features:326 - Creating volatility features...
+2025-11-15 01:46:23.554 | INFO     | src.feature_engineering:_create_target:356 - Creating target variable...
+2025-11-15 01:46:23.566 | INFO     | src.feature_engineering:_clean_features:368 - Cleaning features...
+2025-11-15 01:46:23.766 | INFO     | src.feature_engineering:_clean_features:385 - Final feature count: 25
+2025-11-15 01:46:23.766 | INFO     | src.feature_engineering:create_all_features:64 - Feature engineering completed. Created 25 features
+📊 Creating train/test split (85% train)...
+   AAPL: 323 train, 58 test                                                     
+   ABBV: 2339 train, 413 test
+   AMGN: 2959 train, 523 test
+   CMG: 3026 train, 534 test
+   COP: 3007 train, 531 test
+   COST: 2955 train, 522 test
+   GSK: 3016 train, 533 test
+   MRK: 3014 train, 533 test
+   QCOM: 2964 train, 524 test
+   USO: 3104 train, 548 test
+   AAL: 2934 train, 518 test
+   AMD: 1501 train, 266 test
+   BABA: 1943 train, 343 test
+   BIIB: 2959 train, 523 test
+   CMCSA: 3007 train, 531 test
+   CRM: 2992 train, 528 test
+   CVX: 1572 train, 278 test
+   EBAY: 3026 train, 535 test
+   NKE: 3003 train, 531 test
+   NVDA: 494 train, 88 test
+   ORCL: 3003 train, 531 test
+   PEP: 3011 train, 532 test
+   PYPL: 1796 train, 317 test
+2025-11-15 01:48:17.175 | INFO     | src.feature_engineering:create_feature_vector:391 - Creating feature vector...
+25/11/15 01:49:53 WARN DAGScheduler: Broadcasting large task binary with size 12.7 MiB
+25/11/15 01:49:56 WARN DAGScheduler: Broadcasting large task binary with size 12.4 MiB
+2025-11-15 01:49:56.694 | INFO     | src.feature_engineering:create_feature_vector:412 - Feature vector creation completed
+✅ Training data prepared:
+25/11/15 01:51:28 WARN DAGScheduler: Broadcasting large task binary with size 12.3 MiB
+   Training samples: 57948                                                      
+25/11/15 01:53:10 WARN DAGScheduler: Broadcasting large task binary with size 12.3 MiB
+   Test samples: 10240                                                          
+   Features: 25
+✅ Scaler model saved to: models/feature_scaler
+25/11/15 01:54:47 WARN DAGScheduler: Broadcasting large task binary with size 12.3 MiB
+25/11/15 01:56:22 WARN DAGScheduler: Broadcasting large task binary with size 12.3 MiB
+2025-11-15 01:56:24,874 - INFO - ⚡ data_loading: 619.03s, 110.2 records/sec    
+2025-11-15 01:56:24,874 - INFO - 📊 Data loading completed: 619.03s for 68,188 samples
+2025-11-15 01:56:24,874 - INFO - ⚡ feature_engineering: 619.03s, 0.0 records/sec
+2025-11-15 01:56:24,874 - INFO - 🔧 Feature engineering: 25 features created
+2025-11-15 01:56:24,898 - INFO - 📂 Using existing MLflow experiment: close_gain_forecasting_unified_monitoring
+2025-11-15 02:01:13,699 - INFO - 🔧 Training unified model with monitoring - 68,188 total samples...
+2025-11-15 02:01:13,703 - INFO - ⚙️ Hyperparameter tuning is DISABLED - using default parameters (with monitoring)
+2025-11-15 02:01:13,703 - INFO - ✅ Using default parameters: {'featureSubsetStrategy': 'sqrt', 'maxDepth': 8, 'maxIter': 150, 'seed': 42, 'stepSize': 0.05, 'subsamplingRate': 0.8}
+🔧 Training final model with parameters:
+   featureSubsetStrategy: sqrt
+   maxDepth: 8
+   maxIter: 150
+   seed: 42
+   stepSize: 0.05
+   subsamplingRate: 0.8
+✅ Model training completed in 3155.31 seconds                                  
+📊 Evaluating model performance...
+25/11/15 02:55:22 WARN DAGScheduler: Broadcasting large task binary with size 12.7 MiB
+25/11/15 02:56:50 WARN DAGScheduler: Broadcasting large task binary with size 12.7 MiB
+                                                                                
+Training Metrics:
+  MAE: 0.010643
+  MSE: 0.000219
+  RMSE: 0.014789
+  R²: 0.4797
+  Samples: 57948
+
+Test Metrics:
+  MAE: 0.015341
+  MSE: 0.000513
+  RMSE: 0.022653
+  R²: -0.1489
+  Samples: 10240
+
+Top 10 Most Important Features:
+  volume_vs_ma20: 0.0516
+  volume_vs_ma5: 0.0507
+  sentiment_lag_1: 0.0506
+  sentiment_lag_3: 0.0482
+  price_change_3d: 0.0480
+  volume_change_1d: 0.0478
+  close_vs_ma20: 0.0470
+  close_vs_ma5: 0.0451
+  volume_normalized_vs_lag1: 0.0445
+  high_low_spread: 0.0440
+
+Per-Stock Test Metrics:
+  AAPL: MAE=0.009308, MSE=0.000136, R²=-0.2594, N=58
+  ABBV: MAE=0.009906, MSE=0.000188, R²=-0.0481, N=413
+  AMGN: MAE=0.009987, MSE=0.000189, R²=-0.0559, N=523
+  CMG: MAE=0.016070, MSE=0.000546, R²=-0.1917, N=534
+  COP: MAE=0.017656, MSE=0.000549, R²=-0.0466, N=531
+  COST: MAE=0.012230, MSE=0.000301, R²=-0.1021, N=522
+  GSK: MAE=0.010758, MSE=0.000216, R²=-0.0191, N=533
+  MRK: MAE=0.009782, MSE=0.000182, R²=-0.0511, N=533
+  QCOM: MAE=0.019626, MSE=0.000676, R²=-0.0616, N=524
+  USO: MAE=0.018743, MSE=0.000603, R²=-0.0792, N=548
+  AAL: MAE=0.025022, MSE=0.001501, R²=-0.6504, N=518
+  AMD: MAE=0.023084, MSE=0.000985, R²=-0.1424, N=266
+  BABA: MAE=0.022715, MSE=0.001028, R²=-0.1643, N=343
+  BIIB: MAE=0.015016, MSE=0.000687, R²=-0.1168, N=523
+  CMCSA: MAE=0.012918, MSE=0.000320, R²=-0.0851, N=531
+  CRM: MAE=0.019098, MSE=0.000700, R²=-0.0979, N=528
+  CVX: MAE=0.011573, MSE=0.000238, R²=-0.0422, N=278
+  EBAY: MAE=0.015517, MSE=0.000442, R²=-0.0347, N=535
+  NKE: MAE=0.016295, MSE=0.000510, R²=-0.1034, N=531
+  NVDA: MAE=0.022367, MSE=0.000758, R²=-0.3777, N=88
+  ORCL: MAE=0.014079, MSE=0.000444, R²=-0.0816, N=531
+  PEP: MAE=0.008014, MSE=0.000123, R²=-0.0392, N=532
+  PYPL: MAE=0.018379, MSE=0.000635, R²=-0.0162, N=317
+2025-11-15 02:56:53,250 - INFO - ⚡ unified_model_training: 3339.55s, 20.4 records/sec
+2025-11-15 02:56:53,250 - INFO - 🔧 Model training completed: 3339.55s
+2025-11-15 02:56:53,252 - INFO - 💾 Peak memory usage: 24110.2 MB
+Successfully registered model 'stock_predictor_unified_29stocks'.
+Created version '1' of model 'stock_predictor_unified_29stocks'.
+2025-11-15 02:57:05,461 - INFO - 💾 Unified model saved: models:/stock_predictor_unified_29stocks/1
+2025-11-15 02:57:05,484 - INFO - ✅ Config updated: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/config/config.yaml
+2025-11-15 02:57:05,484 - INFO - ✅ Updated training monitoring config:
+2025-11-15 02:57:05,484 - INFO -    Run ID: 7184de7c82e6417dabfd38789599c2a9
+2025-11-15 02:57:05,484 - INFO -    Run Name: unified_model_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP-COST-CRM-CVX-EBAY-GE-GOOG-GSK-MRK-NKE-NVDA-ORCL-PEP-PYPL-QCOM-QQQ-TSLA-TSM-USO-WFC_20251115_015624
+2025-11-15 02:57:05,484 - INFO -    Experiment: stock_forecasting_gbt_exp_unified_monitoring
+2025-11-15 02:57:05,484 - INFO -    Metrics URL: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/7184de7c82e6417dabfd38789599c2a9
+2025-11-15 02:57:05,484 - INFO - ✅ Updated training monitoring config - Model Run ID: 7184de7c82e6417dabfd38789599c2a9
+2025-11-15 02:57:05,484 - INFO -    📊 Model Experiment: stock_forecasting_gbt_exp_unified_monitoring
+2025-11-15 02:57:05,484 - INFO -    🏃 Model Run Name: unified_model_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP-COST-CRM-CVX-EBAY-GE-GOOG-GSK-MRK-NKE-NVDA-ORCL-PEP-PYPL-QCOM-QQQ-TSLA-TSM-USO-WFC_20251115_015624
+2025-11-15 02:57:05,487 - WARNING - ⚠️  Low data_processing_efficiency: 0.00
+2025-11-15 02:57:05,487 - WARNING - ⚠️  Low memory_efficiency: 0.00
+2025-11-15 02:57:05,487 - WARNING - ⚠️  Low time_efficiency: 0.16
+2025-11-15 02:57:05,487 - WARNING - ⚠️  Low cost_efficiency: 0.00
+2025-11-15 02:57:05,514 - INFO - ✅ Scalability metrics logged to MLflow
+2025-11-15 02:57:05,515 - INFO - 🎉 Unified model training with monitoring completed in 4304.14 seconds
+2025-11-15 02:57:05,545 - INFO - ✅ Scalability metrics logged to MLflow
+2025-11-15 02:57:05,547 - INFO - ✅ Monitoring completed. Total time: 4304.14s
+2025-11-15 02:57:05,556 - INFO - ✅ Config updated: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/config/config.yaml
+2025-11-15 02:57:05,556 - INFO - ✅ Updated training scalability monitoring config:
+2025-11-15 02:57:05,556 - INFO -    Scalability Run ID: 20a648e2172a4fa79bf76c4ef9cf9ab6
+2025-11-15 02:57:05,556 - INFO -    Scalability Run Name: scalability_monitoring_20251115_025705
+2025-11-15 02:57:05,556 - INFO -    Scalability Experiment: stock_forecasting_gbt_exp_unified_monitoring
+2025-11-15 02:57:05,556 - INFO - ✅ Updated scalability monitoring config - Run ID: 20a648e2172a4fa79bf76c4ef9cf9ab6
+2025-11-15 02:57:05,556 - INFO - 🏁 Monitoring completed and stopped
+
+🎉 Training pipeline completed successfully!
+⏱️  Total time: 4304.14 seconds
+📊 Stocks processed: 29
+🤖 Models trained: 1
+2025-11-15 02:57:06,026 - INFO - Closing down clientserver connection
+🔧 Spark session stopped
+2025-11-15 02:57:06,042 - INFO - Closing down clientserver connection
