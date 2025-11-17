@@ -1,0 +1,29 @@
+================================================================================
+🚂 TRAINING PIPELINE REPORT
+================================================================================
+Training Start: 2025-11-17 14:16:11.390108
+Training End: 2025-11-17 14:19:15.815279
+Total Training Time: 184.43 seconds
+
+📊 TRAINING RESULTS:
+----------------------------------------
+Stocks Processed: 2
+Models Trained: 1
+
+📈 UNIFIED MODEL - AAPL, GOOG:
+  Training Time: 184.43s
+  Features: 25
+  Training Samples: 323
+  Test Samples: 58
+  mae: 0.0128
+  mse: 0.0003
+  rmse: 0.0165
+  r2: -1.5070
+  sample_count: 58.0000
+
+⚡ TRAINING EFFICIENCY:
+----------------------------------------
+data_processing_efficiency: 0.000
+memory_efficiency: 0.000
+time_efficiency: 0.000
+cost_efficiency: 0.000

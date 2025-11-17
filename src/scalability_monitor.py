@@ -496,29 +496,36 @@ class ScalabilityMonitor:
         """Calculate scalability scoring metrics"""
         # Linear scalability score (based on throughput efficiency)
         if self.metrics.total_rows_processed > 0 and self.metrics.total_processing_time > 0:
-            # Perfect scalability baseline: 1000 records/second
-            baseline_throughput = 1000
+            # Updated baseline for current Spark config: local[8] with 22GB memory allocation
+            baseline_throughput = 1500  # records/second (increased from 1000)
             actual_throughput = self.metrics.throughput_records_per_second
             
             self.metrics.linear_scalability_score = min(1.0, actual_throughput / baseline_throughput)
         
-        # Resource efficiency score
+        # Resource efficiency score (updated for current Spark configuration)
         if self.metrics.peak_memory_usage_mb > 0 and self.metrics.peak_cpu_usage_percent > 0:
-            # Optimal: 70-80% resource utilization
-            memory_efficiency = self._calculate_utilization_score(self.metrics.avg_memory_usage_mb / 1024, 70, 80)  # Convert to GB
+            # Memory efficiency based on Spark allocated memory (22GB) rather than total system memory
+            spark_allocated_gb = 22  # 12g driver + 10g executor from current config
+            memory_gb_used = self.metrics.avg_memory_usage_mb / 1024
+            memory_utilization_percent = (memory_gb_used / spark_allocated_gb) * 100
+            
+            # Optimal Spark memory utilization: 60-80%
+            memory_efficiency = self._calculate_utilization_score(memory_utilization_percent, 60, 80)
+            
+            # CPU efficiency: optimal 60-80% for local[8] configuration
             cpu_efficiency = self._calculate_utilization_score(self.metrics.avg_cpu_usage_percent, 60, 80)
             
             self.metrics.resource_efficiency_score = (memory_efficiency + cpu_efficiency) / 2
         
-        # Cost efficiency (simplified model)
+        # Cost efficiency (updated for improved configuration)
         if self.metrics.total_processing_time > 0 and self.metrics.total_rows_processed > 0:
-            # Assume cost based on processing time and resource usage
-            cost_per_hour = 1.0  # $1/hour baseline
+            # Updated cost model for current configuration
+            cost_per_hour = 1.5  # $1.50/hour for improved configuration
             processing_hours = self.metrics.total_processing_time / 3600
             records_per_dollar = self.metrics.total_rows_processed / (cost_per_hour * processing_hours)
             
-            # Normalize to 0-1 scale (baseline: 10000 records per dollar)
-            self.metrics.cost_efficiency_score = min(1.0, records_per_dollar / 10000)
+            # Normalize to 0-1 scale (updated baseline: 20000 records per dollar)
+            self.metrics.cost_efficiency_score = min(1.0, records_per_dollar / 20000)
     
     def _calculate_utilization_score(self, actual: float, optimal_min: float, optimal_max: float) -> float:
         """Calculate utilization efficiency score"""
@@ -555,33 +562,36 @@ class ScalabilityMonitor:
         """Identify potential scalability bottlenecks"""
         bottlenecks = {}
         
-        # Memory bottlenecks
+        # Memory bottlenecks (updated for Spark configuration)
         if self.metrics.peak_memory_usage_mb > 0:
-            memory_pressure = self.metrics.avg_memory_usage_mb / self.metrics.peak_memory_usage_mb
-            if memory_pressure > 0.9:
+            # Calculate memory pressure based on Spark allocated memory
+            spark_allocated_mb = 22 * 1024  # 22GB allocated in current config
+            memory_pressure = self.metrics.avg_memory_usage_mb / spark_allocated_mb
+            
+            if memory_pressure > 0.85:  # 85% of allocated Spark memory
                 bottlenecks['memory_pressure'] = {
                     'severity': 'high',
-                    'description': f'High memory usage: {memory_pressure:.1%}',
+                    'description': f'High Spark memory usage: {memory_pressure:.1%} of allocated 22GB',
                     'recommendation': 'Consider increasing executor memory or optimizing data structures'
                 }
         
-        # CPU bottlenecks
-        if self.metrics.avg_cpu_usage_percent > 85:
+        # CPU bottlenecks (updated for local[8] configuration)
+        if self.metrics.avg_cpu_usage_percent > 80:  # 80% for 8-core configuration
             bottlenecks['cpu_saturation'] = {
                 'severity': 'medium',
-                'description': f'High CPU usage: {self.metrics.avg_cpu_usage_percent:.1f}%',
-                'recommendation': 'Consider adding more CPU cores or optimizing algorithms'
+                'description': f'High CPU usage: {self.metrics.avg_cpu_usage_percent:.1f}% (8 cores)',
+                'recommendation': 'Consider optimizing algorithms or reducing parallelism to prevent over-subscription'
             }
         
-        # Throughput bottlenecks
-        if self.metrics.throughput_records_per_second < 100:  # Arbitrary threshold
+        # Throughput bottlenecks (updated threshold)
+        if self.metrics.throughput_records_per_second < 200:  # Updated from 100 to 200
             bottlenecks['low_throughput'] = {
                 'severity': 'high',
                 'description': f'Low throughput: {self.metrics.throughput_records_per_second:.1f} records/sec',
                 'recommendation': 'Optimize data processing or increase parallelism'
             }
         
-        # Partition inefficiency
+        # Partition inefficiency (same threshold)
         if self.metrics.partition_efficiency_score < 0.7:
             bottlenecks['partition_skew'] = {
                 'severity': 'medium',

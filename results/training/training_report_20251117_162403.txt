@@ -1,0 +1,35 @@
+================================================================================
+🚂 TRAINING PIPELINE REPORT
+================================================================================
+Training Start: 2025-11-17 14:30:04.035578
+Training End: 2025-11-17 16:24:03.594304
+Total Training Time: 6839.52 seconds
+
+📊 TRAINING RESULTS:
+----------------------------------------
+Stocks Processed: 29
+Models Trained: 1
+
+📈 UNIFIED MODEL - AAL, AAPL, ABBV, AMD, AMGN, BABA, BIIB, CMCSA, CMG, COP, COST, CRM, CVX, EBAY, GE, GOOG, GSK, MRK, NKE, NVDA, ORCL, PEP, PYPL, QCOM, QQQ, TSLA, TSM, USO, WFC:
+  Training Time: 6839.52s
+  Features: 25
+  Training Samples: 57,948
+  Test Samples: 10,240
+  mae: 0.0156
+  mse: 0.0006
+  rmse: 0.0237
+  r2: -0.2625
+  sample_count: 10240.0000
+
+⚡ TRAINING EFFICIENCY:
+----------------------------------------
+data_processing_efficiency: 0.010
+memory_efficiency: 0.258
+time_efficiency: 0.008
+cost_efficiency: 0.021
+
+📈 PERFORMANCE SUMMARY:
+----------------------------------------
+Total Samples Processed: 68,188
+Processing Throughput: 10.0 samples/sec
+Average Processing Time: 0.00 ms/sample

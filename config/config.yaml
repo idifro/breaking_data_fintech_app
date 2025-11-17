@@ -198,29 +198,29 @@ mlflow:
       run_type: scalability_monitoring
       start_time: '2025-11-15T09:47:26.852000'
     training:
-      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/d8ac8c2e04204a9888e2e7b77d148838/artifacts
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/8cb48c5fff8349428713864ab0ba70f1/artifacts
       end_time: null
       experiment_id: '608535781630392078'
       experiment_name: stock_forecasting_gbt_exp_unified_monitoring
-      latest_run_id: d8ac8c2e04204a9888e2e7b77d148838
-      latest_run_name: unified_model_monitoring_AAPL-GOOG_20251117_120034
-      latest_timestamp: '2025-11-17T12:01:58.683402'
-      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/d8ac8c2e04204a9888e2e7b77d148838
+      latest_run_id: 8cb48c5fff8349428713864ab0ba70f1
+      latest_run_name: unified_model_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP-COST-CRM-CVX-EBAY-GE-GOOG-GSK-MRK-NKE-NVDA-ORCL-PEP-PYPL-QCOM-QQQ-TSLA-TSM-USO-WFC_20251117_144023
+      latest_timestamp: '2025-11-17T16:24:03.552191'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/8cb48c5fff8349428713864ab0ba70f1
       run_status: RUNNING
       run_type: model_training
-      start_time: '2025-11-17T12:00:34.580000'
+      start_time: '2025-11-17T14:40:23.929000'
     training_scalability:
-      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/20a648e2172a4fa79bf76c4ef9cf9ab6/artifacts
-      end_time: '2025-11-15T02:57:05.546000'
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/99e6797ffb854290910d32b149560aa7/artifacts
+      end_time: '2025-11-17T16:24:03.593000'
       experiment_id: '608535781630392078'
       experiment_name: stock_forecasting_gbt_exp_unified_monitoring
-      latest_run_id: 20a648e2172a4fa79bf76c4ef9cf9ab6
-      latest_run_name: scalability_monitoring_20251115_025705
-      latest_timestamp: '2025-11-15T02:57:05.550895'
-      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/20a648e2172a4fa79bf76c4ef9cf9ab6
+      latest_run_id: 99e6797ffb854290910d32b149560aa7
+      latest_run_name: scalability_monitoring_20251117_162403
+      latest_timestamp: '2025-11-17T16:24:03.598813'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/99e6797ffb854290910d32b149560aa7
       run_status: FINISHED
       run_type: scalability_monitoring
-      start_time: '2025-11-15T02:57:05.517000'
+      start_time: '2025-11-17T16:24:03.564000'
   run_name_prefix: gbt_sentiment_close_price
 model:
   algorithm: GBTRegressor
