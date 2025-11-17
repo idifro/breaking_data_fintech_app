@@ -1,0 +1,15 @@
+creation_timestamp: 1763384692569
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1763384692569
+model_id: m-16d06c339e1c4564bff23118c83c670e
+name: stock_predictor_hybrid_AAPL-GOOG-TSLA_xgboost
+run_id: eb92a626d0ed427c900c4816d715972f
+run_link: null
+source: models:/m-16d06c339e1c4564bff23118c83c670e
+status: READY
+status_message: null
+storage_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/702925934234739188/models/m-16d06c339e1c4564bff23118c83c670e/artifacts
+user_id: null
+version: 3

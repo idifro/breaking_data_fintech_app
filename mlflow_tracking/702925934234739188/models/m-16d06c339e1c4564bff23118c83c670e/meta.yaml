@@ -1,0 +1,10 @@
+artifact_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/702925934234739188/models/m-16d06c339e1c4564bff23118c83c670e/artifacts
+creation_timestamp: 1763384677477
+experiment_id: '702925934234739188'
+last_updated_timestamp: 1763384692550
+model_id: m-16d06c339e1c4564bff23118c83c670e
+model_type: null
+name: xgboost_model
+source_run_id: eb92a626d0ed427c900c4816d715972f
+status: 2
+status_message: null

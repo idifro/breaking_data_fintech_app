@@ -1,0 +1,114 @@
+====================================================================================================
+COMPREHENSIVE TRAINING METRICS REPORT
+====================================================================================================
+Generated: 2025-11-17T20:07:24.377210
+Training Mode: hybrid
+Stocks: AAPL
+
+🖥️  SYSTEM INFORMATION
+--------------------------------------------------
+platform: Linux-6.8.0-87-generic-x86_64-with-glibc2.39
+processor: x86_64
+architecture: 64bit
+python_version: 3.12.12
+total_memory_gb: 31.016544342041016
+available_memory_gb: 15.664066314697266
+cpu_count_logical: 16
+cpu_count_physical: 8
+boot_time: 1763355900.0
+timestamp: 2025-11-17T20:07:05.218893
+
+⚙️  TRAINING MODE REQUIREMENTS
+--------------------------------------------------
+min_memory_gb: 4
+recommended_memory_gb: 8
+min_cores: 2
+recommended_cores: 4
+distribution: spark_preprocessing_sklearn_training
+memory_intensive: False
+cpu_intensive: True
+scalability: limited
+
+📊 RESOURCE UTILIZATION
+--------------------------------------------------
+start_memory_gb: 15.352
+start_cpu_percent: 3.100
+peak_memory_gb: 15.394
+peak_cpu_percent: 100.000
+avg_memory_gb: 15.348
+avg_cpu_percent: 39.800
+monitoring_samples: 4
+
+📈 DATA PROCESSING METRICS
+--------------------------------------------------
+total_samples: 381
+training_samples: 323
+test_samples: 58
+feature_count: 25
+data_size_mb: 0.000
+processing_time_data_load: 0.000
+processing_time_feature_engineering: 0.000
+
+🚂 TRAINING PROCESS METRICS
+--------------------------------------------------
+training_time_total: 14.635
+training_time_model_specific: 12.529
+preprocessing_time: 0.000
+evaluation_time: 0.000
+convergence_iterations: 0
+early_stopping_triggered: False
+
+🎯 MODEL PERFORMANCE METRICS
+--------------------------------------------------
+train_mae: 0.012821
+train_mse: 0.000300
+train_rmse: 0.017321
+train_r2: 0.077370
+test_mae: 0.008453
+test_mse: 0.000110
+test_rmse: 0.010494
+test_r2: -0.019453
+overfitting_ratio: -0.394152
+generalization_score: 0.605848
+
+⚡ EFFICIENCY ANALYSIS
+--------------------------------------------------
+throughput_samples_per_second: 0.000
+memory_efficiency_score: 0.173
+cpu_efficiency_score: 1.000
+time_efficiency_score: 0.000
+resource_utilization_score: 0.391
+
+💰 COST ANALYSIS
+--------------------------------------------------
+estimated_cost_usd: $0.000407
+cost_per_hour_usd: $0.100000
+training_time_hours: 0.004
+cost_per_sample_usd: $0.000001
+cost_per_r2_point_usd: $inf
+cost_efficiency_score: $1.000000
+
+🔧 HYBRID SPECIFIC METRICS
+--------------------------------------------------
+model_params: {'n_estimators': 150, 'max_depth': 12, 'learning_rate': 0.01, 'subsample': 0.8, 'colsample_bytree': 0.8, 'random_state': 42, 'n_jobs': 8, 'tree_method': 'hist', 'eval_metric': 'mae', 'early_stopping_rounds': 20}
+spark_to_pandas_conversion_time: 2.100
+xgboost_training_time: 12.529
+best_iteration: 7
+n_cores_used: 8
+sklearn_model: XGBRegressor(base_score=None, booster=None, callbacks=None,
+             colsample_bylevel=None, colsample_bynode=None,
+             colsample_bytree=0.8, device=None, early_stopping_rounds=20,
+             enable_categorical=False, eval_metric='mae', feature_types=None,
+             feature_weights=None, gamma=None, grow_policy=None,
+             importance_type=None, interaction_constraints=None,
+             learning_rate=0.01, max_bin=None, max_cat_threshold=None,
+             max_cat_to_onehot=None, max_delta_step=None, max_depth=12,
+             max_leaves=None, min_child_weight=None, missing=nan,
+             monotone_constraints=None, multi_strategy=None, n_estimators=150,
+             n_jobs=8, num_parallel_tree=None, ...)
+spark_wrapper: <src.dual_mode_trainer.DualModeTrainer._create_spark_wrapper.<locals>.XGBoostSparkWrapper object at 0x74f6ea165f70>
+conversion_efficiency: 0.856
+
+====================================================================================================
+END OF REPORT
+====================================================================================================

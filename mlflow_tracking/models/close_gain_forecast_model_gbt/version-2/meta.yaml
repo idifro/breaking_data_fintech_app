@@ -1,0 +1,15 @@
+creation_timestamp: 1763385621128
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1763385621128
+model_id: null
+name: close_gain_forecast_model_gbt
+run_id: 592df5bf869d45c9b10d884dc8c6a694
+run_link: null
+source: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/229712802633426649/592df5bf869d45c9b10d884dc8c6a694/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/229712802633426649/592df5bf869d45c9b10d884dc8c6a694/artifacts/model
+user_id: null
+version: 2

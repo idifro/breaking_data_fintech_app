@@ -1,0 +1,14 @@
+artifact_uri: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/229712802633426649/6c68f39fb51d4a3eb46d680c66bef470/artifacts
+end_time: 1763385398934
+entry_point_name: ''
+experiment_id: '229712802633426649'
+lifecycle_stage: active
+run_id: 6c68f39fb51d4a3eb46d680c66bef470
+run_name: gbt_sentiment_close_price_20251117_184413
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763385253602
+status: 3
+tags: []
+user_id: mha2cob

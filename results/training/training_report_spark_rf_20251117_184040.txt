@@ -1,0 +1,42 @@
+================================================================================
+🔧 DUAL-MODE TRAINING REPORT - SPARK_RF MODE
+================================================================================
+Training Timestamp: 2025-11-17T18:40:40.377977
+Training Mode: spark_rf
+Stocks Processed: AAPL-GOOG-TSLA
+Total Training Time: 16.40 seconds
+
+📊 MODEL PERFORMANCE METRICS:
+----------------------------------------
+Training MAE: 0.006901
+Training R²: 0.750197
+Test MAE: 0.008687
+Test R²: -0.096621
+
+🌲 SPARK RANDOMFOREST METRICS:
+----------------------------------------
+Distributed Training Time: 4.64s
+Number of Trees: 150
+Training Distribution: Distributed across executors
+
+🎯 TOP 10 FEATURE IMPORTANCES:
+----------------------------------------
+  volume_vs_ma5: 0.0554
+  close_vs_ma10: 0.0501
+  close_normalized_vs_lag1: 0.0476
+  volume_ma_20: 0.0473
+  sentiment_lag_3: 0.0468
+  high_low_spread: 0.0464
+  close_lag_1: 0.0458
+  sentiment_lag_1: 0.0456
+  volume_ma_5: 0.0430
+  close_vs_ma5: 0.0414
+
+💡 MODE-SPECIFIC INSIGHTS:
+----------------------------------------
+✅ Good distributed training performance
+💡 RandomForest mode scales well with larger datasets
+
+================================================================================
+Report generated at: 2025-11-17T18:40:40.378025
+================================================================================

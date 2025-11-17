@@ -1,0 +1,44 @@
+================================================================================
+🔧 DUAL-MODE TRAINING REPORT - HYBRID MODE
+================================================================================
+Training Timestamp: 2025-11-17T18:32:21.956380
+Training Mode: hybrid
+Stocks Processed: AAPL-GOOG-TSLA
+Total Training Time: 15.60 seconds
+
+📊 MODEL PERFORMANCE METRICS:
+----------------------------------------
+Training MAE: 0.012821
+Training R²: 0.077370
+Test MAE: 0.008453
+Test R²: -0.019453
+
+🔄 HYBRID XGBOOST METRICS:
+----------------------------------------
+Spark to Pandas Conversion: 2.78s
+XGBoost Training Time: 12.78s
+Best Iteration: 7
+CPU Cores Used: 8
+Training Efficiency: N/A
+
+🎯 TOP 10 FEATURE IMPORTANCES:
+----------------------------------------
+  ma_10: 0.0712
+  volume_ma_20: 0.0555
+  sentiment_lag_3: 0.0522
+  ma_20: 0.0520
+  sentiment_lag_1: 0.0499
+  volume_ma_5: 0.0498
+  high_low_spread: 0.0491
+  close_vs_ma10: 0.0466
+  volume_change_1d: 0.0461
+  volume_vs_ma5: 0.0442
+
+💡 MODE-SPECIFIC INSIGHTS:
+----------------------------------------
+✅ Excellent training performance with hybrid mode
+💡 Consider using hybrid mode for production pipelines
+
+================================================================================
+Report generated at: 2025-11-17T18:32:21.956435
+================================================================================
