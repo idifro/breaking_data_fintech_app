@@ -548,6 +548,7 @@ class MonitoredModelTrainer:
                 
                 self.logger.info(f"{scenario}: {efficiency:.1f}% scaling efficiency")
     
+    # TODO use generate training report and create training report in current training pipeline
     def _generate_training_report(self, scalability_metrics):
         """Generate comprehensive training report"""
         report_path = f"results/training/training_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
@@ -626,22 +627,63 @@ class MonitoredModelTrainer:
 
 
 def create_spark_session(config: Config) -> SparkSession:
-    """Create Spark session for training with monitoring"""
+    """Create optimized Spark session for ML training with system resource monitoring"""
+    import psutil
+    
+    # Get system information for optimization
+    physical_cores = psutil.cpu_count(logical=False)
+    memory = psutil.virtual_memory()
+    available_memory_gb = memory.available / (1024**3)
+    
+    # Calculate optimal memory allocation (leave 25% for OS)
+    reserved_memory = max(4, available_memory_gb * 0.25)
+    usable_memory = available_memory_gb - reserved_memory
+    
+    # Optimize for ML training workload
+    driver_memory = min(12, usable_memory * 0.6)  # More for feature engineering
+    executor_memory = min(10, usable_memory * 0.4)
+    executor_cores = min(4, physical_cores)  # Use physical cores
+    
+    print(f"🖥️  System Resources: {physical_cores} cores, {available_memory_gb:.1f}GB available")
+    print(f"⚙️  Spark Config: Driver={driver_memory:.1f}g, Executor={executor_memory:.1f}g, Cores={executor_cores}")
     
     builder = SparkSession.builder \
         .appName(f"{config.spark.app_name}_Training_With_Monitoring") \
-        .master(config.spark.master) \
-        .config("spark.driver.memory", config.spark.driver_memory) \
-        .config("spark.executor.memory", config.spark.executor_memory) \
-        .config("spark.executor.cores", config.spark.executor_cores) \
+        .master(f"local[{physical_cores}]") \
+        .config("spark.driver.memory", f"{driver_memory:.0f}g") \
+        .config("spark.executor.memory", f"{executor_memory:.0f}g") \
+        .config("spark.executor.cores", str(executor_cores)) \
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
     
-    # Add additional configurations
+    # Add ML-specific optimizations
+    builder = builder \
+        .config("spark.driver.maxResultSize", "4g") \
+        .config("spark.driver.memoryFraction", "0.8") \
+        .config("spark.executor.memoryFraction", "0.8") \
+        .config("spark.ml.cache.enabled", "true") \
+        .config("spark.mllib.cache.enabled", "true") \
+        .config("spark.sql.execution.arrow.maxRecordsPerBatch", "10000")
+    
+    # Optimize AQE for 80k rows dataset
+    builder = builder \
+        .config("spark.sql.adaptive.advisoryPartitionSizeInBytes", "32MB") \
+        .config("spark.sql.adaptive.maxNumPostShufflePartitions", "64")
+    
+    # Add GC optimization for local development
+    gc_options = "-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=35"
+    builder = builder \
+        .config("spark.driver.extraJavaOptions", gc_options) \
+        .config("spark.executor.extraJavaOptions", gc_options)
+    
+    # Add additional configurations from config
     for key, value in config.spark.configs.items():
         builder = builder.config(key, value)
     
-    return configure_spark_with_delta_pip(builder).getOrCreate()
+    spark = configure_spark_with_delta_pip(builder).getOrCreate()
+    spark.sparkContext.setLogLevel("WARN")  # Reduce log noise
+    
+    return spark
 
 
 def parse_arguments():

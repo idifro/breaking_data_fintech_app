@@ -1,0 +1,73 @@
+data:
+  selected_stocks:
+  - AAPL
+  - GOOG
+  - TSLA
+  - BABA
+  sequence_length: 50
+  train_split: 0.85
+features:
+  enable_interactions: true
+  enable_rsi: true
+  enable_volatility: true
+  ma_windows:
+  - 5
+  - 10
+  - 20
+  max_features: 25
+  price_lags:
+  - 1
+  - 2
+  - 3
+  - 5
+  sentiment_lags:
+  - 1
+  - 3
+  volume_lags:
+  - 1
+model:
+  algorithm: GradientBoostingRegressor
+  best_params:
+    learning_rate: 0.01
+    max_depth: 12
+    max_features: log2
+    n_estimators: 150
+    subsample: 0.8
+  performance:
+    best_trial_number: 44
+    optimization_time_seconds: 257.5807821750641
+    test_metrics:
+      mae: 0.017604226445828482
+      mse: 0.0006330375999080978
+      r2: 0.008376241765692627
+      rmse: !!python/object/apply:numpy._core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - f8
+        - false
+        - true
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        whiRBZvDmT8=
+    total_trials: 50
+    train_metrics:
+      mae: 0.016520807160102128
+      mse: 0.010073938075398492
+      r2: 0.8944542391499288
+      rmse: !!python/object/apply:numpy._core.multiarray.scalar
+      - *id001
+      - !!binary |
+        uxJ+jcixuT8=
+  tuning_info:
+    best_trial: 44
+    n_trials: 50
+    optimization_time_seconds: 257.5807821750641
+    tuning_date: '2025-11-17T12:45:26.622610'

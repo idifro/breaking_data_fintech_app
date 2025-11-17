@@ -304,7 +304,7 @@ class ModelTrainer:
         }
         
         return evaluation_results
-    
+    # TODO : user model evaluation, regression evalutor for this
     def _calculate_metrics(self, results: List, data_type: str) -> Dict[str, float]:
         """Calculate evaluation metrics"""
         

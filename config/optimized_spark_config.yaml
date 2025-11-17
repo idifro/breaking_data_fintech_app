@@ -1,0 +1,72 @@
+# Optimized Spark Configuration for Local ML Training
+# System: Intel i7-11850H, 32GB RAM, 16 cores
+# Use case: ML model training with feature engineering, ~80k rows
+
+spark:
+  app_name: StockForecastingPipeline
+  
+  # Memory allocation (leave ~8GB for OS and other processes)
+  driver_memory: 12g              # Increased for feature engineering
+  executor_memory: 10g            # Increased for ML operations
+  executor_cores: 4               # Optimal for 8 physical cores
+  
+  # Use local mode with controlled parallelism
+  master: local[8]                # Use 8 cores (physical cores) for better performance
+  
+  configs:
+    # Serialization and compression
+    spark.serializer: org.apache.spark.serializer.KryoSerializer
+    spark.io.compression.codec: snappy
+    spark.rdd.compress: 'true'
+    
+    # Memory management for ML workloads
+    spark.driver.memory: 12g
+    spark.driver.maxResultSize: 4g
+    spark.driver.memoryFraction: 0.8
+    spark.executor.memory: 10g
+    spark.executor.memoryFraction: 0.8
+    spark.executor.cores: 4
+    
+    # Adaptive Query Execution (AQE) - optimized for your data size
+    spark.sql.adaptive.enabled: 'true'
+    spark.sql.adaptive.coalescePartitions.enabled: 'true'
+    spark.sql.adaptive.advisoryPartitionSizeInBytes: 32MB  # Smaller for 80k rows
+    spark.sql.adaptive.maxNumPostShufflePartitions: '64'   # Reduced for smaller dataset
+    spark.sql.adaptive.skewJoin.enabled: 'true'
+    spark.sql.adaptive.localShuffleReader.enabled: 'true'
+    
+    # Network and shuffle optimization
+    spark.sql.broadcastTimeout: '36000'
+    spark.network.timeout: '300s'
+    spark.sql.broadcastJoin.threshold: 50MB
+    
+    # Arrow optimization for pandas integration
+    spark.sql.execution.arrow.pyspark.enabled: 'true'
+    spark.sql.execution.arrow.maxRecordsPerBatch: '10000'
+    
+    # ML-specific optimizations
+    spark.ml.cache.enabled: 'true'
+    spark.mllib.cache.enabled: 'true'
+    
+    # Checkpointing and persistence
+    spark.sql.execution.useColumnarShuffleManager: 'false'
+    spark.sql.files.maxPartitionBytes: 134217728  # 128MB
+    
+    # Garbage collection optimization
+    spark.driver.extraJavaOptions: >
+      -XX:+UseG1GC
+      -XX:MaxGCPauseMillis=200
+      -XX:ParallelGCThreads=8
+      -XX:ConcGCThreads=2
+      -XX:InitiatingHeapOccupancyPercent=35
+    
+    spark.executor.extraJavaOptions: >
+      -XX:+UseG1GC
+      -XX:MaxGCPauseMillis=200
+      -XX:ParallelGCThreads=4
+      -XX:ConcGCThreads=1
+      -XX:InitiatingHeapOccupancyPercent=35
+    
+    # Local storage optimization
+    spark.local.dir: "/tmp/spark-tmp"
+    spark.sql.warehouse.dir: "/tmp/spark-warehouse"

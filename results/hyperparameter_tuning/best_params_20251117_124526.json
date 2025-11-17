@@ -1,0 +1,33 @@
+{
+  "best_params": {
+    "n_estimators": 150,
+    "max_depth": 12,
+    "learning_rate": 0.01,
+    "subsample": 0.8,
+    "max_features": "log2"
+  },
+  "performance": {
+    "train_metrics": {
+      "mae": 0.016520807160102128,
+      "mse": 0.010073938075398492,
+      "rmse": 0.10036900953680121,
+      "r2": 0.8944542391499288
+    },
+    "test_metrics": {
+      "mae": 0.017604226445828482,
+      "mse": 0.0006330375999080978,
+      "rmse": 0.025160238470811398,
+      "r2": 0.008376241765692627
+    },
+    "best_trial_number": 44,
+    "total_trials": 50,
+    "optimization_time_seconds": 257.5807821750641
+  },
+  "stocks": [
+    "AAPL",
+    "GOOG",
+    "TSLA",
+    "BABA"
+  ],
+  "timestamp": "2025-11-17T12:45:26.624362"
+}

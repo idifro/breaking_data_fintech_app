@@ -198,17 +198,17 @@ mlflow:
       run_type: scalability_monitoring
       start_time: '2025-11-15T09:47:26.852000'
     training:
-      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/7184de7c82e6417dabfd38789599c2a9/artifacts
+      artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/d8ac8c2e04204a9888e2e7b77d148838/artifacts
       end_time: null
       experiment_id: '608535781630392078'
       experiment_name: stock_forecasting_gbt_exp_unified_monitoring
-      latest_run_id: 7184de7c82e6417dabfd38789599c2a9
-      latest_run_name: unified_model_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP-COST-CRM-CVX-EBAY-GE-GOOG-GSK-MRK-NKE-NVDA-ORCL-PEP-PYPL-QCOM-QQQ-TSLA-TSM-USO-WFC_20251115_015624
-      latest_timestamp: '2025-11-15T02:57:05.478635'
-      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/7184de7c82e6417dabfd38789599c2a9
+      latest_run_id: d8ac8c2e04204a9888e2e7b77d148838
+      latest_run_name: unified_model_monitoring_AAPL-GOOG_20251117_120034
+      latest_timestamp: '2025-11-17T12:01:58.683402'
+      metrics_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/d8ac8c2e04204a9888e2e7b77d148838
       run_status: RUNNING
       run_type: model_training
-      start_time: '2025-11-15T01:56:24.948000'
+      start_time: '2025-11-17T12:00:34.580000'
     training_scalability:
       artifacts_url: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/#/experiments/608535781630392078/runs/20a648e2172a4fa79bf76c4ef9cf9ab6/artifacts
       end_time: '2025-11-15T02:57:05.546000'
@@ -225,11 +225,11 @@ mlflow:
 model:
   algorithm: GBTRegressor
   default_params:
-    featureSubsetStrategy: sqrt
-    maxDepth: 8
+    featureSubsetStrategy: log2
+    maxDepth: 12
     maxIter: 150
     seed: 42
-    stepSize: 0.05
+    stepSize: 0.01
     subsamplingRate: 0.8
   hyperparameter_ranges:
     featureSubsetStrategy:
@@ -292,21 +292,29 @@ monitoring:
 spark:
   app_name: StockForecastingPipeline
   configs:
+    spark.driver.extraJavaOptions: -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=35
+    spark.driver.maxResultSize: 4g
+    spark.driver.memoryFraction: '0.8'
+    spark.executor.extraJavaOptions: -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:InitiatingHeapOccupancyPercent=35
+    spark.executor.memoryFraction: '0.8'
     spark.io.compression.codec: snappy
+    spark.ml.cache.enabled: 'true'
+    spark.mllib.cache.enabled: 'true'
     spark.rdd.compress: 'true'
     spark.serializer: org.apache.spark.serializer.KryoSerializer
-    spark.sql.adaptive.advisoryPartitionSizeInBytes: 64MB
+    spark.sql.adaptive.advisoryPartitionSizeInBytes: 32MB
     spark.sql.adaptive.coalescePartitions.enabled: 'true'
     spark.sql.adaptive.enabled: 'true'
     spark.sql.adaptive.localShuffleReader.enabled: 'true'
-    spark.sql.adaptive.maxNumPostShufflePartitions: '200'
+    spark.sql.adaptive.maxNumPostShufflePartitions: '64'
     spark.sql.adaptive.skewJoin.enabled: 'true'
     spark.sql.broadcastTimeout: '36000'
+    spark.sql.execution.arrow.maxRecordsPerBatch: '10000'
     spark.sql.execution.arrow.pyspark.enabled: 'true'
-  driver_memory: 4g
+  driver_memory: 12g
   executor_cores: 4
-  executor_memory: 8g
-  master: local[*]
+  executor_memory: 10g
+  master: local[8]
 visualization:
   colors:
     primary: '#1f77b4'
