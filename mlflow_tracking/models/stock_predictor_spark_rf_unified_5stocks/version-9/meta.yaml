@@ -1,0 +1,15 @@
+creation_timestamp: 1763448571322
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1763448571322
+model_id: null
+name: stock_predictor_spark_rf_unified_5stocks
+run_id: 01a4c9c44df9424f9777aad34acdb60f
+run_link: null
+source: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/260892442739248592/01a4c9c44df9424f9777aad34acdb60f/artifacts/model
+status: READY
+status_message: null
+storage_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/260892442739248592/01a4c9c44df9424f9777aad34acdb60f/artifacts/model
+user_id: null
+version: 9

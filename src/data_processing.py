@@ -3,7 +3,7 @@ Data Processing Module for Stock Price Prediction
 Handles data loading, preprocessing, and train/test splitting
 """
 
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Any
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -218,7 +218,7 @@ class DataProcessor:
         
         return combined_df.orderBy("stock_symbol", "Date")
     
-    def prepare_training_data(self, stock_selection: List[str] = None) -> Tuple[DataFrame, DataFrame, List[str]]:
+    def prepare_training_data(self, stock_selection: List[str] = None) -> Tuple[DataFrame, DataFrame, List[str], Any]:
         """
         Prepare training and test data with features
         
@@ -226,7 +226,7 @@ class DataProcessor:
             stock_selection: List of stocks to train on (defaults to config training_stocks)
             
         Returns:
-            Tuple of (train_df, test_df, feature_names)
+            Tuple of (train_df, test_df, feature_names, scaler_model)
         """
         
         # Load data from stock-specific Delta tables
@@ -259,7 +259,7 @@ class DataProcessor:
         scaler_model.write().overwrite().save(scaler_path)
         print(f"✅ Scaler model saved to: {scaler_path}")
         
-        return train_df, test_df, feature_names
+        return train_df, test_df, feature_names, scaler_model
     
     def _create_train_test_split(self, df: DataFrame) -> DataFrame:
         """Create train/test split by time for each stock (like CNN approach)"""

@@ -1,0 +1,6 @@
+artifact_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/974964133641391798
+creation_time: 1763401819715
+experiment_id: '974964133641391798'
+last_update_time: 1763401819715
+lifecycle_stage: active
+name: stock_forecasting_hybrid_sklearn_scalability

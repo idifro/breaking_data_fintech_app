@@ -214,7 +214,7 @@ class ScalabilityMonitor:
         
         return self.metrics
     
-    def monitor_data_volume(self, operation_name: str = "data_analysis") -> Dict:
+    def monitor_data_volume(self, operation_name: str = "data_analysis",stock_selection=[]) -> Dict:
         """
         Monitor data volume scalability metrics
         
@@ -234,9 +234,10 @@ class ScalabilityMonitor:
             total_rows = 0
             total_size_mb = 0
             partition_stats = []
-            
+            if stock_selection == []:
+                stock_selection = self.config.data.available_stocks
             # Analyze each stock table
-            for stock in self.config.data.available_stocks:
+            for stock in stock_selection:
                 try:
                     table_path = f"delta_tables/stock_{stock}"
                     

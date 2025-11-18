@@ -90,31 +90,31 @@ class FeatureEngineer:
         )
         
         # Ensure market data consistency (High >= Low, Close within range)
-        df_filtered = df_filtered.filter(
-            (col("High") >= col("Low")) &
-            (col("Close") >= col("Low")) &
-            (col("Close") <= col("High"))
-        )
+        # df_filtered = df_filtered.filter(
+        #     (col("High") >= col("Low")) &
+        #     (col("Close") >= col("Low")) &
+        #     (col("Close") <= col("High"))
+        # )
         
         # Remove extreme outliers that could indicate data quality issues
         # Filter out rows where price changes are more than 1000% (likely data errors)
-        window_spec = Window.partitionBy("stock_symbol").orderBy("Date")
-        df_with_prev = df_filtered.withColumn("prev_close", lag("Close", 1).over(window_spec))
+        # window_spec = Window.partitionBy("stock_symbol").orderBy("Date")
+        # df_with_prev = df_filtered.withColumn("prev_close", lag("Close", 1).over(window_spec))
         
-        df_filtered = df_with_prev.filter(
-            col("prev_close").isNull() |  # Keep first row for each stock
-            (
-                (col("Close") / col("prev_close") <= 10.0) &  # Max 10x increase
-                (col("Close") / col("prev_close") >= 0.1)     # Max 90% decrease
-            )
-        ).drop("prev_close")
+        # df_filtered = df_with_prev.filter(
+        #     col("prev_close").isNull() |  # Keep first row for each stock
+        #     (
+        #         (col("Close") / col("prev_close") <= 10.0) &  # Max 10x increase
+        #         (col("Close") / col("prev_close") >= 0.1)     # Max 90% decrease
+        #     )
+        # ).drop("prev_close")
         
-        # Additional safety: Remove any remaining rows with extreme values
-        df_filtered = df_filtered.filter(
-            (col("Close") < 1000000) &  # Reasonable price limit
-            (col("Volume") < 1e12) &    # Reasonable volume limit
-            (col("Scaled_sentiment") >= -10) & (col("Scaled_sentiment") <= 10)  # Reasonable sentiment range
-        )
+        # # Additional safety: Remove any remaining rows with extreme values
+        # df_filtered = df_filtered.filter(
+        #     (col("Close") < 1000000) &  # Reasonable price limit
+        #     (col("Volume") < 1e12) &    # Reasonable volume limit
+        #     (col("Scaled_sentiment") >= -10) & (col("Scaled_sentiment") <= 10)  # Reasonable sentiment range
+        # )
         
         final_count = df_filtered.count()
         removed_count = initial_count - final_count

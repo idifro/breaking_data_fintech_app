@@ -1,0 +1,14 @@
+artifact_uri: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/260892442739248592/b2a9da7b8e484d50b9635ab5a9565b30/artifacts
+end_time: 1763447642976
+entry_point_name: ''
+experiment_id: '260892442739248592'
+lifecycle_stage: active
+run_id: b2a9da7b8e484d50b9635ab5a9565b30
+run_name: spark_rf_distributed_monitoring_AAPL-GOOG-MSFT-NVDA-TSLA_20251118_120335
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763447615876
+status: 3
+tags: []
+user_id: mha2cob

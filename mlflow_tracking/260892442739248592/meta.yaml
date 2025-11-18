@@ -1,0 +1,6 @@
+artifact_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/260892442739248592
+creation_time: 1763397058745
+experiment_id: '260892442739248592'
+last_update_time: 1763397058745
+lifecycle_stage: active
+name: stock_forecasting_spark_rf_scalability

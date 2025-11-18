@@ -292,12 +292,12 @@ ipython_config.py
 # ==============================================================================
 
 # Generated plots
-plots/
-*.png
-*.jpg
-*.jpeg
-*.svg
-*.pdf
+# plots/
+# *.png
+# *.jpg
+# *.jpeg
+# *.svg
+# *.pdf
 
 # Feature importance files
 # feature_importance/
