@@ -59,8 +59,7 @@
     - [ ] Data transfer overhead (for hybrid mode)
 
 [ ] 3.3 Create scalability test scenarios
-    - [ ] Variable data volume testing (5, 10, 20, 30 stocks)
-    - [ ] Variable core/executor testing (2, 4, 8 cores)
+    - [ ] Variable data volume testing (5, 10, 29 stocks)
     - [ ] Memory scaling tests
     - [ ] Load testing for each mode
 
