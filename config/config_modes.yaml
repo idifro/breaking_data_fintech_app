@@ -191,20 +191,57 @@ hybrid_sklearn_mode:
     scoring: "neg_mean_absolute_error"
     n_iter: 20  # for random_search
   
-  # Hybrid-specific configurations
+  # Hybrid-specific configurations with optimizations
   hybrid_config:
     # Data collection to driver
     collect_to_driver: true
     max_collect_size_mb: 2048  # Maximum size to collect to driver
     
-    # Distributed inference configuration
+    # Distributed inference configuration with optimizations
     distributed_inference:
       enabled: true
-      batch_size: 10000
+      batch_size: 10000  # Default batch size (overridden by dynamic calculation)
       use_pandas_udf: true
       return_type: "double"
+      dynamic_batching:
+        enabled: true
+        memory_fraction: 0.3  # Use 30% of executor memory for batching
+        min_batch_size: 1000
+        max_batch_size: 50000
+    
+    # Evaluation optimizations
+    evaluation:
+      sql_evaluation_enabled: true  # Use SQL for single-pass evaluation
+      fallback_to_regression_evaluator: true  # Fallback if SQL fails
+      
+    # Caching strategy
+    cache_strategy:
+      enabled: true
+      auto_detect_memory: true
+      memory_thresholds:
+        high_memory_gb: 8  # Use memory-only caching
+        moderate_memory_gb: 4  # Use memory+disk caching
+        low_memory_gb: 2  # Disable caching
+      cache_levels:
+        high: "memory"
+        moderate: "memory_and_disk"
+        low: "none"
+    
+    # Visualization sampling configuration
+    visualization:
+      sampling_enabled: true
+      target_samples: 5000
+      stratified_sampling: true  # Sample proportionally by stock
+      fallback_limit: 1000
+      
+    # Resource cleanup
+    resource_cleanup:
+      enabled: true
+      cleanup_broadcast_variables: true
+      cleanup_cached_dataframes: true
+      force_garbage_collection: true
   
-  # Monitoring specific to hybrid approach
+  # Monitoring specific to hybrid approach with optimization tracking
   monitoring:
     enabled: true
     focus_areas:
@@ -212,12 +249,22 @@ hybrid_sklearn_mode:
       - "driver_sklearn_training"
       - "distributed_inference_performance"
       - "memory_driver_vs_executor_balance"
+      - "optimization_effectiveness"  # New focus area
     
+    # Performance improvement tracking
+    optimization_monitoring:
+      track_evaluation_time_reduction: true
+      track_cache_hit_ratio: true
+      track_memory_efficiency_improvement: true
+      track_visualization_time_reduction: true
+      track_dataset_passes_saved: true
+      
     hybrid_monitoring:
       data_collection_time_tracking: true
       sklearn_training_metrics: true
       inference_distribution_efficiency: true
       driver_memory_pressure_monitoring: true
+      optimization_impact_analysis: true  # New monitoring
 
 # =============================================================================
 # EVALUATION CONFIGURATION
