@@ -1,0 +1,15 @@
+creation_timestamp: 1763554742893
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1763554742893
+model_id: m-3d86a3a1a56e4da88d88d0eb34697530
+name: stock_predictor_hybrid_sklearn_unified_5stocks
+run_id: 4d858fad6b6d49fd9ec7b44fa780f5b7
+run_link: null
+source: models:/m-3d86a3a1a56e4da88d88d0eb34697530
+status: READY
+status_message: null
+storage_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/974964133641391798/models/m-3d86a3a1a56e4da88d88d0eb34697530/artifacts
+user_id: null
+version: 15

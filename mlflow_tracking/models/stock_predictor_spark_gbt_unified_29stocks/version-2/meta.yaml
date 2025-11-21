@@ -1,0 +1,15 @@
+creation_timestamp: 1763651489645
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1763651489645
+model_id: null
+name: stock_predictor_spark_gbt_unified_29stocks
+run_id: 535226723f224170863fb922169a0d5b
+run_link: null
+source: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/659928479284864024/535226723f224170863fb922169a0d5b/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/659928479284864024/535226723f224170863fb922169a0d5b/artifacts/model
+user_id: null
+version: 2

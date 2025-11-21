@@ -69,6 +69,9 @@ class HybridSklearnTrainer:
         self.sklearn_model = None
         self.feature_scaler = None
         
+        # Memory optimization tracking
+        self.data_sampling_ratio = None
+        
         # Monitoring metrics
         self.training_metrics = {
             'mode': 'hybrid_sklearn',
@@ -266,7 +269,7 @@ class HybridSklearnTrainer:
         mlflow.set_experiment(self.experiment_name)
     
     def _validate_collection_size(self, total_samples: int, num_features: int):
-        """Validate that data size is appropriate for collection to driver"""
+        """Validate that data size is appropriate for collection to driver and implement optimizations"""
         
         # Estimate memory requirement
         bytes_per_sample = num_features * 8 + 50  # 8 bytes per float + overhead
@@ -274,25 +277,62 @@ class HybridSklearnTrainer:
         
         max_collect_size_mb = self.mode_config['hybrid_config']['max_collect_size_mb']
         
+        self.logger.info(f"💾 Estimated collection size: {estimated_memory_mb:.1f} MB")
+        
+        # Implement adaptive memory management
         if estimated_memory_mb > max_collect_size_mb:
             self.logger.warning(f"⚠️ Data size ({estimated_memory_mb:.1f} MB) exceeds max collection size ({max_collect_size_mb} MB)")
-            self.logger.warning("🔄 Consider sampling data or increasing max_collect_size_mb")
-            # Could implement sampling here if needed
-        
-        self.logger.info(f"💾 Estimated collection size: {estimated_memory_mb:.1f} MB")
+            
+            # Calculate sampling ratio to stay within memory limits
+            sampling_ratio = min(0.8, max_collect_size_mb / estimated_memory_mb)
+            self.data_sampling_ratio = sampling_ratio
+            
+            self.logger.warning(f"� MEMORY OPTIMIZATION: Will sample {sampling_ratio:.1%} of data to prevent system slowdown")
+            self.logger.warning(f"📊 Reduced data size: ~{estimated_memory_mb * sampling_ratio:.1f} MB")
+            
+            # Log optimization strategy
+            self.training_metrics['memory_optimization'] = {
+                'original_size_mb': estimated_memory_mb,
+                'max_allowed_mb': max_collect_size_mb,
+                'sampling_ratio': sampling_ratio,
+                'optimized_size_mb': estimated_memory_mb * sampling_ratio,
+                'reason': 'prevent_system_memory_pressure'
+            }
+        else:
+            self.data_sampling_ratio = None
+            self.logger.info(f"✅ Memory usage within limits ({estimated_memory_mb:.1f} MB < {max_collect_size_mb} MB)")
     
     def _collect_data_to_driver(self, train_df: DataFrame, test_df: DataFrame, 
                                feature_names: List[str]) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """Collect Spark DataFrames to driver as pandas DataFrames"""
-        
-        self.logger.info("🔄 Collecting training data to driver...")
+        """Collect Spark DataFrames to driver as pandas DataFrames with memory optimization"""
         
         # Select required columns (include stock_symbol if available)
         feature_cols = feature_names + ["target"]
         if "stock_symbol" in train_df.columns:
             feature_cols.append("stock_symbol")
         
-        # Collect training data
+        # Apply sampling if memory optimization is needed
+        if hasattr(self, 'data_sampling_ratio') and self.data_sampling_ratio is not None:
+            self.logger.info(f"🔧 Applying memory optimization sampling: {self.data_sampling_ratio:.1%}")
+            
+            # Sample both training and test data proportionally
+            train_df_sampled = train_df.sample(fraction=self.data_sampling_ratio, seed=42)
+            test_df_sampled = test_df.sample(fraction=self.data_sampling_ratio, seed=42)
+            
+            self.logger.info(f"📊 Sampled training data: {train_df_sampled.count():,} samples (was {train_df.count():,})")
+            self.logger.info(f"📊 Sampled test data: {test_df_sampled.count():,} samples (was {test_df.count():,})")
+            
+            # Use sampled data for collection
+            train_df = train_df_sampled
+            test_df = test_df_sampled
+        
+        self.logger.info("🔄 Collecting training data to driver...")
+        
+        # Optimize collection with partitioning and caching
+        train_df.cache()
+        test_df.cache()
+        
+        # Collect training data with memory management
         train_pandas_df = train_df.select(*feature_cols).toPandas()
         
         self.logger.info("🔄 Collecting test data to driver...")
@@ -300,7 +340,15 @@ class HybridSklearnTrainer:
         # Collect test data
         test_pandas_df = test_df.select(*feature_cols).toPandas()
         
+        # Unpersist cached DataFrames to free Spark memory
+        train_df.unpersist()
+        test_df.unpersist()
+        
         self.logger.info(f"✅ Data collection completed - Train: {len(train_pandas_df)}, Test: {len(test_pandas_df)}")
+        
+        # Force garbage collection to free memory
+        import gc
+        gc.collect()
         
         return train_pandas_df, test_pandas_df
     
@@ -682,7 +730,7 @@ class HybridSklearnTrainer:
     
     def _create_distributed_predictions(self, train_df: DataFrame, test_df: DataFrame,
                                       feature_names: List[str]) -> Tuple[DataFrame, DataFrame]:
-        """Create distributed predictions using pandas UDF"""
+        """Create distributed predictions using pandas UDF with memory optimization"""
         
         self.logger.info("🌐 Creating distributed predictions using pandas UDF...")
         
@@ -711,12 +759,15 @@ class HybridSklearnTrainer:
         model_broadcast = self.spark.sparkContext.broadcast(self.sklearn_model)
         scaler_broadcast = self.spark.sparkContext.broadcast(self.feature_scaler)
         
-        # Define pandas UDF for prediction
+        # Optimized pandas UDF with batch processing
+        batch_size = self.mode_config['hybrid_config']['distributed_inference'].get('batch_size', 10000)
+        
         @pandas_udf(returnType=DoubleType())
-        def predict_udf(features_arrays):
-            """Pandas UDF for distributed sklearn predictions"""
+        def predict_udf_optimized(features_arrays):
+            """Memory-optimized pandas UDF for distributed sklearn predictions"""
             import pandas as pd
             import numpy as np
+            import gc
             
             # Get broadcasted objects
             model = model_broadcast.value
@@ -725,37 +776,66 @@ class HybridSklearnTrainer:
             # Convert pandas Series of arrays to numpy matrix
             features_matrix = np.array(features_arrays.tolist())
             
-            # Apply scaling
-            features_scaled = scaler.transform(features_matrix)
+            # Process in batches to reduce memory pressure
+            predictions = []
+            batch_size_local = min(batch_size, len(features_matrix))
             
-            # Make predictions
-            predictions = model.predict(features_scaled)
+            for i in range(0, len(features_matrix), batch_size_local):
+                end_idx = min(i + batch_size_local, len(features_matrix))
+                batch_features = features_matrix[i:end_idx]
+                
+                # Apply scaling
+                batch_features_scaled = scaler.transform(batch_features)
+                
+                # Make predictions
+                batch_predictions = model.predict(batch_features_scaled)
+                predictions.extend(batch_predictions)
+                
+                # Force garbage collection for large batches
+                if len(batch_features) > 1000:
+                    del batch_features_scaled
+                    del batch_predictions
+                    gc.collect()
             
             return pd.Series(predictions)
+        
+        # Optimize Spark DataFrames for distributed processing
+        train_df_arrays = train_df_arrays.repartition(16)  # Optimize partitions
+        test_df_arrays = test_df_arrays.repartition(16)
         
         # Apply distributed predictions using the features array column
         inference_start = time.time()
         
-        train_predictions_df = train_df_arrays.withColumn("prediction", predict_udf(col("features_array")))
-        test_predictions_df = test_df_arrays.withColumn("prediction", predict_udf(col("features_array")))
+        self.logger.info(f"🚀 Starting distributed inference with batch size: {batch_size:,}")
         
-        # Trigger computation and cache results
+        # Process train predictions with memory management
+        train_predictions_df = train_df_arrays.withColumn("prediction", predict_udf_optimized(col("features_array")))
+        
+        # Cache and trigger computation for train set
         train_predictions_df.cache()
-        test_predictions_df.cache()
-        
         train_count = train_predictions_df.count()
+        
+        # Process test predictions
+        test_predictions_df = test_df_arrays.withColumn("prediction", predict_udf_optimized(col("features_array")))
+        
+        # Cache and trigger computation for test set
+        test_predictions_df.cache()
         test_count = test_predictions_df.count()
         
         inference_time = time.time() - inference_start
         
-        # Store distributed inference metrics
+        # Store distributed inference metrics with optimization info
         self.training_metrics['distributed_inference_metrics'] = {
             'inference_time': inference_time,
             'train_predictions_count': train_count,
             'test_predictions_count': test_count,
             'predictions_per_second': (train_count + test_count) / inference_time if inference_time > 0 else 0,
             'pandas_udf_used': True,
-            'distributed_execution': True
+            'distributed_execution': True,
+            'batch_processing': True,
+            'batch_size': batch_size,
+            'memory_optimized': True,
+            'partitions_used': 16
         }
         
         self.logger.info(f"✅ Distributed inference completed in {inference_time:.2f}s")

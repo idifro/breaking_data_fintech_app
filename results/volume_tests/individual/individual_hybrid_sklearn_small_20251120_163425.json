@@ -1,0 +1,2321 @@
+{
+  "volume": "small",
+  "volume_spec": {
+    "stocks": 5,
+    "description": "Small dataset - 5 stocks (~5k-15k rows)"
+  },
+  "modes_tested": [
+    "hybrid_sklearn"
+  ],
+  "test_session_timestamp": "2025-11-20T16:34:24.295139",
+  "total_session_time": 274.3422656059265,
+  "mode_results": {
+    "hybrid_sklearn": {
+      "mode": "hybrid_sklearn",
+      "volume": "small",
+      "volume_spec": {
+        "stocks": 5,
+        "description": "Small dataset - 5 stocks (~5k-15k rows)"
+      },
+      "test_timestamp": "2025-11-20T16:34:24.295139",
+      "total_test_time": 274.3422656059265,
+      "training_result": {
+        "mode": "hybrid_sklearn",
+        "model_info": {
+          "name": "stock_predictor_hybrid_sklearn_unified_5stocks",
+          "version": 17,
+          "path": "models:/stock_predictor_hybrid_sklearn_unified_5stocks/17",
+          "type": "hybrid_sklearn"
+        },
+        "metrics": {
+          "train_metrics": {
+            "mae": 0.034156652896225305,
+            "mse": 0.0018953030929561873,
+            "rmse": 0.043535078878488176,
+            "r2": -1.8482484231498941
+          },
+          "test_metrics": {
+            "mae": 0.03597214500162542,
+            "mse": 0.001979368080300285,
+            "rmse": 0.044490089686359195,
+            "r2": -3.014273853707415
+          },
+          "feature_importance": "DataFrame[feature: string, importance: double]",
+          "train_predictions": "DataFrame[Date: timestamp, Open: double, High: double, Low: double, Close: double, Adj_close: double, Volume: int, Sentiment_gpt: double, News_flag: double, Scaled_sentiment: double, stock_symbol: string, close_lag_1: double, close_lag_2: double, close_lag_3: double, close_lag_5: double, price_change_1d: double, price_change_3d: double, price_change_5d: double, ma_5: double, close_vs_ma5: double, ma_10: double, close_vs_ma10: double, ma_20: double, close_vs_ma20: double, high_low_spread: double, close_normalized_vs_lag1: double, close_normalized_vs_lag5: double, volume_lag_1: int, volume_ma_5: double, volume_ma_20: double, volume_change_1d: double, volume_vs_ma5: double, volume_vs_ma20: double, volume_normalized_vs_lag1: double, sentiment_lag_1: double, sentiment_lag_3: double, sentiment_ma_5: double, sentiment_ma_10: double, sentiment_ma_20: double, sentiment_change_1d: double, sentiment_change_3d: double, sentiment_volatility_5d: double, price_gain: double, price_loss: double, avg_gain_14: double, avg_loss_14: double, momentum_ratio: double, high_5d: double, low_5d: double, price_position_5d: double, price_volume_interaction: double, price_sentiment_interaction: double, volume_sentiment_interaction: double, price_volume_sentiment_interaction: double, price_volatility_5d: double, price_volatility_10d: double, volume_volatility_5d: double, volatility_ratio_5_10: double, risk_adjusted_return: double, target: double, split: string, features_raw: vector, features: vector, features_array: array<double>, prediction: double]",
+          "test_predictions": "DataFrame[Date: timestamp, Open: double, High: double, Low: double, Close: double, Adj_close: double, Volume: int, Sentiment_gpt: double, News_flag: double, Scaled_sentiment: double, stock_symbol: string, close_lag_1: double, close_lag_2: double, close_lag_3: double, close_lag_5: double, price_change_1d: double, price_change_3d: double, price_change_5d: double, ma_5: double, close_vs_ma5: double, ma_10: double, close_vs_ma10: double, ma_20: double, close_vs_ma20: double, high_low_spread: double, close_normalized_vs_lag1: double, close_normalized_vs_lag5: double, volume_lag_1: int, volume_ma_5: double, volume_ma_20: double, volume_change_1d: double, volume_vs_ma5: double, volume_vs_ma20: double, volume_normalized_vs_lag1: double, sentiment_lag_1: double, sentiment_lag_3: double, sentiment_ma_5: double, sentiment_ma_10: double, sentiment_ma_20: double, sentiment_change_1d: double, sentiment_change_3d: double, sentiment_volatility_5d: double, price_gain: double, price_loss: double, avg_gain_14: double, avg_loss_14: double, momentum_ratio: double, high_5d: double, low_5d: double, price_position_5d: double, price_volume_interaction: double, price_sentiment_interaction: double, volume_sentiment_interaction: double, price_volume_sentiment_interaction: double, price_volatility_5d: double, price_volatility_10d: double, volume_volatility_5d: double, volatility_ratio_5_10: double, risk_adjusted_return: double, target: double, split: string, features_raw: vector, features: vector, features_array: array<double>, prediction: double]"
+        },
+        "training_time": 273.1523814201355,
+        "training_samples": 10056,
+        "test_samples": 1778,
+        "features_count": 25,
+        "stocks_processed": [
+          "AAL",
+          "AAPL",
+          "ABBV",
+          "AMD",
+          "AMGN"
+        ],
+        "phase_timings": {
+          "data_loading": 52.63282513618469,
+          "data_collection": 10.492818117141724,
+          "sklearn_training": 5.615464687347412,
+          "distributed_inference": 122.46954250335693,
+          "evaluation": 54.35574412345886
+        },
+        "hybrid_metrics": {
+          "inference_time": 122.41774320602417,
+          "train_predictions_count": 10056,
+          "test_predictions_count": 1778,
+          "predictions_per_second": 96.66899331809974,
+          "pandas_udf_used": true,
+          "distributed_execution": true
+        },
+        "scalability_metrics": "ScalabilityMetrics(total_rows_processed=81127, data_size_mb=np.float64(9.946986145019533), avg_partition_size_mb=np.float64(0.3429995222420529), partition_count=29, partition_efficiency_score=np.float64(0.6288950976872778), total_processing_time=274.301399, avg_processing_time_per_record=23.082000270009907, throughput_records_per_second=43.323801590076435, feature_engineering_time=0.0, model_inference_time=0.0, peak_memory_usage_mb=24753.48828125, avg_memory_usage_mb=np.float64(22382.763292696887), peak_cpu_usage_percent=99.8, avg_cpu_usage_percent=np.float64(63.72307692307693), disk_io_read_mb=57.87890625, disk_io_write_mb=1308.65625, linear_scalability_score=0.028882534393384292, resource_efficiency_score=0.55, cost_efficiency_score=1.0, bottleneck_indicators={'memory_pressure': {'severity': 'high', 'description': 'High Spark memory usage: 99.4% of allocated 22GB', 'recommendation': 'Consider increasing executor memory or optimizing data structures'}, 'low_throughput': {'severity': 'high', 'description': 'Low throughput: 43.3 records/sec', 'recommendation': 'Optimize data processing or increase parallelism'}, 'partition_skew': {'severity': 'medium', 'description': 'Partition inefficiency: 0.63', 'recommendation': 'Consider repartitioning data for better load distribution'}}, start_time=datetime.datetime(2025, 11, 20, 16, 29, 49, 568270), end_time=datetime.datetime(2025, 11, 20, 16, 34, 23, 869669))"
+      },
+      "mode_specific_monitoring": {
+        "mode": "hybrid_sklearn",
+        "metrics": {
+          "spark_to_driver_transfer_time": 0.0,
+          "data_collection_size_mb": 0.0,
+          "transfer_throughput_mbps": 0.0,
+          "sklearn_training_time": 0.0,
+          "driver_memory_during_sklearn": 0.0,
+          "sklearn_model_size_mb": 0.0,
+          "pandas_udf_setup_time": 0.0,
+          "distributed_inference_time": 0.0,
+          "inference_task_distribution_time": 0.0,
+          "data_transfer_overhead_percentage": 0.0,
+          "hybrid_vs_spark_overhead": 0.0,
+          "memory_driver_vs_executor_ratio": 0.7666322174162177,
+          "model_serialization_time": 0.0,
+          "model_deserialization_time": 0.0
+        },
+        "resource_samples": [
+          {
+            "timestamp": 1763636389.3952932,
+            "memory_used_mb": 18366.92578125,
+            "memory_percent": 57.8,
+            "cpu_percent": 0.0,
+            "disk_read_mb": 2285473.2749023438,
+            "disk_write_mb": 555156.482421875
+          },
+          {
+            "timestamp": 1763636390.4015226,
+            "memory_used_mb": 18424.11328125,
+            "memory_percent": 58.0,
+            "cpu_percent": 10.9,
+            "disk_read_mb": 2285478.8999023438,
+            "disk_write_mb": 555169.126953125
+          },
+          {
+            "timestamp": 1763636391.4033918,
+            "memory_used_mb": 18489.640625,
+            "memory_percent": 58.2,
+            "cpu_percent": 14.4,
+            "disk_read_mb": 2285479.2749023438,
+            "disk_write_mb": 555169.208984375
+          },
+          {
+            "timestamp": 1763636392.4049163,
+            "memory_used_mb": 18549.05859375,
+            "memory_percent": 58.4,
+            "cpu_percent": 19.9,
+            "disk_read_mb": 2285479.2749023438,
+            "disk_write_mb": 555169.255859375
+          },
+          {
+            "timestamp": 1763636393.4064896,
+            "memory_used_mb": 18608.76171875,
+            "memory_percent": 58.6,
+            "cpu_percent": 29.2,
+            "disk_read_mb": 2285479.2749023438,
+            "disk_write_mb": 555180.423828125
+          },
+          {
+            "timestamp": 1763636394.4082508,
+            "memory_used_mb": 18652.69921875,
+            "memory_percent": 58.7,
+            "cpu_percent": 50.7,
+            "disk_read_mb": 2285479.2749023438,
+            "disk_write_mb": 555181.185546875
+          },
+          {
+            "timestamp": 1763636395.4105663,
+            "memory_used_mb": 18738.203125,
+            "memory_percent": 59.0,
+            "cpu_percent": 63.1,
+            "disk_read_mb": 2285479.2749023438,
+            "disk_write_mb": 555181.373046875
+          },
+          {
+            "timestamp": 1763636396.4124286,
+            "memory_used_mb": 18896.07421875,
+            "memory_percent": 59.5,
+            "cpu_percent": 75.8,
+            "disk_read_mb": 2285479.2866210938,
+            "disk_write_mb": 555182.685546875
+          },
+          {
+            "timestamp": 1763636397.4137917,
+            "memory_used_mb": 19099.16796875,
+            "memory_percent": 60.1,
+            "cpu_percent": 59.9,
+            "disk_read_mb": 2285479.2866210938,
+            "disk_write_mb": 555183.587890625
+          },
+          {
+            "timestamp": 1763636398.4159389,
+            "memory_used_mb": 19111.1484375,
+            "memory_percent": 60.2,
+            "cpu_percent": 52.0,
+            "disk_read_mb": 2285479.2866210938,
+            "disk_write_mb": 555185.521484375
+          },
+          {
+            "timestamp": 1763636399.4174573,
+            "memory_used_mb": 19294.203125,
+            "memory_percent": 60.7,
+            "cpu_percent": 51.0,
+            "disk_read_mb": 2285479.2866210938,
+            "disk_write_mb": 555185.521484375
+          },
+          {
+            "timestamp": 1763636400.4194338,
+            "memory_used_mb": 19313.09765625,
+            "memory_percent": 60.8,
+            "cpu_percent": 60.9,
+            "disk_read_mb": 2285479.2866210938,
+            "disk_write_mb": 555190.138671875
+          },
+          {
+            "timestamp": 1763636401.4214268,
+            "memory_used_mb": 19498.16015625,
+            "memory_percent": 61.4,
+            "cpu_percent": 46.0,
+            "disk_read_mb": 2285479.2866210938,
+            "disk_write_mb": 555190.138671875
+          },
+          {
+            "timestamp": 1763636402.4231167,
+            "memory_used_mb": 19458.2265625,
+            "memory_percent": 61.3,
+            "cpu_percent": 36.8,
+            "disk_read_mb": 2285479.6733398438,
+            "disk_write_mb": 555192.095703125
+          },
+          {
+            "timestamp": 1763636403.425216,
+            "memory_used_mb": 19636.6796875,
+            "memory_percent": 61.8,
+            "cpu_percent": 37.6,
+            "disk_read_mb": 2285479.6733398438,
+            "disk_write_mb": 555192.201171875
+          },
+          {
+            "timestamp": 1763636404.4269588,
+            "memory_used_mb": 19682.69921875,
+            "memory_percent": 62.0,
+            "cpu_percent": 34.2,
+            "disk_read_mb": 2285491.5444335938,
+            "disk_write_mb": 555192.201171875
+          },
+          {
+            "timestamp": 1763636405.4281414,
+            "memory_used_mb": 19709.40625,
+            "memory_percent": 62.1,
+            "cpu_percent": 36.0,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555192.212890625
+          },
+          {
+            "timestamp": 1763636406.4295123,
+            "memory_used_mb": 19725.859375,
+            "memory_percent": 62.1,
+            "cpu_percent": 47.4,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555193.630859375
+          },
+          {
+            "timestamp": 1763636407.43154,
+            "memory_used_mb": 19150.48828125,
+            "memory_percent": 60.3,
+            "cpu_percent": 49.1,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555194.638671875
+          },
+          {
+            "timestamp": 1763636408.4333332,
+            "memory_used_mb": 19289.93359375,
+            "memory_percent": 60.7,
+            "cpu_percent": 50.0,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555196.185546875
+          },
+          {
+            "timestamp": 1763636409.4348986,
+            "memory_used_mb": 19468.6640625,
+            "memory_percent": 61.3,
+            "cpu_percent": 36.2,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555196.208984375
+          },
+          {
+            "timestamp": 1763636410.4362788,
+            "memory_used_mb": 19761.95703125,
+            "memory_percent": 62.2,
+            "cpu_percent": 31.9,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555223.818359375
+          },
+          {
+            "timestamp": 1763636411.4377093,
+            "memory_used_mb": 19838.19921875,
+            "memory_percent": 62.5,
+            "cpu_percent": 29.5,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555223.818359375
+          },
+          {
+            "timestamp": 1763636412.4393513,
+            "memory_used_mb": 19810.46484375,
+            "memory_percent": 62.4,
+            "cpu_percent": 30.5,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555225.986328125
+          },
+          {
+            "timestamp": 1763636413.441037,
+            "memory_used_mb": 19813.55859375,
+            "memory_percent": 62.4,
+            "cpu_percent": 27.0,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555227.333984375
+          },
+          {
+            "timestamp": 1763636414.442449,
+            "memory_used_mb": 19815.234375,
+            "memory_percent": 62.4,
+            "cpu_percent": 28.6,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555227.333984375
+          },
+          {
+            "timestamp": 1763636415.4439437,
+            "memory_used_mb": 19828.671875,
+            "memory_percent": 62.4,
+            "cpu_percent": 27.7,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555244.853515625
+          },
+          {
+            "timestamp": 1763636416.4456031,
+            "memory_used_mb": 20098.45703125,
+            "memory_percent": 63.3,
+            "cpu_percent": 32.0,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555245.333984375
+          },
+          {
+            "timestamp": 1763636417.4469674,
+            "memory_used_mb": 20084.86328125,
+            "memory_percent": 63.2,
+            "cpu_percent": 27.5,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555248.720703125
+          },
+          {
+            "timestamp": 1763636418.4480374,
+            "memory_used_mb": 20095.89453125,
+            "memory_percent": 63.3,
+            "cpu_percent": 26.7,
+            "disk_read_mb": 2285491.5561523438,
+            "disk_write_mb": 555249.365234375
+          },
+          {
+            "timestamp": 1763636419.4526556,
+            "memory_used_mb": 20146.21484375,
+            "memory_percent": 63.4,
+            "cpu_percent": 64.0,
+            "disk_read_mb": 2285491.5678710938,
+            "disk_write_mb": 555310.970703125
+          },
+          {
+            "timestamp": 1763636420.4545045,
+            "memory_used_mb": 20641.13671875,
+            "memory_percent": 65.0,
+            "cpu_percent": 75.0,
+            "disk_read_mb": 2285491.5678710938,
+            "disk_write_mb": 555319.490234375
+          },
+          {
+            "timestamp": 1763636421.4564214,
+            "memory_used_mb": 20221.15625,
+            "memory_percent": 63.7,
+            "cpu_percent": 48.1,
+            "disk_read_mb": 2285491.5795898438,
+            "disk_write_mb": 555361.138671875
+          },
+          {
+            "timestamp": 1763636422.457767,
+            "memory_used_mb": 20338.078125,
+            "memory_percent": 64.0,
+            "cpu_percent": 29.8,
+            "disk_read_mb": 2285491.5795898438,
+            "disk_write_mb": 555361.361328125
+          },
+          {
+            "timestamp": 1763636423.4589045,
+            "memory_used_mb": 20383.08203125,
+            "memory_percent": 64.2,
+            "cpu_percent": 23.8,
+            "disk_read_mb": 2285491.5913085938,
+            "disk_write_mb": 555361.806640625
+          },
+          {
+            "timestamp": 1763636424.4601128,
+            "memory_used_mb": 20375.2890625,
+            "memory_percent": 64.2,
+            "cpu_percent": 27.5,
+            "disk_read_mb": 2285491.5913085938,
+            "disk_write_mb": 555362.169921875
+          },
+          {
+            "timestamp": 1763636425.4632068,
+            "memory_used_mb": 20396.58984375,
+            "memory_percent": 64.2,
+            "cpu_percent": 56.3,
+            "disk_read_mb": 2285491.5913085938,
+            "disk_write_mb": 555362.169921875
+          },
+          {
+            "timestamp": 1763636426.4650006,
+            "memory_used_mb": 20413.875,
+            "memory_percent": 64.3,
+            "cpu_percent": 75.0,
+            "disk_read_mb": 2285491.5913085938,
+            "disk_write_mb": 555362.169921875
+          },
+          {
+            "timestamp": 1763636427.4669402,
+            "memory_used_mb": 20446.12109375,
+            "memory_percent": 64.4,
+            "cpu_percent": 32.7,
+            "disk_read_mb": 2285491.5913085938,
+            "disk_write_mb": 555362.169921875
+          },
+          {
+            "timestamp": 1763636428.468389,
+            "memory_used_mb": 20585.12109375,
+            "memory_percent": 64.8,
+            "cpu_percent": 42.2,
+            "disk_read_mb": 2285491.5913085938,
+            "disk_write_mb": 555362.310546875
+          },
+          {
+            "timestamp": 1763636429.4696472,
+            "memory_used_mb": 20697.51953125,
+            "memory_percent": 65.2,
+            "cpu_percent": 30.4,
+            "disk_read_mb": 2285491.6030273438,
+            "disk_write_mb": 555364.455078125
+          },
+          {
+            "timestamp": 1763636430.4715953,
+            "memory_used_mb": 20697.953125,
+            "memory_percent": 65.2,
+            "cpu_percent": 33.1,
+            "disk_read_mb": 2285491.6030273438,
+            "disk_write_mb": 555364.724609375
+          },
+          {
+            "timestamp": 1763636431.4760795,
+            "memory_used_mb": 20740.8046875,
+            "memory_percent": 65.3,
+            "cpu_percent": 63.2,
+            "disk_read_mb": 2285491.6030273438,
+            "disk_write_mb": 555365.626953125
+          },
+          {
+            "timestamp": 1763636432.4794176,
+            "memory_used_mb": 21005.484375,
+            "memory_percent": 66.1,
+            "cpu_percent": 63.7,
+            "disk_read_mb": 2285491.6030273438,
+            "disk_write_mb": 555365.626953125
+          },
+          {
+            "timestamp": 1763636433.4807343,
+            "memory_used_mb": 21070.62109375,
+            "memory_percent": 66.3,
+            "cpu_percent": 25.5,
+            "disk_read_mb": 2285491.6030273438,
+            "disk_write_mb": 555370.115234375
+          },
+          {
+            "timestamp": 1763636434.4818864,
+            "memory_used_mb": 20356.359375,
+            "memory_percent": 64.1,
+            "cpu_percent": 24.6,
+            "disk_read_mb": 2285491.6030273438,
+            "disk_write_mb": 555370.115234375
+          },
+          {
+            "timestamp": 1763636435.4830098,
+            "memory_used_mb": 20635.6875,
+            "memory_percent": 65.0,
+            "cpu_percent": 24.7,
+            "disk_read_mb": 2285491.6499023438,
+            "disk_write_mb": 555370.537109375
+          },
+          {
+            "timestamp": 1763636436.4850812,
+            "memory_used_mb": 20631.5546875,
+            "memory_percent": 65.0,
+            "cpu_percent": 34.3,
+            "disk_read_mb": 2285491.6499023438,
+            "disk_write_mb": 555370.537109375
+          },
+          {
+            "timestamp": 1763636437.4871552,
+            "memory_used_mb": 20672.4140625,
+            "memory_percent": 65.1,
+            "cpu_percent": 66.6,
+            "disk_read_mb": 2285491.6499023438,
+            "disk_write_mb": 555374.955078125
+          },
+          {
+            "timestamp": 1763636438.4890065,
+            "memory_used_mb": 20674.71484375,
+            "memory_percent": 65.1,
+            "cpu_percent": 40.5,
+            "disk_read_mb": 2285491.6499023438,
+            "disk_write_mb": 555375.341796875
+          },
+          {
+            "timestamp": 1763636439.4905539,
+            "memory_used_mb": 20645.59375,
+            "memory_percent": 65.0,
+            "cpu_percent": 26.8,
+            "disk_read_mb": 2285491.6499023438,
+            "disk_write_mb": 555375.341796875
+          },
+          {
+            "timestamp": 1763636440.4919474,
+            "memory_used_mb": 20640.3359375,
+            "memory_percent": 65.0,
+            "cpu_percent": 22.7,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555375.341796875
+          },
+          {
+            "timestamp": 1763636441.4938047,
+            "memory_used_mb": 20624.125,
+            "memory_percent": 64.9,
+            "cpu_percent": 24.1,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555381.458984375
+          },
+          {
+            "timestamp": 1763636442.4958143,
+            "memory_used_mb": 20662.5390625,
+            "memory_percent": 65.1,
+            "cpu_percent": 50.2,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555384.259765625
+          },
+          {
+            "timestamp": 1763636443.4972713,
+            "memory_used_mb": 20659.00390625,
+            "memory_percent": 65.0,
+            "cpu_percent": 71.1,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555385.197265625
+          },
+          {
+            "timestamp": 1763636444.4988172,
+            "memory_used_mb": 20674.125,
+            "memory_percent": 65.1,
+            "cpu_percent": 24.6,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555385.197265625
+          },
+          {
+            "timestamp": 1763636445.500695,
+            "memory_used_mb": 20658.5703125,
+            "memory_percent": 65.0,
+            "cpu_percent": 23.6,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555385.197265625
+          },
+          {
+            "timestamp": 1763636446.502005,
+            "memory_used_mb": 20644.74609375,
+            "memory_percent": 65.0,
+            "cpu_percent": 22.7,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555385.935546875
+          },
+          {
+            "timestamp": 1763636447.5032063,
+            "memory_used_mb": 20642.3828125,
+            "memory_percent": 65.0,
+            "cpu_percent": 40.2,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555385.935546875
+          },
+          {
+            "timestamp": 1763636448.5042596,
+            "memory_used_mb": 20690.9609375,
+            "memory_percent": 65.1,
+            "cpu_percent": 65.4,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555390.775390625
+          },
+          {
+            "timestamp": 1763636449.5053573,
+            "memory_used_mb": 20697.84375,
+            "memory_percent": 65.2,
+            "cpu_percent": 24.1,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555390.775390625
+          },
+          {
+            "timestamp": 1763636450.5066795,
+            "memory_used_mb": 20875.19921875,
+            "memory_percent": 65.7,
+            "cpu_percent": 27.7,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555390.775390625
+          },
+          {
+            "timestamp": 1763636451.5083961,
+            "memory_used_mb": 20872.8984375,
+            "memory_percent": 65.7,
+            "cpu_percent": 24.0,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555405.599609375
+          },
+          {
+            "timestamp": 1763636452.511475,
+            "memory_used_mb": 20876.92578125,
+            "memory_percent": 65.7,
+            "cpu_percent": 30.9,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555405.599609375
+          },
+          {
+            "timestamp": 1763636453.516675,
+            "memory_used_mb": 20929.4140625,
+            "memory_percent": 65.9,
+            "cpu_percent": 72.9,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555410.732421875
+          },
+          {
+            "timestamp": 1763636454.52413,
+            "memory_used_mb": 20939.5859375,
+            "memory_percent": 65.9,
+            "cpu_percent": 32.2,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555411.388671875
+          },
+          {
+            "timestamp": 1763636455.5255766,
+            "memory_used_mb": 20866.078125,
+            "memory_percent": 65.7,
+            "cpu_percent": 29.8,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555411.388671875
+          },
+          {
+            "timestamp": 1763636456.526831,
+            "memory_used_mb": 20870.671875,
+            "memory_percent": 65.7,
+            "cpu_percent": 28.0,
+            "disk_read_mb": 2285491.6733398438,
+            "disk_write_mb": 555411.388671875
+          },
+          {
+            "timestamp": 1763636457.528049,
+            "memory_used_mb": 20873.0234375,
+            "memory_percent": 65.7,
+            "cpu_percent": 28.0,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555415.408203125
+          },
+          {
+            "timestamp": 1763636458.5294175,
+            "memory_used_mb": 20873.984375,
+            "memory_percent": 65.7,
+            "cpu_percent": 34.0,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555417.095703125
+          },
+          {
+            "timestamp": 1763636459.5313413,
+            "memory_used_mb": 20880.12109375,
+            "memory_percent": 65.7,
+            "cpu_percent": 33.7,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555417.541015625
+          },
+          {
+            "timestamp": 1763636460.5328357,
+            "memory_used_mb": 20882.44140625,
+            "memory_percent": 65.7,
+            "cpu_percent": 33.6,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555417.541015625
+          },
+          {
+            "timestamp": 1763636461.5341074,
+            "memory_used_mb": 20888.51953125,
+            "memory_percent": 65.8,
+            "cpu_percent": 36.2,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555436.232421875
+          },
+          {
+            "timestamp": 1763636462.5354486,
+            "memory_used_mb": 20899.2109375,
+            "memory_percent": 65.8,
+            "cpu_percent": 34.5,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555438.107421875
+          },
+          {
+            "timestamp": 1763636463.5366535,
+            "memory_used_mb": 20866.98828125,
+            "memory_percent": 65.7,
+            "cpu_percent": 34.3,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555439.970703125
+          },
+          {
+            "timestamp": 1763636464.5381813,
+            "memory_used_mb": 20861.42578125,
+            "memory_percent": 65.7,
+            "cpu_percent": 32.0,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555441.998046875
+          },
+          {
+            "timestamp": 1763636465.5394118,
+            "memory_used_mb": 20866.69921875,
+            "memory_percent": 65.7,
+            "cpu_percent": 35.1,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555441.998046875
+          },
+          {
+            "timestamp": 1763636466.5408084,
+            "memory_used_mb": 20865.69921875,
+            "memory_percent": 65.7,
+            "cpu_percent": 31.7,
+            "disk_read_mb": 2285492.0366210938,
+            "disk_write_mb": 555441.998046875
+          },
+          {
+            "timestamp": 1763636467.5420003,
+            "memory_used_mb": 20865.234375,
+            "memory_percent": 65.7,
+            "cpu_percent": 33.9,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555441.998046875
+          },
+          {
+            "timestamp": 1763636468.5434017,
+            "memory_used_mb": 20857.87109375,
+            "memory_percent": 65.7,
+            "cpu_percent": 31.5,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555442.044921875
+          },
+          {
+            "timestamp": 1763636469.544747,
+            "memory_used_mb": 20854.94140625,
+            "memory_percent": 65.7,
+            "cpu_percent": 32.6,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555450.388671875
+          },
+          {
+            "timestamp": 1763636470.5458422,
+            "memory_used_mb": 20843.40625,
+            "memory_percent": 65.6,
+            "cpu_percent": 32.4,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555450.388671875
+          },
+          {
+            "timestamp": 1763636471.5471373,
+            "memory_used_mb": 20840.359375,
+            "memory_percent": 65.6,
+            "cpu_percent": 32.8,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555452.146484375
+          },
+          {
+            "timestamp": 1763636472.548574,
+            "memory_used_mb": 20842.6796875,
+            "memory_percent": 65.6,
+            "cpu_percent": 34.0,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555452.193359375
+          },
+          {
+            "timestamp": 1763636473.5498776,
+            "memory_used_mb": 20839.859375,
+            "memory_percent": 65.6,
+            "cpu_percent": 33.2,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555455.099609375
+          },
+          {
+            "timestamp": 1763636474.5510936,
+            "memory_used_mb": 20847.390625,
+            "memory_percent": 65.6,
+            "cpu_percent": 34.6,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555455.498046875
+          },
+          {
+            "timestamp": 1763636475.552755,
+            "memory_used_mb": 20841.44140625,
+            "memory_percent": 65.6,
+            "cpu_percent": 32.2,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555455.498046875
+          },
+          {
+            "timestamp": 1763636476.554077,
+            "memory_used_mb": 20754.6796875,
+            "memory_percent": 65.3,
+            "cpu_percent": 36.6,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555457.126953125
+          },
+          {
+            "timestamp": 1763636477.5552695,
+            "memory_used_mb": 20756.79296875,
+            "memory_percent": 65.4,
+            "cpu_percent": 34.3,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555460.279296875
+          },
+          {
+            "timestamp": 1763636478.55675,
+            "memory_used_mb": 20762.125,
+            "memory_percent": 65.4,
+            "cpu_percent": 31.4,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555460.291015625
+          },
+          {
+            "timestamp": 1763636479.55792,
+            "memory_used_mb": 20762.9609375,
+            "memory_percent": 65.4,
+            "cpu_percent": 32.8,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555463.501953125
+          },
+          {
+            "timestamp": 1763636480.5591986,
+            "memory_used_mb": 20767.375,
+            "memory_percent": 65.4,
+            "cpu_percent": 33.2,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555463.923828125
+          },
+          {
+            "timestamp": 1763636481.560416,
+            "memory_used_mb": 20830.765625,
+            "memory_percent": 65.6,
+            "cpu_percent": 46.3,
+            "disk_read_mb": 2285492.0717773438,
+            "disk_write_mb": 555505.220703125
+          },
+          {
+            "timestamp": 1763636482.5630178,
+            "memory_used_mb": 20834.5390625,
+            "memory_percent": 65.6,
+            "cpu_percent": 98.5,
+            "disk_read_mb": 2285492.4350585938,
+            "disk_write_mb": 555505.220703125
+          },
+          {
+            "timestamp": 1763636483.572467,
+            "memory_used_mb": 20830.05078125,
+            "memory_percent": 65.6,
+            "cpu_percent": 54.6,
+            "disk_read_mb": 2285492.4702148438,
+            "disk_write_mb": 555505.220703125
+          },
+          {
+            "timestamp": 1763636484.573995,
+            "memory_used_mb": 20932.953125,
+            "memory_percent": 65.9,
+            "cpu_percent": 10.3,
+            "disk_read_mb": 2285492.4702148438,
+            "disk_write_mb": 555508.244140625
+          },
+          {
+            "timestamp": 1763636485.5756521,
+            "memory_used_mb": 20807.0078125,
+            "memory_percent": 65.5,
+            "cpu_percent": 12.8,
+            "disk_read_mb": 2285501.0952148438,
+            "disk_write_mb": 555508.267578125
+          },
+          {
+            "timestamp": 1763636486.578769,
+            "memory_used_mb": 20841.26953125,
+            "memory_percent": 65.6,
+            "cpu_percent": 9.9,
+            "disk_read_mb": 2285502.4663085938,
+            "disk_write_mb": 555515.181640625
+          },
+          {
+            "timestamp": 1763636487.582079,
+            "memory_used_mb": 20838.65625,
+            "memory_percent": 65.6,
+            "cpu_percent": 14.8,
+            "disk_read_mb": 2285502.4663085938,
+            "disk_write_mb": 555515.251953125
+          },
+          {
+            "timestamp": 1763636488.5832543,
+            "memory_used_mb": 20834.671875,
+            "memory_percent": 65.6,
+            "cpu_percent": 25.5,
+            "disk_read_mb": 2285502.4663085938,
+            "disk_write_mb": 555515.251953125
+          },
+          {
+            "timestamp": 1763636489.5848083,
+            "memory_used_mb": 20845.94921875,
+            "memory_percent": 65.6,
+            "cpu_percent": 24.6,
+            "disk_read_mb": 2285502.4663085938,
+            "disk_write_mb": 555517.818359375
+          },
+          {
+            "timestamp": 1763636490.5862706,
+            "memory_used_mb": 20842.87109375,
+            "memory_percent": 65.6,
+            "cpu_percent": 22.0,
+            "disk_read_mb": 2285502.6069335938,
+            "disk_write_mb": 555517.818359375
+          },
+          {
+            "timestamp": 1763636491.5878747,
+            "memory_used_mb": 20833.32421875,
+            "memory_percent": 65.6,
+            "cpu_percent": 20.2,
+            "disk_read_mb": 2285502.6069335938,
+            "disk_write_mb": 555517.818359375
+          },
+          {
+            "timestamp": 1763636492.5891209,
+            "memory_used_mb": 20832.93359375,
+            "memory_percent": 65.6,
+            "cpu_percent": 24.7,
+            "disk_read_mb": 2285502.6069335938,
+            "disk_write_mb": 555518.603515625
+          },
+          {
+            "timestamp": 1763636493.5907404,
+            "memory_used_mb": 20858.828125,
+            "memory_percent": 65.7,
+            "cpu_percent": 25.3,
+            "disk_read_mb": 2285502.6069335938,
+            "disk_write_mb": 555523.525390625
+          },
+          {
+            "timestamp": 1763636494.5923522,
+            "memory_used_mb": 21566.58203125,
+            "memory_percent": 67.9,
+            "cpu_percent": 44.0,
+            "disk_read_mb": 2285502.6069335938,
+            "disk_write_mb": 555523.572265625
+          },
+          {
+            "timestamp": 1763636495.5942016,
+            "memory_used_mb": 22218.18359375,
+            "memory_percent": 70.0,
+            "cpu_percent": 66.8,
+            "disk_read_mb": 2285502.6069335938,
+            "disk_write_mb": 555525.833984375
+          },
+          {
+            "timestamp": 1763636496.5982862,
+            "memory_used_mb": 23015.08984375,
+            "memory_percent": 72.5,
+            "cpu_percent": 46.2,
+            "disk_read_mb": 2285503.0288085938,
+            "disk_write_mb": 555525.833984375
+          },
+          {
+            "timestamp": 1763636497.605583,
+            "memory_used_mb": 23743.16015625,
+            "memory_percent": 74.8,
+            "cpu_percent": 98.2,
+            "disk_read_mb": 2285503.9663085938,
+            "disk_write_mb": 555570.142578125
+          },
+          {
+            "timestamp": 1763636498.6078098,
+            "memory_used_mb": 24248.6484375,
+            "memory_percent": 76.3,
+            "cpu_percent": 79.2,
+            "disk_read_mb": 2285505.1616210938,
+            "disk_write_mb": 555570.142578125
+          },
+          {
+            "timestamp": 1763636499.610525,
+            "memory_used_mb": 24510.23046875,
+            "memory_percent": 77.2,
+            "cpu_percent": 97.5,
+            "disk_read_mb": 2285505.1616210938,
+            "disk_write_mb": 555570.142578125
+          },
+          {
+            "timestamp": 1763636500.6171865,
+            "memory_used_mb": 24614.17578125,
+            "memory_percent": 77.5,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285505.1616210938,
+            "disk_write_mb": 555570.154296875
+          },
+          {
+            "timestamp": 1763636501.6229224,
+            "memory_used_mb": 24631.953125,
+            "memory_percent": 77.6,
+            "cpu_percent": 98.6,
+            "disk_read_mb": 2285505.1616210938,
+            "disk_write_mb": 555576.388671875
+          },
+          {
+            "timestamp": 1763636502.6290486,
+            "memory_used_mb": 24684.46875,
+            "memory_percent": 77.7,
+            "cpu_percent": 99.8,
+            "disk_read_mb": 2285505.1616210938,
+            "disk_write_mb": 555577.244140625
+          },
+          {
+            "timestamp": 1763636503.63133,
+            "memory_used_mb": 24750.55078125,
+            "memory_percent": 77.9,
+            "cpu_percent": 98.2,
+            "disk_read_mb": 2285505.1850585938,
+            "disk_write_mb": 555577.607421875
+          },
+          {
+            "timestamp": 1763636504.6393354,
+            "memory_used_mb": 24720.5546875,
+            "memory_percent": 77.8,
+            "cpu_percent": 99.4,
+            "disk_read_mb": 2285505.1850585938,
+            "disk_write_mb": 555577.607421875
+          },
+          {
+            "timestamp": 1763636505.6457546,
+            "memory_used_mb": 24728.2109375,
+            "memory_percent": 77.9,
+            "cpu_percent": 99.4,
+            "disk_read_mb": 2285505.1850585938,
+            "disk_write_mb": 555577.619140625
+          },
+          {
+            "timestamp": 1763636506.6514122,
+            "memory_used_mb": 24738.90234375,
+            "memory_percent": 77.9,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285505.1850585938,
+            "disk_write_mb": 555577.865234375
+          },
+          {
+            "timestamp": 1763636507.6609488,
+            "memory_used_mb": 24731.99609375,
+            "memory_percent": 77.9,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555577.865234375
+          },
+          {
+            "timestamp": 1763636508.6637695,
+            "memory_used_mb": 24734.80078125,
+            "memory_percent": 77.9,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555577.865234375
+          },
+          {
+            "timestamp": 1763636509.669187,
+            "memory_used_mb": 24732.23046875,
+            "memory_percent": 77.9,
+            "cpu_percent": 99.0,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555578.052734375
+          },
+          {
+            "timestamp": 1763636510.673702,
+            "memory_used_mb": 24720.0625,
+            "memory_percent": 77.8,
+            "cpu_percent": 98.3,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555579.224609375
+          },
+          {
+            "timestamp": 1763636511.677942,
+            "memory_used_mb": 24707.03125,
+            "memory_percent": 77.8,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555579.224609375
+          },
+          {
+            "timestamp": 1763636512.6852098,
+            "memory_used_mb": 24665.50390625,
+            "memory_percent": 77.7,
+            "cpu_percent": 98.9,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555582.177734375
+          },
+          {
+            "timestamp": 1763636513.689521,
+            "memory_used_mb": 24638.125,
+            "memory_percent": 77.6,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555582.177734375
+          },
+          {
+            "timestamp": 1763636514.695725,
+            "memory_used_mb": 24636.47265625,
+            "memory_percent": 77.6,
+            "cpu_percent": 99.8,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555582.177734375
+          },
+          {
+            "timestamp": 1763636515.6979616,
+            "memory_used_mb": 24639.7734375,
+            "memory_percent": 77.6,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285505.1967773438,
+            "disk_write_mb": 555585.201171875
+          },
+          {
+            "timestamp": 1763636516.7039104,
+            "memory_used_mb": 24639.72265625,
+            "memory_percent": 77.6,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555585.201171875
+          },
+          {
+            "timestamp": 1763636517.7096841,
+            "memory_used_mb": 24627.91796875,
+            "memory_percent": 77.5,
+            "cpu_percent": 98.5,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555585.634765625
+          },
+          {
+            "timestamp": 1763636518.712207,
+            "memory_used_mb": 24621.9609375,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.6,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555585.634765625
+          },
+          {
+            "timestamp": 1763636519.7207272,
+            "memory_used_mb": 24626.46875,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555585.634765625
+          },
+          {
+            "timestamp": 1763636520.7270396,
+            "memory_used_mb": 24589.22265625,
+            "memory_percent": 77.4,
+            "cpu_percent": 98.0,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555585.646484375
+          },
+          {
+            "timestamp": 1763636521.7295673,
+            "memory_used_mb": 24588.27734375,
+            "memory_percent": 77.4,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555585.646484375
+          },
+          {
+            "timestamp": 1763636522.733731,
+            "memory_used_mb": 24584.12109375,
+            "memory_percent": 77.4,
+            "cpu_percent": 99.5,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555585.974609375
+          },
+          {
+            "timestamp": 1763636523.7386875,
+            "memory_used_mb": 24704.62890625,
+            "memory_percent": 77.8,
+            "cpu_percent": 99.0,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555586.080078125
+          },
+          {
+            "timestamp": 1763636524.7439265,
+            "memory_used_mb": 24698.0625,
+            "memory_percent": 77.8,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285505.2905273438,
+            "disk_write_mb": 555586.080078125
+          },
+          {
+            "timestamp": 1763636525.7495723,
+            "memory_used_mb": 24690.35546875,
+            "memory_percent": 77.7,
+            "cpu_percent": 99.4,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555587.146484375
+          },
+          {
+            "timestamp": 1763636526.75433,
+            "memory_used_mb": 24671.46484375,
+            "memory_percent": 77.7,
+            "cpu_percent": 99.7,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555587.474609375
+          },
+          {
+            "timestamp": 1763636527.7592077,
+            "memory_used_mb": 24673.671875,
+            "memory_percent": 77.7,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555588.189453125
+          },
+          {
+            "timestamp": 1763636528.762074,
+            "memory_used_mb": 24640.1484375,
+            "memory_percent": 77.6,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555588.412109375
+          },
+          {
+            "timestamp": 1763636529.7686949,
+            "memory_used_mb": 24637.5703125,
+            "memory_percent": 77.6,
+            "cpu_percent": 98.9,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555588.412109375
+          },
+          {
+            "timestamp": 1763636530.7729356,
+            "memory_used_mb": 24625.5078125,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555593.955078125
+          },
+          {
+            "timestamp": 1763636531.781647,
+            "memory_used_mb": 24619.921875,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.4,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555593.955078125
+          },
+          {
+            "timestamp": 1763636532.7895267,
+            "memory_used_mb": 24621.25390625,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555593.955078125
+          },
+          {
+            "timestamp": 1763636533.8019302,
+            "memory_used_mb": 24612.40234375,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.4,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555600.470703125
+          },
+          {
+            "timestamp": 1763636534.804556,
+            "memory_used_mb": 24613.98046875,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555601.501953125
+          },
+          {
+            "timestamp": 1763636535.8077052,
+            "memory_used_mb": 24605.6484375,
+            "memory_percent": 77.5,
+            "cpu_percent": 98.7,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555601.513671875
+          },
+          {
+            "timestamp": 1763636536.8135352,
+            "memory_used_mb": 24607.140625,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.0,
+            "disk_read_mb": 2285505.3022460938,
+            "disk_write_mb": 555602.474609375
+          },
+          {
+            "timestamp": 1763636537.8177328,
+            "memory_used_mb": 24628.85546875,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.4,
+            "disk_read_mb": 2285505.3139648438,
+            "disk_write_mb": 555602.896484375
+          },
+          {
+            "timestamp": 1763636538.8220375,
+            "memory_used_mb": 24629.2734375,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285505.3139648438,
+            "disk_write_mb": 555603.458984375
+          },
+          {
+            "timestamp": 1763636539.828162,
+            "memory_used_mb": 24629.7734375,
+            "memory_percent": 77.5,
+            "cpu_percent": 99.4,
+            "disk_read_mb": 2285505.3139648438,
+            "disk_write_mb": 555603.458984375
+          },
+          {
+            "timestamp": 1763636540.8317668,
+            "memory_used_mb": 24628.69140625,
+            "memory_percent": 77.5,
+            "cpu_percent": 98.6,
+            "disk_read_mb": 2285505.3139648438,
+            "disk_write_mb": 555603.494140625
+          },
+          {
+            "timestamp": 1763636541.8381233,
+            "memory_used_mb": 24777.93359375,
+            "memory_percent": 78.0,
+            "cpu_percent": 99.6,
+            "disk_read_mb": 2285505.3139648438,
+            "disk_write_mb": 555643.689453125
+          },
+          {
+            "timestamp": 1763636542.8433428,
+            "memory_used_mb": 24669.453125,
+            "memory_percent": 77.7,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285512.3452148438,
+            "disk_write_mb": 555644.181640625
+          },
+          {
+            "timestamp": 1763636543.850791,
+            "memory_used_mb": 24669.71875,
+            "memory_percent": 77.7,
+            "cpu_percent": 98.4,
+            "disk_read_mb": 2285512.3452148438,
+            "disk_write_mb": 555644.181640625
+          },
+          {
+            "timestamp": 1763636544.8546,
+            "memory_used_mb": 24654.12109375,
+            "memory_percent": 77.6,
+            "cpu_percent": 98.5,
+            "disk_read_mb": 2285512.3452148438,
+            "disk_write_mb": 555644.181640625
+          },
+          {
+            "timestamp": 1763636545.8621783,
+            "memory_used_mb": 24644.390625,
+            "memory_percent": 77.6,
+            "cpu_percent": 98.3,
+            "disk_read_mb": 2285512.3452148438,
+            "disk_write_mb": 555644.193359375
+          },
+          {
+            "timestamp": 1763636546.8642657,
+            "memory_used_mb": 24639.42578125,
+            "memory_percent": 77.6,
+            "cpu_percent": 79.4,
+            "disk_read_mb": 2285512.3452148438,
+            "disk_write_mb": 555648.634765625
+          },
+          {
+            "timestamp": 1763636547.8656235,
+            "memory_used_mb": 24638.3515625,
+            "memory_percent": 77.6,
+            "cpu_percent": 59.5,
+            "disk_read_mb": 2285512.3452148438,
+            "disk_write_mb": 555650.603515625
+          },
+          {
+            "timestamp": 1763636548.8675413,
+            "memory_used_mb": 24620.08984375,
+            "memory_percent": 77.5,
+            "cpu_percent": 58.6,
+            "disk_read_mb": 2285512.7202148438,
+            "disk_write_mb": 555650.603515625
+          },
+          {
+            "timestamp": 1763636549.8690286,
+            "memory_used_mb": 24606.9375,
+            "memory_percent": 77.5,
+            "cpu_percent": 59.1,
+            "disk_read_mb": 2285512.7202148438,
+            "disk_write_mb": 555650.603515625
+          },
+          {
+            "timestamp": 1763636550.8706903,
+            "memory_used_mb": 24596.9921875,
+            "memory_percent": 77.4,
+            "cpu_percent": 59.5,
+            "disk_read_mb": 2285513.1069335938,
+            "disk_write_mb": 555650.638671875
+          },
+          {
+            "timestamp": 1763636551.872382,
+            "memory_used_mb": 24618.09765625,
+            "memory_percent": 77.5,
+            "cpu_percent": 58.6,
+            "disk_read_mb": 2285513.1069335938,
+            "disk_write_mb": 555650.638671875
+          },
+          {
+            "timestamp": 1763636552.8761425,
+            "memory_used_mb": 23220.14453125,
+            "memory_percent": 73.1,
+            "cpu_percent": 56.2,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555654.470703125
+          },
+          {
+            "timestamp": 1763636553.8797245,
+            "memory_used_mb": 22903.59765625,
+            "memory_percent": 72.1,
+            "cpu_percent": 77.3,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555654.470703125
+          },
+          {
+            "timestamp": 1763636554.8864043,
+            "memory_used_mb": 22990.8203125,
+            "memory_percent": 72.4,
+            "cpu_percent": 94.7,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555654.470703125
+          },
+          {
+            "timestamp": 1763636555.8904777,
+            "memory_used_mb": 23048.42578125,
+            "memory_percent": 72.6,
+            "cpu_percent": 97.4,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555657.552734375
+          },
+          {
+            "timestamp": 1763636556.897048,
+            "memory_used_mb": 23049.1171875,
+            "memory_percent": 72.6,
+            "cpu_percent": 99.5,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555657.564453125
+          },
+          {
+            "timestamp": 1763636557.9015725,
+            "memory_used_mb": 23058.60546875,
+            "memory_percent": 72.6,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555662.052734375
+          },
+          {
+            "timestamp": 1763636558.9040868,
+            "memory_used_mb": 23042.16015625,
+            "memory_percent": 72.5,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555730.419921875
+          },
+          {
+            "timestamp": 1763636559.911594,
+            "memory_used_mb": 23052.88671875,
+            "memory_percent": 72.6,
+            "cpu_percent": 99.5,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555730.419921875
+          },
+          {
+            "timestamp": 1763636560.9165814,
+            "memory_used_mb": 23052.99609375,
+            "memory_percent": 72.6,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555730.419921875
+          },
+          {
+            "timestamp": 1763636561.925966,
+            "memory_used_mb": 23051.796875,
+            "memory_percent": 72.6,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555730.431640625
+          },
+          {
+            "timestamp": 1763636562.9310338,
+            "memory_used_mb": 23040.0390625,
+            "memory_percent": 72.5,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555733.642578125
+          },
+          {
+            "timestamp": 1763636563.9612596,
+            "memory_used_mb": 23052.421875,
+            "memory_percent": 72.6,
+            "cpu_percent": 99.0,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555740.052734375
+          },
+          {
+            "timestamp": 1763636564.967377,
+            "memory_used_mb": 23028.515625,
+            "memory_percent": 72.5,
+            "cpu_percent": 98.3,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555744.177734375
+          },
+          {
+            "timestamp": 1763636565.9720092,
+            "memory_used_mb": 23037.84375,
+            "memory_percent": 72.5,
+            "cpu_percent": 99.5,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555744.177734375
+          },
+          {
+            "timestamp": 1763636566.9796226,
+            "memory_used_mb": 23033.15234375,
+            "memory_percent": 72.5,
+            "cpu_percent": 98.4,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555744.423828125
+          },
+          {
+            "timestamp": 1763636567.98994,
+            "memory_used_mb": 23430.796875,
+            "memory_percent": 73.8,
+            "cpu_percent": 98.9,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555744.775390625
+          },
+          {
+            "timestamp": 1763636568.9987473,
+            "memory_used_mb": 23430.49609375,
+            "memory_percent": 73.8,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555744.775390625
+          },
+          {
+            "timestamp": 1763636570.0095885,
+            "memory_used_mb": 23435.7109375,
+            "memory_percent": 73.8,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555744.775390625
+          },
+          {
+            "timestamp": 1763636571.0155177,
+            "memory_used_mb": 23439.140625,
+            "memory_percent": 73.8,
+            "cpu_percent": 99.8,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555744.775390625
+          },
+          {
+            "timestamp": 1763636572.0224712,
+            "memory_used_mb": 23436.28125,
+            "memory_percent": 73.8,
+            "cpu_percent": 99.8,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555746.462890625
+          },
+          {
+            "timestamp": 1763636573.0289462,
+            "memory_used_mb": 23451.74609375,
+            "memory_percent": 73.8,
+            "cpu_percent": 99.0,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555747.201171875
+          },
+          {
+            "timestamp": 1763636574.036086,
+            "memory_used_mb": 23480.6015625,
+            "memory_percent": 73.9,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555747.201171875
+          },
+          {
+            "timestamp": 1763636575.0454693,
+            "memory_used_mb": 23493.890625,
+            "memory_percent": 74.0,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285513.7397460938,
+            "disk_write_mb": 555747.201171875
+          },
+          {
+            "timestamp": 1763636576.0475924,
+            "memory_used_mb": 23526.12890625,
+            "memory_percent": 74.1,
+            "cpu_percent": 97.9,
+            "disk_read_mb": 2285513.8452148438,
+            "disk_write_mb": 555747.248046875
+          },
+          {
+            "timestamp": 1763636577.0519032,
+            "memory_used_mb": 23521.23046875,
+            "memory_percent": 74.1,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285513.8686523438,
+            "disk_write_mb": 555749.369140625
+          },
+          {
+            "timestamp": 1763636578.0575469,
+            "memory_used_mb": 23509.42578125,
+            "memory_percent": 74.0,
+            "cpu_percent": 98.7,
+            "disk_read_mb": 2285513.8686523438,
+            "disk_write_mb": 555753.423828125
+          },
+          {
+            "timestamp": 1763636579.0597365,
+            "memory_used_mb": 23489.91796875,
+            "memory_percent": 74.0,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285513.9155273438,
+            "disk_write_mb": 555757.748046875
+          },
+          {
+            "timestamp": 1763636580.0637574,
+            "memory_used_mb": 23473.58203125,
+            "memory_percent": 73.9,
+            "cpu_percent": 99.6,
+            "disk_read_mb": 2285528.0717773438,
+            "disk_write_mb": 555758.626953125
+          },
+          {
+            "timestamp": 1763636581.0697002,
+            "memory_used_mb": 23496.2265625,
+            "memory_percent": 74.0,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285529.2202148438,
+            "disk_write_mb": 555758.626953125
+          },
+          {
+            "timestamp": 1763636582.074274,
+            "memory_used_mb": 23583.91796875,
+            "memory_percent": 74.3,
+            "cpu_percent": 99.3,
+            "disk_read_mb": 2285529.2202148438,
+            "disk_write_mb": 555758.638671875
+          },
+          {
+            "timestamp": 1763636583.07999,
+            "memory_used_mb": 23584.453125,
+            "memory_percent": 74.3,
+            "cpu_percent": 98.0,
+            "disk_read_mb": 2285529.2202148438,
+            "disk_write_mb": 555758.638671875
+          },
+          {
+            "timestamp": 1763636584.0856068,
+            "memory_used_mb": 23580.0859375,
+            "memory_percent": 74.2,
+            "cpu_percent": 98.7,
+            "disk_read_mb": 2285529.2202148438,
+            "disk_write_mb": 555758.638671875
+          },
+          {
+            "timestamp": 1763636585.0877056,
+            "memory_used_mb": 23575.0,
+            "memory_percent": 74.2,
+            "cpu_percent": 98.0,
+            "disk_read_mb": 2285529.2202148438,
+            "disk_write_mb": 555759.869140625
+          },
+          {
+            "timestamp": 1763636586.0939717,
+            "memory_used_mb": 23567.203125,
+            "memory_percent": 74.2,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285529.2202148438,
+            "disk_write_mb": 555759.869140625
+          },
+          {
+            "timestamp": 1763636587.0960271,
+            "memory_used_mb": 23612.4140625,
+            "memory_percent": 74.3,
+            "cpu_percent": 99.5,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555760.009765625
+          },
+          {
+            "timestamp": 1763636588.0995958,
+            "memory_used_mb": 23611.96875,
+            "memory_percent": 74.3,
+            "cpu_percent": 99.0,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555760.009765625
+          },
+          {
+            "timestamp": 1763636589.1051679,
+            "memory_used_mb": 23569.875,
+            "memory_percent": 74.2,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555761.298828125
+          },
+          {
+            "timestamp": 1763636590.1101036,
+            "memory_used_mb": 23553.53125,
+            "memory_percent": 74.2,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555763.208984375
+          },
+          {
+            "timestamp": 1763636591.1123283,
+            "memory_used_mb": 23544.21484375,
+            "memory_percent": 74.1,
+            "cpu_percent": 98.7,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555763.208984375
+          },
+          {
+            "timestamp": 1763636592.1171231,
+            "memory_used_mb": 23543.28125,
+            "memory_percent": 74.1,
+            "cpu_percent": 99.2,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555763.220703125
+          },
+          {
+            "timestamp": 1763636593.1220567,
+            "memory_used_mb": 23523.05078125,
+            "memory_percent": 74.1,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555765.740234375
+          },
+          {
+            "timestamp": 1763636594.1273916,
+            "memory_used_mb": 22545.42578125,
+            "memory_percent": 71.0,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555830.263671875
+          },
+          {
+            "timestamp": 1763636595.137206,
+            "memory_used_mb": 22521.2890625,
+            "memory_percent": 70.9,
+            "cpu_percent": 99.6,
+            "disk_read_mb": 2285529.2788085938,
+            "disk_write_mb": 555830.826171875
+          },
+          {
+            "timestamp": 1763636596.1394122,
+            "memory_used_mb": 22524.83203125,
+            "memory_percent": 70.9,
+            "cpu_percent": 98.7,
+            "disk_read_mb": 2285529.8061523438,
+            "disk_write_mb": 555831.904296875
+          },
+          {
+            "timestamp": 1763636597.146205,
+            "memory_used_mb": 22548.91015625,
+            "memory_percent": 71.0,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285529.8061523438,
+            "disk_write_mb": 555831.916015625
+          },
+          {
+            "timestamp": 1763636598.1509135,
+            "memory_used_mb": 22550.59375,
+            "memory_percent": 71.0,
+            "cpu_percent": 98.8,
+            "disk_read_mb": 2285529.8178710938,
+            "disk_write_mb": 555840.201171875
+          },
+          {
+            "timestamp": 1763636599.157315,
+            "memory_used_mb": 22556.40625,
+            "memory_percent": 71.0,
+            "cpu_percent": 99.5,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555866.076171875
+          },
+          {
+            "timestamp": 1763636600.1616483,
+            "memory_used_mb": 22527.296875,
+            "memory_percent": 70.9,
+            "cpu_percent": 98.5,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555866.826171875
+          },
+          {
+            "timestamp": 1763636601.167632,
+            "memory_used_mb": 22430.76953125,
+            "memory_percent": 70.6,
+            "cpu_percent": 99.4,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555867.048828125
+          },
+          {
+            "timestamp": 1763636602.1701329,
+            "memory_used_mb": 22423.4921875,
+            "memory_percent": 70.6,
+            "cpu_percent": 98.1,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555907.326171875
+          },
+          {
+            "timestamp": 1763636603.175175,
+            "memory_used_mb": 22418.4453125,
+            "memory_percent": 70.6,
+            "cpu_percent": 99.1,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555907.619140625
+          },
+          {
+            "timestamp": 1763636604.181136,
+            "memory_used_mb": 22472.6171875,
+            "memory_percent": 70.8,
+            "cpu_percent": 82.2,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555912.541015625
+          },
+          {
+            "timestamp": 1763636605.1835072,
+            "memory_used_mb": 23133.4921875,
+            "memory_percent": 72.8,
+            "cpu_percent": 79.4,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555914.837890625
+          },
+          {
+            "timestamp": 1763636606.1850808,
+            "memory_used_mb": 23137.765625,
+            "memory_percent": 72.8,
+            "cpu_percent": 57.0,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555918.447265625
+          },
+          {
+            "timestamp": 1763636607.1866238,
+            "memory_used_mb": 23087.2578125,
+            "memory_percent": 72.7,
+            "cpu_percent": 56.9,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555918.458984375
+          },
+          {
+            "timestamp": 1763636608.1884649,
+            "memory_used_mb": 23098.26171875,
+            "memory_percent": 72.7,
+            "cpu_percent": 56.9,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555925.080078125
+          },
+          {
+            "timestamp": 1763636609.1899092,
+            "memory_used_mb": 23096.5,
+            "memory_percent": 72.7,
+            "cpu_percent": 56.1,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555925.220703125
+          },
+          {
+            "timestamp": 1763636610.1917357,
+            "memory_used_mb": 23113.74609375,
+            "memory_percent": 72.8,
+            "cpu_percent": 64.4,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555928.302734375
+          },
+          {
+            "timestamp": 1763636611.1932654,
+            "memory_used_mb": 23121.06640625,
+            "memory_percent": 72.8,
+            "cpu_percent": 79.4,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555928.302734375
+          },
+          {
+            "timestamp": 1763636612.1951048,
+            "memory_used_mb": 23125.36328125,
+            "memory_percent": 72.8,
+            "cpu_percent": 58.9,
+            "disk_read_mb": 2285529.8295898438,
+            "disk_write_mb": 555928.302734375
+          },
+          {
+            "timestamp": 1763636613.1966636,
+            "memory_used_mb": 23107.94921875,
+            "memory_percent": 72.8,
+            "cpu_percent": 58.6,
+            "disk_read_mb": 2285529.8764648438,
+            "disk_write_mb": 555928.314453125
+          },
+          {
+            "timestamp": 1763636614.1980777,
+            "memory_used_mb": 23101.2734375,
+            "memory_percent": 72.7,
+            "cpu_percent": 56.4,
+            "disk_read_mb": 2285529.8764648438,
+            "disk_write_mb": 555932.345703125
+          },
+          {
+            "timestamp": 1763636615.1994758,
+            "memory_used_mb": 23104.4765625,
+            "memory_percent": 72.7,
+            "cpu_percent": 56.5,
+            "disk_read_mb": 2285529.8764648438,
+            "disk_write_mb": 556008.248046875
+          },
+          {
+            "timestamp": 1763636616.2008917,
+            "memory_used_mb": 23126.8515625,
+            "memory_percent": 72.8,
+            "cpu_percent": 55.2,
+            "disk_read_mb": 2285529.8764648438,
+            "disk_write_mb": 556014.810546875
+          },
+          {
+            "timestamp": 1763636617.20229,
+            "memory_used_mb": 23124.61328125,
+            "memory_percent": 72.8,
+            "cpu_percent": 56.4,
+            "disk_read_mb": 2285530.2514648438,
+            "disk_write_mb": 556015.056640625
+          },
+          {
+            "timestamp": 1763636618.2037792,
+            "memory_used_mb": 23124.4921875,
+            "memory_percent": 72.8,
+            "cpu_percent": 58.2,
+            "disk_read_mb": 2285530.3686523438,
+            "disk_write_mb": 556015.080078125
+          },
+          {
+            "timestamp": 1763636619.2051134,
+            "memory_used_mb": 23131.546875,
+            "memory_percent": 72.8,
+            "cpu_percent": 55.5,
+            "disk_read_mb": 2285530.3803710938,
+            "disk_write_mb": 556021.748046875
+          },
+          {
+            "timestamp": 1763636620.206542,
+            "memory_used_mb": 23131.01171875,
+            "memory_percent": 72.8,
+            "cpu_percent": 55.1,
+            "disk_read_mb": 2285530.3803710938,
+            "disk_write_mb": 556023.142578125
+          },
+          {
+            "timestamp": 1763636621.2084372,
+            "memory_used_mb": 23126.47265625,
+            "memory_percent": 72.8,
+            "cpu_percent": 55.9,
+            "disk_read_mb": 2285530.3803710938,
+            "disk_write_mb": 556023.142578125
+          },
+          {
+            "timestamp": 1763636622.209879,
+            "memory_used_mb": 23138.734375,
+            "memory_percent": 72.9,
+            "cpu_percent": 48.4,
+            "disk_read_mb": 2285530.3803710938,
+            "disk_write_mb": 556023.142578125
+          },
+          {
+            "timestamp": 1763636623.211435,
+            "memory_used_mb": 23135.27734375,
+            "memory_percent": 72.8,
+            "cpu_percent": 57.1,
+            "disk_read_mb": 2285530.4155273438,
+            "disk_write_mb": 556028.369140625
+          },
+          {
+            "timestamp": 1763636624.2129521,
+            "memory_used_mb": 23143.9609375,
+            "memory_percent": 72.9,
+            "cpu_percent": 57.3,
+            "disk_read_mb": 2285530.4155273438,
+            "disk_write_mb": 556031.111328125
+          },
+          {
+            "timestamp": 1763636625.2144084,
+            "memory_used_mb": 23141.07421875,
+            "memory_percent": 72.9,
+            "cpu_percent": 55.3,
+            "disk_read_mb": 2285530.4155273438,
+            "disk_write_mb": 556031.111328125
+          },
+          {
+            "timestamp": 1763636626.2159727,
+            "memory_used_mb": 23138.49609375,
+            "memory_percent": 72.9,
+            "cpu_percent": 55.2,
+            "disk_read_mb": 2285530.4155273438,
+            "disk_write_mb": 556034.861328125
+          },
+          {
+            "timestamp": 1763636627.2174702,
+            "memory_used_mb": 23129.359375,
+            "memory_percent": 72.8,
+            "cpu_percent": 54.9,
+            "disk_read_mb": 2285530.4389648438,
+            "disk_write_mb": 556034.861328125
+          },
+          {
+            "timestamp": 1763636628.2194088,
+            "memory_used_mb": 23129.91015625,
+            "memory_percent": 72.8,
+            "cpu_percent": 47.6,
+            "disk_read_mb": 2285530.6264648438,
+            "disk_write_mb": 556038.845703125
+          },
+          {
+            "timestamp": 1763636629.2208726,
+            "memory_used_mb": 23131.92578125,
+            "memory_percent": 72.8,
+            "cpu_percent": 55.4,
+            "disk_read_mb": 2285530.8139648438,
+            "disk_write_mb": 556039.818359375
+          },
+          {
+            "timestamp": 1763636630.222471,
+            "memory_used_mb": 23135.52734375,
+            "memory_percent": 72.8,
+            "cpu_percent": 57.1,
+            "disk_read_mb": 2285531.0600585938,
+            "disk_write_mb": 556039.865234375
+          },
+          {
+            "timestamp": 1763636631.2239213,
+            "memory_used_mb": 23133.90625,
+            "memory_percent": 72.8,
+            "cpu_percent": 54.1,
+            "disk_read_mb": 2285531.1069335938,
+            "disk_write_mb": 556039.865234375
+          },
+          {
+            "timestamp": 1763636632.225787,
+            "memory_used_mb": 23135.453125,
+            "memory_percent": 72.8,
+            "cpu_percent": 55.7,
+            "disk_read_mb": 2285531.1069335938,
+            "disk_write_mb": 556045.748046875
+          },
+          {
+            "timestamp": 1763636633.2273273,
+            "memory_used_mb": 23142.54296875,
+            "memory_percent": 72.9,
+            "cpu_percent": 48.9,
+            "disk_read_mb": 2285531.1069335938,
+            "disk_write_mb": 556045.783203125
+          },
+          {
+            "timestamp": 1763636634.2290902,
+            "memory_used_mb": 23138.09375,
+            "memory_percent": 72.9,
+            "cpu_percent": 56.7,
+            "disk_read_mb": 2285531.1069335938,
+            "disk_write_mb": 556052.228515625
+          },
+          {
+            "timestamp": 1763636635.2308958,
+            "memory_used_mb": 23138.640625,
+            "memory_percent": 72.9,
+            "cpu_percent": 54.8,
+            "disk_read_mb": 2285531.2006835938,
+            "disk_write_mb": 556052.498046875
+          },
+          {
+            "timestamp": 1763636636.2328196,
+            "memory_used_mb": 23148.93359375,
+            "memory_percent": 72.9,
+            "cpu_percent": 56.7,
+            "disk_read_mb": 2285531.3295898438,
+            "disk_write_mb": 556201.712890625
+          },
+          {
+            "timestamp": 1763636637.2348347,
+            "memory_used_mb": 23151.375,
+            "memory_percent": 72.9,
+            "cpu_percent": 55.0,
+            "disk_read_mb": 2285531.3295898438,
+            "disk_write_mb": 556205.732421875
+          },
+          {
+            "timestamp": 1763636638.2363513,
+            "memory_used_mb": 23146.1875,
+            "memory_percent": 72.9,
+            "cpu_percent": 55.8,
+            "disk_read_mb": 2285531.3295898438,
+            "disk_write_mb": 556205.744140625
+          },
+          {
+            "timestamp": 1763636639.2381094,
+            "memory_used_mb": 23147.8828125,
+            "memory_percent": 72.9,
+            "cpu_percent": 49.2,
+            "disk_read_mb": 2285531.6225585938,
+            "disk_write_mb": 556205.744140625
+          },
+          {
+            "timestamp": 1763636640.2394552,
+            "memory_used_mb": 23162.91015625,
+            "memory_percent": 72.9,
+            "cpu_percent": 58.9,
+            "disk_read_mb": 2285531.9975585938,
+            "disk_write_mb": 556206.435546875
+          },
+          {
+            "timestamp": 1763636641.2411342,
+            "memory_used_mb": 23149.1171875,
+            "memory_percent": 72.9,
+            "cpu_percent": 57.7,
+            "disk_read_mb": 2285531.9975585938,
+            "disk_write_mb": 556223.158203125
+          },
+          {
+            "timestamp": 1763636642.2426207,
+            "memory_used_mb": 23153.578125,
+            "memory_percent": 72.9,
+            "cpu_percent": 56.0,
+            "disk_read_mb": 2285532.0092773438,
+            "disk_write_mb": 556223.158203125
+          },
+          {
+            "timestamp": 1763636643.24451,
+            "memory_used_mb": 23147.16015625,
+            "memory_percent": 72.9,
+            "cpu_percent": 54.8,
+            "disk_read_mb": 2285532.0092773438,
+            "disk_write_mb": 556228.548828125
+          },
+          {
+            "timestamp": 1763636644.2459486,
+            "memory_used_mb": 23154.6484375,
+            "memory_percent": 72.9,
+            "cpu_percent": 49.6,
+            "disk_read_mb": 2285532.0092773438,
+            "disk_write_mb": 556228.548828125
+          },
+          {
+            "timestamp": 1763636645.2479582,
+            "memory_used_mb": 23153.609375,
+            "memory_percent": 72.9,
+            "cpu_percent": 55.3,
+            "disk_read_mb": 2285532.0092773438,
+            "disk_write_mb": 556229.052734375
+          },
+          {
+            "timestamp": 1763636646.2497787,
+            "memory_used_mb": 23152.53515625,
+            "memory_percent": 72.9,
+            "cpu_percent": 55.9,
+            "disk_read_mb": 2285532.0092773438,
+            "disk_write_mb": 556229.052734375
+          },
+          {
+            "timestamp": 1763636647.2517037,
+            "memory_used_mb": 23140.7421875,
+            "memory_percent": 72.9,
+            "cpu_percent": 58.4,
+            "disk_read_mb": 2285532.0092773438,
+            "disk_write_mb": 556229.052734375
+          },
+          {
+            "timestamp": 1763636648.2538056,
+            "memory_used_mb": 23137.5546875,
+            "memory_percent": 72.8,
+            "cpu_percent": 55.3,
+            "disk_read_mb": 2285532.0092773438,
+            "disk_write_mb": 556237.490234375
+          },
+          {
+            "timestamp": 1763636649.2552464,
+            "memory_used_mb": 23143.1953125,
+            "memory_percent": 72.9,
+            "cpu_percent": 54.9,
+            "disk_read_mb": 2285532.2084960938,
+            "disk_write_mb": 556237.783203125
+          },
+          {
+            "timestamp": 1763636650.2565749,
+            "memory_used_mb": 23143.171875,
+            "memory_percent": 72.9,
+            "cpu_percent": 46.2,
+            "disk_read_mb": 2285532.2084960938,
+            "disk_write_mb": 556245.388671875
+          },
+          {
+            "timestamp": 1763636651.257982,
+            "memory_used_mb": 23145.921875,
+            "memory_percent": 72.9,
+            "cpu_percent": 56.0,
+            "disk_read_mb": 2285532.2084960938,
+            "disk_write_mb": 556245.388671875
+          },
+          {
+            "timestamp": 1763636652.259255,
+            "memory_used_mb": 23146.2734375,
+            "memory_percent": 72.9,
+            "cpu_percent": 55.7,
+            "disk_read_mb": 2285532.2084960938,
+            "disk_write_mb": 556245.388671875
+          },
+          {
+            "timestamp": 1763636653.260617,
+            "memory_used_mb": 23153.29296875,
+            "memory_percent": 72.9,
+            "cpu_percent": 54.9,
+            "disk_read_mb": 2285532.4194335938,
+            "disk_write_mb": 556245.400390625
+          },
+          {
+            "timestamp": 1763636654.2625043,
+            "memory_used_mb": 23152.29296875,
+            "memory_percent": 72.9,
+            "cpu_percent": 56.2,
+            "disk_read_mb": 2285532.6420898438,
+            "disk_write_mb": 556245.400390625
+          },
+          {
+            "timestamp": 1763636655.2645705,
+            "memory_used_mb": 23161.234375,
+            "memory_percent": 72.9,
+            "cpu_percent": 50.2,
+            "disk_read_mb": 2285532.6420898438,
+            "disk_write_mb": 556252.970703125
+          },
+          {
+            "timestamp": 1763636656.2670755,
+            "memory_used_mb": 23506.6484375,
+            "memory_percent": 74.0,
+            "cpu_percent": 36.5,
+            "disk_read_mb": 2285532.6420898438,
+            "disk_write_mb": 556401.166015625
+          },
+          {
+            "timestamp": 1763636657.2691262,
+            "memory_used_mb": 23582.6484375,
+            "memory_percent": 74.3,
+            "cpu_percent": 30.1,
+            "disk_read_mb": 2285532.6538085938,
+            "disk_write_mb": 556425.435546875
+          },
+          {
+            "timestamp": 1763636658.2708652,
+            "memory_used_mb": 23583.1171875,
+            "memory_percent": 74.3,
+            "cpu_percent": 59.2,
+            "disk_read_mb": 2285532.6538085938,
+            "disk_write_mb": 556434.318359375
+          },
+          {
+            "timestamp": 1763636659.272853,
+            "memory_used_mb": 24017.1484375,
+            "memory_percent": 75.6,
+            "cpu_percent": 55.1,
+            "disk_read_mb": 2285532.6538085938,
+            "disk_write_mb": 556434.330078125
+          },
+          {
+            "timestamp": 1763636660.2744236,
+            "memory_used_mb": 24015.88671875,
+            "memory_percent": 75.6,
+            "cpu_percent": 54.8,
+            "disk_read_mb": 2285532.6538085938,
+            "disk_write_mb": 556434.330078125
+          },
+          {
+            "timestamp": 1763636661.2874088,
+            "memory_used_mb": 24173.625,
+            "memory_percent": 76.1,
+            "cpu_percent": 50.4,
+            "disk_read_mb": 2285532.6538085938,
+            "disk_write_mb": 556434.517578125
+          },
+          {
+            "timestamp": 1763636662.2918522,
+            "memory_used_mb": 24292.24609375,
+            "memory_percent": 76.5,
+            "cpu_percent": 16.7,
+            "disk_read_mb": 2285532.6538085938,
+            "disk_write_mb": 556474.501953125
+          },
+          {
+            "timestamp": 1763636663.2931466,
+            "memory_used_mb": 24348.9609375,
+            "memory_percent": 76.7,
+            "cpu_percent": 8.2,
+            "disk_read_mb": 2285532.6655273438,
+            "disk_write_mb": 556477.783203125
+          }
+        ],
+        "performance_checkpoints": [],
+        "threshold_evaluation": {
+          "overall_status": "PASS",
+          "warnings": [],
+          "failures": [],
+          "performance_score": 1.0
+        },
+        "monitoring_duration": 274.9007155895233
+      },
+      "performance_summary": {
+        "training_time": 273.1523814201355,
+        "data_rows_processed": 81127,
+        "memory_efficiency": 0.55,
+        "cost_efficiency": 6761474.272478854,
+        "status": "PASS",
+        "performance_score": 1.0,
+        "warnings": []
+      }
+    }
+  },
+  "comparative_analysis": {
+    "note": "Single mode test for hybrid_sklearn",
+    "fastest_mode": "hybrid_sklearn",
+    "most_memory_efficient": "hybrid_sklearn",
+    "best_cost_efficiency": "hybrid_sklearn",
+    "mode_rankings": [
+      {
+        "mode": "hybrid_sklearn",
+        "score": 1.0
+      }
+    ],
+    "performance_comparison": {}
+  },
+  "individual_mode_test": true
+}

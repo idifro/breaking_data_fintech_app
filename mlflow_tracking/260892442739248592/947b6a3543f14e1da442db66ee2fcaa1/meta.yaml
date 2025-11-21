@@ -1,0 +1,14 @@
+artifact_uri: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/260892442739248592/947b6a3543f14e1da442db66ee2fcaa1/artifacts
+end_time: 1763587677779
+entry_point_name: ''
+experiment_id: '260892442739248592'
+lifecycle_stage: active
+run_id: 947b6a3543f14e1da442db66ee2fcaa1
+run_name: spark_rf_distributed_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP-COST-CRM-CVX-EBAY-GE-GOOG-GSK-MRK-NKE-NVDA-ORCL-PEP-PYPL-QCOM-QQQ-TSLA-TSM-USO-WFC_20251120_025501
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763587501362
+status: 3
+tags: []
+user_id: mha2cob

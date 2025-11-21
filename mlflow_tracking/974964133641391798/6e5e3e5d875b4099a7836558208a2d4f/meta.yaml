@@ -1,0 +1,14 @@
+artifact_uri: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/974964133641391798/6e5e3e5d875b4099a7836558208a2d4f/artifacts
+end_time: 1763558854590
+entry_point_name: ''
+experiment_id: '974964133641391798'
+lifecycle_stage: active
+run_id: 6e5e3e5d875b4099a7836558208a2d4f
+run_name: hybrid_sklearn_hybrid_monitoring_AAL-AAPL-ABBV-AMD-AMGN_20251119_185730
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763558850175
+status: 3
+tags: []
+user_id: mha2cob

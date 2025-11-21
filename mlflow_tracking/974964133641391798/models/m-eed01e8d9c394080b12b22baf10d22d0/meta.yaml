@@ -1,0 +1,10 @@
+artifact_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/974964133641391798/models/m-eed01e8d9c394080b12b22baf10d22d0/artifacts
+creation_timestamp: 1763558851774
+experiment_id: '974964133641391798'
+last_updated_timestamp: 1763558853296
+model_id: m-eed01e8d9c394080b12b22baf10d22d0
+model_type: null
+name: sklearn_model
+source_run_id: 6e5e3e5d875b4099a7836558208a2d4f
+status: 2
+status_message: null
