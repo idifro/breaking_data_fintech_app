@@ -17,8 +17,11 @@ spark_ml_pipeline/
 ├── scripts/                      # Execution scripts
 │   ├── train_model.py           # Basic training pipeline
 │   ├── train_model_with_monitoring.py # Enhanced training with monitoring
+│   ├── train_model_with_modes.py       # Multi-mode training (GBT, RF, Hybrid)
 │   ├── inference.py             # Basic inference pipeline
 │   ├── inference_with_monitoring.py   # Enhanced inference with monitoring
+│   ├── inference_batch.py       # Batch inference for 25 stocks (RF model)
+│   ├── create_predictions_table.py    # Create stock predictions Delta table
 │   └── load_testing_scenarios.py      # Automated performance testing
 ├── config/                       # Configuration management
 │   └── config.yaml              # Centralized YAML configuration
@@ -203,6 +206,84 @@ python scripts/inference_with_monitoring.py --load-test
    ✅ Experiment logged: stock_forecasting_gbt_exp_unified_monitoring
    📊 Run ID: abc123def456
    📁 Artifacts saved: results/inference/
+```
+
+## 🎯 Batch Inference Pipeline
+
+### 1. Setup Predictions Table
+```bash
+# Create the stock predictions Delta table with proper schema
+python scripts/create_predictions_table.py
+```
+
+### 2. Run Batch Inference
+```bash
+# Execute batch inference for 25 stocks using Spark RF model
+python scripts/inference_batch.py
+```
+
+The batch inference pipeline will:
+1. **Load Spark RF model** and feature scaler from MLflow registry
+2. **Prepare data** for 25 stocks (last 50 rows from each Delta table)
+3. **Apply feature engineering** using the same pipeline as training
+4. **Scale features** using the trained scaler
+5. **Make predictions** using the loaded Spark RF model
+6. **Calculate predicted close prices** using close gain formula
+7. **Save predictions** to Delta table and optionally CSV
+
+### 3. Example Batch Output
+```
+🚀 Starting Batch Inference for Stock Price Prediction
+================================================================================
+🔧 Configuration loaded successfully
+📊 Inference stocks: 25
+🔧 Spark session created successfully
+🚀 Inference Batch Processor initialized
+🔮 Starting batch inference for 25 stocks
+📥 Loading model and scaler from MLflow...
+✅ Model loaded successfully: stock_predictor_spark_rf v3
+📊 Preparing inference data...
+✅ Prepared 25 records for prediction
+🔧 Applying feature engineering...
+⚖️ Applying feature scaling...
+✅ Feature scaling applied successfully
+🎯 Making predictions...
+✅ Predictions generated successfully
+💰 Calculating predicted close prices...
+✅ Predicted close prices calculated successfully
+💾 Saving predictions to Delta table...
+✅ Predictions saved to Delta table: delta_tables/stock_predictions
+
+🎯 BATCH INFERENCE PERFORMANCE SUMMARY
+================================================================================
+📊 Stocks Processed: 25
+⏱️  Total Time: 45.67 seconds (0.76 minutes)
+⚡ Average Time per Stock: 1.83 seconds
+🚀 Throughput: 0.55 predictions/second
+================================================================================
+
+🎉 Batch Inference Completed Successfully!
+================================================================================
+✅ Status: success
+📊 Predictions Generated: 25
+🏢 Stocks Processed: 25
+🤖 Model: stock_predictor_spark_rf v3
+⏱️  Total Time: 45.67 seconds
+🚀 Throughput: 0.55 predictions/second
+```
+
+### 4. Prediction Schema
+The batch inference saves predictions to `delta_tables/stock_predictions` with the following schema:
+```
+prediction_date         date      # Next business day
+prediction_timestamp    timestamp # Next business day at 9:30 AM
+predicted_close         double    # Calculated using: last_close * (1 + predicted_gain)
+model_confidence        double    # Fixed at 0.85
+model_version           string    # MLflow model version
+features_used           string    # Comma-separated feature names
+created_at              timestamp # When prediction was made
+days_ahead              integer   # Always 1
+stock_symbol            string    # Stock symbol
 ```
 
 ## 🧪 Load Testing & Benchmarking

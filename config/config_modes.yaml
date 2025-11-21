@@ -389,6 +389,75 @@ spark:
     "spark.executor.extraJavaOptions": "-XX:+UseG1GC -XX:MaxGCPauseMillis=200"
 
 # =============================================================================
+# INFERENCE MODES CONFIGURATION
+# =============================================================================
+
+inference_modes:
+  spark_rf_inference:
+    # MLflow configuration
+    mlflow:
+      experiment_name: "stock_forecasting_spark_rf_scalability"
+      model_name: "stock_predictor_spark_rf_unified_29stocks"  # Registered model name to be specified
+      version: "latest"  # or specific version number
+      experiment_id: "260892442739248592"  # optional
+      run_id: "1e291bb4bc98461db487733ec8b6affd"  # optional for specific run
+      run_name: "spark_rf_distributed_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP-COST-CRM-CVX-EBAY-GE-GOOG-GSK-MRK-NKE-NVDA-ORCL-PEP-PYPL-QCOM-QQQ-TSLA-TSM-USO-WFC_20251119_134559"
+    
+    # Inference-specific stocks (first 25 from available stocks)
+    inference_stocks: 
+      - AAL
+      - AAPL
+      - ABBV
+      - AMD
+      - AMGN
+      - BABA
+      - BIIB
+      - CMCSA
+      - CMG
+      - COP
+      - COST
+      - CRM
+      - CVX
+      - EBAY
+      - GE
+      - GOOG
+      - GSK
+      - MRK
+      - NKE
+      - NVDA
+      - ORCL
+      - PEP
+      - PYPL
+      - QCOM
+      - QQQ
+    
+    # Prediction configuration
+    prediction_config:
+      lookback_days: 50  # Last 50 rows from each delta table
+      prediction_horizon: 1  # Days ahead (always 1)
+      model_confidence: 0.85  # Fixed confidence score
+      skip_weekends: true  # Add 1 business day
+      skip_holidays: false
+      features_format: "comma_separated"  # Comma-separated string of feature names
+    
+    # Output configuration
+    output:
+      delta_table_name: "stock_predictions"
+      delta_table_path: "delta_tables/stock_predictions"
+      save_to_csv: true
+      csv_path: "results/inference/batch_predictions"
+      schema:
+        prediction_date: "date"
+        prediction_timestamp: "timestamp" 
+        predicted_close: "double"
+        model_confidence: "double"
+        model_version: "string"
+        features_used: "string"
+        created_at: "timestamp"
+        days_ahead: "integer"
+        stock_symbol: "string"
+
+# =============================================================================
 # LOGGING CONFIGURATION
 # =============================================================================
 
@@ -404,6 +473,7 @@ logging:
     spark_gbt: "logs/spark_gbt_mode.log"
     spark_rf: "logs/spark_rf_mode.log" 
     hybrid_sklearn: "logs/hybrid_sklearn_mode.log"
+    inference: "logs/inference_batch.log"
 
 # =============================================================================
 # OUTPUT CONFIGURATION
