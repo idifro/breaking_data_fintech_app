@@ -433,7 +433,7 @@ inference_modes:
     
     # Prediction configuration
     prediction_config:
-      lookback_days: 50  # Last 50 rows from each delta table
+      lookback_days: 25  # Last 50 rows from each delta table
       prediction_horizon: 1  # Days ahead (always 1)
       model_confidence: 0.85  # Fixed confidence score
       skip_weekends: true  # Add 1 business day

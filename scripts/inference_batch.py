@@ -305,12 +305,12 @@ class InferenceBatchProcessor:
                 """Get next business day (skip weekends)"""
                 if date_val is None:
                     return None
-                
-                next_day = date_val + timedelta(days=1)
+                #print("Date Received", date_val)
+                next_day = date_val + timedelta(days=2)
                 
                 # Skip weekends
                 while next_day.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
-                    next_day += timedelta(days=1)
+                    next_day += timedelta(days=2)
                 
                 return next_day
             
