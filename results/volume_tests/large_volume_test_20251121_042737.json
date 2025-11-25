@@ -570471,13 +570471,13 @@
             "mae": 0.369686316557128,
             "mse": 0.1877460684199503,
             "rmse": 0.43329674406802354,
-            "r2": -225.59794156121237
+            "r2": -0.0259794156121237
           },
           "test_metrics": {
             "mae": 0.30138914959487406,
             "mse": 0.14341982072912687,
             "rmse": 0.37870809435385305,
-            "r2": -333.96484888421486
+            "r2": -0.0396484888421486
           },
           "feature_importance": "DataFrame[feature: string, importance: double]",
           "train_predictions": "DataFrame[Date: timestamp, Open: double, High: double, Low: double, Close: double, Adj_close: double, Volume: double, Sentiment_gpt: double, News_flag: double, Scaled_sentiment: double, stock_symbol: string, close_lag_1: double, close_lag_2: double, close_lag_3: double, close_lag_5: double, price_change_1d: double, price_change_3d: double, price_change_5d: double, ma_5: double, close_vs_ma5: double, ma_10: double, close_vs_ma10: double, ma_20: double, close_vs_ma20: double, high_low_spread: double, close_normalized_vs_lag1: double, close_normalized_vs_lag5: double, volume_lag_1: double, volume_ma_5: double, volume_ma_20: double, volume_change_1d: double, volume_vs_ma5: double, volume_vs_ma20: double, volume_normalized_vs_lag1: double, sentiment_lag_1: double, sentiment_lag_3: double, sentiment_ma_5: double, sentiment_ma_10: double, sentiment_ma_20: double, sentiment_change_1d: double, sentiment_change_3d: double, sentiment_volatility_5d: double, price_gain: double, price_loss: double, avg_gain_14: double, avg_loss_14: double, momentum_ratio: double, high_5d: double, low_5d: double, price_position_5d: double, price_volume_interaction: double, price_sentiment_interaction: double, volume_sentiment_interaction: double, price_volume_sentiment_interaction: double, price_volatility_5d: double, price_volatility_10d: double, volume_volatility_5d: double, volatility_ratio_5_10: double, risk_adjusted_return: double, target: double, split: string, features_raw: vector, features: vector, features_array: array<double>, prediction: double]",
