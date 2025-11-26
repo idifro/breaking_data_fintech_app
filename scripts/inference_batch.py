@@ -475,6 +475,7 @@ def main():
     print("🚀 Starting Batch Inference for Stock Price Prediction")
     print("=" * 80)
     
+    spark = None
     try:
         # Load environment and configuration
         load_environment()
@@ -498,28 +499,39 @@ def main():
         print("🎉 Batch Inference Completed Successfully!")
         print("=" * 80)
         print(f"✅ Status: {results['status']}")
-        print(f"📊 Predictions Generated: {results['predictions_count']}")
-        print(f"🏢 Stocks Processed: {results['stocks_processed']}")
-        print(f"🤖 Model: {results['model_info']['model_name']} v{results['model_info']['model_version']}")
-        
-        if 'performance_metrics' in results:
-            metrics = results['performance_metrics']
-            print(f"⏱️  Total Time: {metrics['total_inference_time_seconds']} seconds")
-            print(f"🚀 Throughput: {metrics['predictions_per_second']} predictions/second")
         
         return results
         
     except Exception as e:
-        print(f"\n❌ Batch inference failed: {str(e)}")
+        print(f"❌ Batch inference failed: {e}")
         import traceback
         traceback.print_exc()
         raise
     
     finally:
-        # Stop Spark session
-        if 'spark' in locals():
-            spark.stop()
-            print("🔧 Spark session stopped")
+        if spark is not None:
+            try:
+                spark.stop()
+                print("🔧 Spark session stopped")
+            except:
+                pass
+
+
+def run_inference_batch():
+    """
+    Wrapper function for Airflow DAG integration.
+    Runs the complete inference batch pipeline.
+    """
+    print("[INFERENCE] Starting batch inference task...")
+    
+    try:
+        results = main()
+        print(f"[INFERENCE] ✅ Batch inference completed successfully")
+        print(f"[INFERENCE] Predictions saved to: {results.get('delta_table_path', 'N/A')}")
+        return results
+    except Exception as e:
+        print(f"[INFERENCE] ❌ Batch inference failed: {e}")
+        raise
 
 
 if __name__ == "__main__":
