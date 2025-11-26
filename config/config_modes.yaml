@@ -1,0 +1,498 @@
+# 🚀 Multi-Mode Training Configuration for Data Engineering at Scale Project
+# Completely separate configuration file for three training approaches
+
+# =============================================================================
+# TRAINING MODES CONFIGURATION
+# =============================================================================
+
+training_modes:
+  # Available modes: spark_gbt, spark_rf, hybrid_sklearn
+  available_modes:
+    - spark_gbt
+    - spark_rf 
+    - hybrid_sklearn
+  
+  default_mode: spark_gbt
+  
+  # Mode descriptions for documentation
+  descriptions:
+    spark_gbt: "Spark ML GBT with driver-based training (enhanced current implementation)"
+    spark_rf: "Spark ML Random Forest with distributed training across executors"  
+    hybrid_sklearn: "Hybrid approach - Spark preprocessing + sklearn training + distributed inference"
+
+# =============================================================================
+# DATA VOLUME SCALABILITY TESTING
+# =============================================================================
+
+scalability_testing:
+  enabled: true
+  
+  # Data volume variations for scalability evaluation
+  data_volumes:
+    small: 5    # 5 stocks
+    medium: 10  # 10 stocks  
+    large: 20   # 20 stocks
+    full: 29    # All available stocks (29)
+  
+  # Stock selections for each volume (ensures consistent testing)
+  stock_selections:
+    small: ['AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN']
+    medium: ['AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN', 'BABA', 'BIIB', 'CMCSA', 'CMG', 'COP']
+    large: [
+    'AAL', 'AAPL', 'ABBV', 'AMD', 'AMGN', 'BABA', 'BIIB', 'CMCSA', 'CMG', 
+    'COP', 'COST', 'CRM', 'CVX', 'EBAY', 'GE', 'GOOG', 'GSK', 'MRK', 'NKE', 
+    'NVDA', 'ORCL', 'PEP', 'PYPL', 'QCOM', 'QQQ', 'TSLA', 'TSM', 'USO', 'WFC'
+    ]
+    full: null  # Will use all available stocks from main config
+
+  # Evaluation design parameters
+  evaluation_design:
+    enabled: false  # Set to true when running scalability evaluation
+    run_all_volumes: true
+    compare_across_modes: true
+    generate_scalability_reports: true
+
+# =============================================================================
+# SPARK GBT MODE CONFIGURATION  
+# =============================================================================
+
+spark_gbt_mode:
+  # MLflow configuration
+  mlflow:
+    experiment_name: "stock_forecasting_spark_gbt_scalability"
+    model_name: "stock_predictor_spark_gbt"
+    run_name_prefix: "spark_gbt"
+  
+  # Model parameters (enhanced current implementation)
+  model:
+    algorithm: GBTRegressor
+    default_params:
+      featureSubsetStrategy: "log2"
+      maxDepth: 12
+      maxIter: 150
+      seed: 42
+      stepSize: 0.01
+      subsamplingRate: 0.8
+    
+    hyperparameter_ranges:
+      featureSubsetStrategy: ["auto", "sqrt", "log2"]
+      maxDepth: [6, 8, 10, 12]
+      maxIter: [100, 150, 200]
+      stepSize: [0.01, 0.05, 0.1, 0.2]
+      subsamplingRate: [0.7, 0.8, 0.9]
+  
+  # Hyperparameter tuning
+  hyperparameter_tuning:
+    enabled: false
+    method: "optuna"  # optuna or spark_cv
+    n_trials: 20
+    cv_folds: 3
+    direction: "minimize"
+    metric: "mae"
+  
+  # Monitoring specific to GBT (driver-focused)
+  monitoring:
+    enabled: true
+    focus_areas:
+      - "driver_memory_usage"
+      - "sequential_training_time" 
+      - "feature_importance_analysis"
+      - "tree_depth_optimization"
+    
+    driver_monitoring:
+      memory_threshold_mb: 8192
+      cpu_threshold_percent: 85
+
+# =============================================================================
+# SPARK RF MODE CONFIGURATION
+# =============================================================================
+
+spark_rf_mode:
+  # MLflow configuration  
+  mlflow:
+    experiment_name: "stock_forecasting_spark_rf_scalability"
+    model_name: "stock_predictor_spark_rf"
+    run_name_prefix: "spark_rf"
+  
+  # Model parameters (distributed Random Forest)
+  model:
+    algorithm: RandomForestRegressor
+    default_params:
+      featureSubsetStrategy: "sqrt"
+      maxDepth: 5
+      numTrees: 100
+      seed: 42
+      subsamplingRate: 0.8
+      maxBins: 32
+    
+    hyperparameter_ranges:
+      featureSubsetStrategy: ["auto", "sqrt", "log2"]
+      maxDepth: [5, 10, 15, 20]
+      numTrees: [50, 100, 150, 200]
+      subsamplingRate: [0.8, 0.9, 1.0]
+      maxBins: [16, 32, 64]
+  
+  # Hyperparameter tuning
+  hyperparameter_tuning:
+    enabled: false
+    method: "spark_cv"  # Prefer Spark CV for distributed RF
+    cv_folds: 3
+    direction: "minimize"
+    metric: "r2"
+  
+  # Monitoring specific to RF (distributed-focused)
+  monitoring:
+    enabled: true
+    focus_areas:
+      - "executor_utilization"
+      - "distributed_tree_building"
+      - "parallel_training_efficiency"
+      - "forest_ensemble_metrics"
+    
+    distributed_monitoring:
+      executor_memory_threshold_mb: 6144
+      task_parallelism_efficiency: 0.8
+      tree_building_time_tracking: true
+
+# =============================================================================
+# HYBRID SKLEARN MODE CONFIGURATION  
+# =============================================================================
+
+hybrid_sklearn_mode:
+  # MLflow configuration
+  mlflow:
+    experiment_name: "stock_forecasting_hybrid_sklearn_scalability" 
+    model_name: "stock_predictor_hybrid_sklearn"
+    run_name_prefix: "hybrid_sklearn"
+  
+  # Model parameters (scikit-learn on driver)
+  model:
+    algorithm: "RandomForestRegressor"  # or "GradientBoostingRegressor"
+    default_params:
+      n_estimators: 150
+      max_depth: 5
+      random_state: 42
+      n_jobs: -1  # Use all available cores on driver
+      min_samples_split: 10
+      min_samples_leaf: 4
+    
+    hyperparameter_ranges:
+      n_estimators: [50, 100, 150, 200]
+      max_depth: [5, 10, 15, 20]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      max_features: ["auto", "sqrt", "log2"]
+  
+  # Hyperparameter tuning (using sklearn methods)
+  hyperparameter_tuning:
+    enabled: false
+    method: "grid_search"  # grid_search or random_search
+    cv_folds: 3
+    scoring: "neg_mean_absolute_error"
+    n_iter: 20  # for random_search
+  
+  # Hybrid-specific configurations with optimizations
+  hybrid_config:
+    # Data collection to driver
+    collect_to_driver: true
+    max_collect_size_mb: 2048  # Maximum size to collect to driver
+    
+    # Distributed inference configuration with optimizations
+    distributed_inference:
+      enabled: true
+      batch_size: 10000  # Default batch size (overridden by dynamic calculation)
+      use_pandas_udf: true
+      return_type: "double"
+      dynamic_batching:
+        enabled: true
+        memory_fraction: 0.3  # Use 30% of executor memory for batching
+        min_batch_size: 1000
+        max_batch_size: 50000
+    
+    # Evaluation optimizations
+    evaluation:
+      sql_evaluation_enabled: true  # Use SQL for single-pass evaluation
+      fallback_to_regression_evaluator: true  # Fallback if SQL fails
+      
+    # Caching strategy
+    cache_strategy:
+      enabled: true
+      auto_detect_memory: true
+      memory_thresholds:
+        high_memory_gb: 8  # Use memory-only caching
+        moderate_memory_gb: 4  # Use memory+disk caching
+        low_memory_gb: 2  # Disable caching
+      cache_levels:
+        high: "memory"
+        moderate: "memory_and_disk"
+        low: "none"
+    
+    # Visualization sampling configuration
+    visualization:
+      sampling_enabled: true
+      target_samples: 5000
+      stratified_sampling: true  # Sample proportionally by stock
+      fallback_limit: 1000
+      
+    # Resource cleanup
+    resource_cleanup:
+      enabled: true
+      cleanup_broadcast_variables: true
+      cleanup_cached_dataframes: true
+      force_garbage_collection: true
+  
+  # Monitoring specific to hybrid approach with optimization tracking
+  monitoring:
+    enabled: true
+    focus_areas:
+      - "data_transfer_overhead"
+      - "driver_sklearn_training"
+      - "distributed_inference_performance"
+      - "memory_driver_vs_executor_balance"
+      - "optimization_effectiveness"  # New focus area
+    
+    # Performance improvement tracking
+    optimization_monitoring:
+      track_evaluation_time_reduction: true
+      track_cache_hit_ratio: true
+      track_memory_efficiency_improvement: true
+      track_visualization_time_reduction: true
+      track_dataset_passes_saved: true
+      
+    hybrid_monitoring:
+      data_collection_time_tracking: true
+      sklearn_training_metrics: true
+      inference_distribution_efficiency: true
+      driver_memory_pressure_monitoring: true
+      optimization_impact_analysis: true  # New monitoring
+
+# =============================================================================
+# EVALUATION CONFIGURATION
+# =============================================================================
+
+evaluation:
+  # Evaluation metrics (same across all modes for comparison)
+  metrics:
+    - "mae"
+    - "mse" 
+    - "rmse"
+    - "r2"
+  
+  # Visualization configuration (same types for all modes)
+  visualizations:
+    feature_importance: true
+    predictions_vs_actual: true
+    residuals_plot: true
+    correlation_matrix: true
+    learning_curves: true
+    scalability_curves: true
+  
+  # Scalability-specific evaluation
+  scalability_evaluation:
+    enabled: false  # Enable via command line argument
+    
+    metrics:
+      # Training time scalability
+      training_time_per_sample: true
+      training_time_vs_data_volume: true
+      
+      # Memory efficiency 
+      memory_usage_per_sample: true
+      memory_efficiency_score: true
+      
+      # Cost analysis
+      cost_per_sample: true
+      resource_utilization_efficiency: true
+      
+      # Mode comparison
+      cross_mode_performance: true
+      scalability_ranking: true
+  
+  # Report generation
+  reports:
+    generate_mode_comparison: true
+    generate_scalability_analysis: true
+    generate_cost_analysis: true
+    save_detailed_metrics: true
+
+# =============================================================================
+# MONITORING CONFIGURATION
+# =============================================================================
+
+monitoring:
+  # General monitoring settings
+  enabled: true
+  detailed_metrics: true
+  resource_monitoring_interval: 1.0
+  
+  # Scalability-focused monitoring
+  scalability_monitoring:
+    enabled: true
+    track_data_volume_impact: true
+    measure_linear_scalability: true
+    monitor_resource_efficiency: true
+  
+  # Performance thresholds
+  thresholds:
+    max_training_time_per_sample_ms: 50
+    min_memory_efficiency: 0.6
+    min_scalability_score: 0.7
+    max_cost_per_sample: 0.001
+  
+  # Alerts and notifications
+  alerts:
+    enabled: true
+    scalability_degradation_threshold: 0.3
+    memory_efficiency_warning: 0.5
+    training_time_explosion_factor: 5.0
+
+# =============================================================================
+# SPARK CONFIGURATION
+# =============================================================================
+
+spark:
+  app_name: "StockForecastingMultiMode"
+  
+  # Resource configuration optimized for scalability testing
+  resources:
+    driver_memory: "12g"
+    executor_memory: "10g"
+    executor_cores: 4
+    master: "local[8]"
+  
+  # Performance configurations
+  configs:
+    # Memory management
+    "spark.driver.memoryFraction": "0.8"
+    "spark.executor.memoryFraction": "0.8"
+    "spark.driver.maxResultSize": "4g"
+    
+    # Adaptive Query Execution (AQE)
+    "spark.sql.adaptive.enabled": "true"
+    "spark.sql.adaptive.advisoryPartitionSizeInBytes": "32MB"
+    "spark.sql.adaptive.maxNumPostShufflePartitions": "64"
+    "spark.sql.adaptive.coalescePartitions.enabled": "true"
+    
+    # ML optimizations
+    "spark.ml.cache.enabled": "true"
+    "spark.mllib.cache.enabled": "true"
+    "spark.sql.execution.arrow.pyspark.enabled": "true"
+    "spark.sql.execution.arrow.maxRecordsPerBatch": "10000"
+    
+    # Serialization and compression
+    "spark.serializer": "org.apache.spark.serializer.KryoSerializer"
+    "spark.io.compression.codec": "snappy"
+    "spark.rdd.compress": "true"
+    
+    # GC optimization
+    "spark.driver.extraJavaOptions": "-XX:+UseG1GC -XX:MaxGCPauseMillis=200"
+    "spark.executor.extraJavaOptions": "-XX:+UseG1GC -XX:MaxGCPauseMillis=200"
+
+# =============================================================================
+# INFERENCE MODES CONFIGURATION
+# =============================================================================
+
+inference_modes:
+  spark_rf_inference:
+    # MLflow configuration
+    mlflow:
+      experiment_name: "stock_forecasting_spark_rf_scalability"
+      model_name: "stock_predictor_spark_rf_unified_29stocks"  # Registered model name to be specified
+      version: "latest"  # or specific version number
+      experiment_id: "260892442739248592"  # optional
+      run_id: "1e291bb4bc98461db487733ec8b6affd"  # optional for specific run
+      run_name: "spark_rf_distributed_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP-COST-CRM-CVX-EBAY-GE-GOOG-GSK-MRK-NKE-NVDA-ORCL-PEP-PYPL-QCOM-QQQ-TSLA-TSM-USO-WFC_20251119_134559"
+    
+    # Inference-specific stocks (first 25 from available stocks)
+    inference_stocks: 
+      - AAL
+      - AAPL
+      - ABBV
+      - AMD
+      - AMGN
+      - BABA
+      - BIIB
+      - CMCSA
+      - CMG
+      - COP
+      - COST
+      - CRM
+      - CVX
+      - EBAY
+      - GE
+      - GOOG
+      - GSK
+      - MRK
+      - NKE
+      - NVDA
+      - ORCL
+      - PEP
+      - PYPL
+      - QCOM
+      - QQQ
+    
+    # Prediction configuration
+    prediction_config:
+      lookback_days: 25  # Last 50 rows from each delta table
+      prediction_horizon: 1  # Days ahead (always 1)
+      model_confidence: 0.85  # Fixed confidence score
+      skip_weekends: true  # Add 1 business day
+      skip_holidays: false
+      features_format: "comma_separated"  # Comma-separated string of feature names
+    
+    # Output configuration
+    output:
+      delta_table_name: "stock_predictions"
+      delta_table_path: "delta_tables/stock_predictions"
+      save_to_csv: true
+      csv_path: "results/inference/batch_predictions"
+      schema:
+        prediction_date: "date"
+        prediction_timestamp: "timestamp" 
+        predicted_close: "double"
+        model_confidence: "double"
+        model_version: "string"
+        features_used: "string"
+        created_at: "timestamp"
+        days_ahead: "integer"
+        stock_symbol: "string"
+
+# =============================================================================
+# LOGGING CONFIGURATION
+# =============================================================================
+
+logging:
+  level: "INFO"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {name} | {message}"
+  log_file: "logs/multi_mode_pipeline.log"
+  retention: "1 month"
+  rotation: "1 week"
+  
+  # Mode-specific logging
+  mode_specific_logging:
+    spark_gbt: "logs/spark_gbt_mode.log"
+    spark_rf: "logs/spark_rf_mode.log" 
+    hybrid_sklearn: "logs/hybrid_sklearn_mode.log"
+    inference: "logs/inference_batch.log"
+
+# =============================================================================
+# OUTPUT CONFIGURATION
+# =============================================================================
+
+output:
+  # Base directories
+  base_results_dir: "results/multi_mode"
+  base_plots_dir: "plots/multi_mode"
+  base_models_dir: "models/multi_mode"
+  
+  # Mode-specific directories
+  mode_directories:
+    spark_gbt: "spark_gbt"
+    spark_rf: "spark_rf"
+    hybrid_sklearn: "hybrid_sklearn"
+  
+  # Scalability evaluation outputs
+  scalability_outputs:
+    reports_dir: "results/scalability"
+    comparison_plots_dir: "plots/scalability_comparison"
+    metrics_export_dir: "results/scalability/metrics"

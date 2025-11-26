@@ -3,7 +3,7 @@ Data Processing Module for Stock Price Prediction
 Handles data loading, preprocessing, and train/test splitting
 """
 
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Any
 import pandas as pd
 import numpy as np
 from pathlib import Path
@@ -167,29 +167,70 @@ class DataProcessor:
                   f"Volume={float(stat.Volume):.0f}, "
                   f"Sentiment={float(stat.Scaled_sentiment):.4f}")
     
-    def load_data_from_delta(self) -> DataFrame:
-        """Load data from Delta table"""
+    def load_data_from_delta(self, stock_selection: List[str] = None, table_type: str = "stock") -> DataFrame:
+        """
+        Load data from stock-specific Delta tables
         
-        delta_path = str(self.path_manager.delta_tables_dir / "stock_data")
+        Args:
+            stock_selection: List of stocks to load (defaults to config training_stocks)
+            table_type: "stock" for training data, "inference" for inference copies
+            
+        Returns:
+            Combined DataFrame from selected stock tables
+        """
         
-        try:
-            df = self.spark.read.format("delta").load(delta_path)
-            print(f"✅ Loaded data from Delta table: {delta_path}")
-            return df.orderBy("stock_symbol", "Date")
+        # Use config stock selection if not provided
+        if stock_selection is None:
+            stock_selection = self.config.data.training_stocks
         
-        except Exception as e:
-            raise FileNotFoundError(f"Delta table not found: {delta_path}. Error: {e}")
+        print(f"📊 Loading {table_type} data for stocks: {stock_selection}")
+        
+        # Load data from each stock-specific Delta table
+        stock_dfs = []
+        
+        for stock in stock_selection:
+            table_name = f"{table_type}_{stock}"
+            delta_path = str(self.path_manager.delta_tables_dir / table_name)
+            
+            try:
+                stock_df = self.spark.read.format("delta").load(delta_path)
+                row_count = stock_df.count()
+                print(f"   ✅ {table_name}: {row_count:,} rows")
+                stock_dfs.append(stock_df)
+                
+            except Exception as e:
+                print(f"   ⚠️ Failed to load {table_name}: {e}")
+                continue
+        
+        if not stock_dfs:
+            raise FileNotFoundError(f"No valid Delta tables found for stocks: {stock_selection}")
+        
+        # Combine all stock DataFrames
+        if len(stock_dfs) == 1:
+            combined_df = stock_dfs[0]
+        else:
+            combined_df = stock_dfs[0]
+            for df in stock_dfs[1:]:
+                combined_df = combined_df.union(df)
+        
+        total_rows = combined_df.count()
+        print(f"✅ Combined data: {total_rows:,} total rows from {len(stock_dfs)} stocks")
+        
+        return combined_df.orderBy("stock_symbol", "Date")
     
-    def prepare_training_data(self, df: DataFrame = None) -> Tuple[DataFrame, DataFrame, List[str]]:
+    def prepare_training_data(self, stock_selection: List[str] = None) -> Tuple[DataFrame, DataFrame, List[str], Any]:
         """
         Prepare training and test data with features
         
+        Args:
+            stock_selection: List of stocks to train on (defaults to config training_stocks)
+            
         Returns:
-            Tuple of (train_df, test_df, feature_names)
+            Tuple of (train_df, test_df, feature_names, scaler_model)
         """
         
-        if df is None:
-            df = self.load_data_from_delta()
+        # Load data from stock-specific Delta tables
+        df = self.load_data_from_delta(stock_selection=stock_selection, table_type="stock")
         
         print("🔧 Preparing training data...")
         
@@ -213,12 +254,12 @@ class DataProcessor:
         print(f"   Test samples: {test_df.count()}")
         print(f"   Features: {len(feature_names)}")
         
-        # Save scaler model
+        # Save scaler model , we are overwriting any existing model
         scaler_path = str(self.path_manager.models_dir / "feature_scaler")
         scaler_model.write().overwrite().save(scaler_path)
         print(f"✅ Scaler model saved to: {scaler_path}")
         
-        return train_df, test_df, feature_names
+        return train_df, test_df, feature_names, scaler_model
     
     def _create_train_test_split(self, df: DataFrame) -> DataFrame:
         """Create train/test split by time for each stock (like CNN approach)"""
@@ -276,11 +317,12 @@ class DataProcessor:
         except Exception as e:
             raise FileNotFoundError(f"Scaler model not found: {scaler_path}. Error: {e}")
     
-    def get_latest_data_for_inference(self, sequence_length: int = None) -> DataFrame:
+    def get_latest_data_for_inference(self, stock_selection: List[str] = None, sequence_length: int = None) -> DataFrame:
         """
-        Get the latest data for inference
+        Get the latest data for inference from inference tables
         
         Args:
+            stock_selection: List of stocks for inference (defaults to config inference_stocks)
             sequence_length: Number of latest rows to get per stock
             
         Returns:
@@ -289,14 +331,120 @@ class DataProcessor:
         
         if sequence_length is None:
             sequence_length = self.config.data.sequence_length
+            
+        # Use config inference stock selection if not provided
+        if stock_selection is None:
+            stock_selection = self.config.data.inference_stocks
         
-        df = self.load_data_from_delta()
+        # Load data from inference Delta tables
+        df = self.load_data_from_delta(stock_selection=stock_selection, table_type="inference")
         
-        # Get latest rows for each stock - Fix: Add proper partitioning
+        # Get latest rows for each stock
         window_spec = Window.partitionBy("stock_symbol").orderBy(desc("Date"))
         
         latest_df = df.withColumn("row_num", row_number().over(window_spec)) \
                      .filter(col("row_num") <= sequence_length) \
                      .drop("row_num")
         
+        print(f"📊 Latest data for inference:")
+        for stock in stock_selection:
+            stock_count = latest_df.filter(col("stock_symbol") == stock).count()
+            print(f"   {stock}: {stock_count} rows")
+        
         return latest_df
+    
+    def load_legacy_combined_data(self) -> DataFrame:
+        """
+        Load data from legacy combined Delta table (for backwards compatibility)
+        
+        Returns:
+            DataFrame from the original stock_data table
+        """
+        
+        delta_path = str(self.path_manager.delta_tables_dir / "stock_data")
+        
+        try:
+            df = self.spark.read.format("delta").load(delta_path)
+            print(f"✅ Loaded legacy data from Delta table: {delta_path}")
+            return df.orderBy("stock_symbol", "Date")
+        
+        except Exception as e:
+            raise FileNotFoundError(f"Legacy Delta table not found: {delta_path}. Error: {e}")
+    
+    def get_available_stocks(self) -> List[str]:
+        """
+        Get list of available stocks from Delta tables
+        
+        Returns:
+            List of stock symbols that have Delta tables
+        """
+        
+        available_stocks = []
+        
+        for stock in self.config.data.available_stocks:
+            stock_table_path = self.path_manager.delta_tables_dir / f"stock_{stock}"
+            if stock_table_path.exists():
+                available_stocks.append(stock)
+        
+        print(f"📊 Available stocks in Delta tables: {available_stocks}")
+        return available_stocks
+    
+    def _get_feature_names(self) -> List[str]:
+        """Get list of feature names used for model training"""
+        # Get feature names from FeatureEngineer to ensure consistency
+        from src.feature_engineering import FeatureEngineer
+        
+        # Create feature engineer and get feature names
+        feature_engineer = FeatureEngineer(self.config, self.spark)
+        
+        # Return a sample feature list - this will be updated when features are created
+        # For now, return the main features we know exist
+        feature_names = [
+            # Core lag features
+            'close_lag_1', 'close_lag_2', 'close_lag_3', 'close_lag_5',
+            
+            # Price change features  
+            'price_change_1d', 'price_change_3d', 'price_change_5d',
+            
+            # Moving averages
+            'ma_5', 'ma_10', 'ma_20',
+            'close_vs_ma5', 'close_vs_ma10', 'close_vs_ma20',
+            
+            # Technical indicators
+            'high_low_spread', 'avg_gain_14', 'avg_loss_14', 'rsi_14',
+            
+            # Volume features
+            'volume_lag_1', 'volume_ma_5', 'volume_ma_20', 'volume_change_1d',
+            
+            # Sentiment features
+            'sentiment_lag_1', 'sentiment_lag_3', 'sentiment_ma_5', 'sentiment_ma_10', 'sentiment_ma_20',
+            'volume_std_5', 'volume_std_10', 'volume_std_20',
+            'volume_vs_sma_5', 'volume_vs_sma_10', 'volume_vs_sma_20',
+            'price_volume_trend',
+            
+            # Sentiment features (if available)
+            'Sentiment_gpt_lag_1', 'Sentiment_gpt_lag_2', 'Sentiment_gpt_lag_3',
+            'Scaled_sentiment_lag_1', 'Scaled_sentiment_lag_2', 'Scaled_sentiment_lag_3',
+            'sentiment_sma_3', 'sentiment_sma_5', 'sentiment_sma_10',
+            'News_flag_lag_1', 'News_flag_lag_2', 'News_flag_lag_3',
+            
+            # Technical indicators
+            'rsi_14', 'bb_upper', 'bb_lower', 'bb_position',
+            'macd_line', 'macd_signal', 'macd_histogram',
+            'stoch_k', 'stoch_d',
+            'atr_14', 'volatility_5', 'volatility_10', 'volatility_20'
+        ]
+        
+        return feature_names
+    
+    def _create_features(self, df: DataFrame) -> DataFrame:
+        """Create features for prediction using FeatureEngineer"""
+        from src.feature_engineering import FeatureEngineer
+        
+        # Create feature engineer
+        feature_engineer = FeatureEngineer(self.config, self.spark)
+        
+        # Create features
+        df_with_features, feature_names = feature_engineer.create_all_features(df)
+        
+        return df_with_features

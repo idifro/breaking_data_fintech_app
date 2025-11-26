@@ -1,84 +1,91 @@
-# Spark ML Stock Price Prediction Pipeline
+# 🚀 Spark ML Stock Price Prediction Pipeline with Scalability Monitoring
 
-A scalable stock price prediction pipeline using Apache Spark MLlib, Delta Lake, and MLflow for experiment tracking. This implementation follows the CNN-style data processing approach but uses Gradient Boosted Trees (GBT) with optimally engineered features.
+A comprehensive, production-ready stock price prediction pipeline using Apache Spark MLlib, Delta Lake, and MLflow with integrated scalability monitoring and performance tracking. This implementation provides enterprise-level monitoring capabilities for Data Engineering at Scale projects.
 
 ## 🏗️ Architecture
 
 ```
 spark_ml_pipeline/
-├── src/                          # Source code modules
-│   ├── utils.py                  # Configuration and utilities
-│   ├── data_processing.py        # Data loading and preprocessing
-│   ├── feature_engineering.py   # Feature creation and selection
-│   ├── model_training.py         # Model training with hyperparameter tuning
-│   └── visualization.py          # Plotting and visualization
+├── src/                          # Core source modules
+│   ├── utils.py                  # Configuration management and data models
+│   ├── data_processing.py        # Delta Lake integration and preprocessing
+│   ├── feature_engineering.py   # 20+ optimized features for GBT
+│   ├── model_training.py         # GBT training with hyperparameter tuning
+│   ├── visualization.py          # Comprehensive plotting and analysis
+│   ├── scalability_monitor.py   # Real-time performance monitoring
+│   └── monitoring_config_manager.py # MLflow monitoring integration
 ├── scripts/                      # Execution scripts
-│   ├── train_model.py           # Training pipeline
-│   └── inference.py             # Inference pipeline
-├── config/                       # Configuration files
-│   └── config.yaml              # Main configuration
-├── data_csv/                     # Input CSV files
-├── delta_tables/                 # Delta Lake storage
-├── results/                      # Training and inference results
+│   ├── train_model.py           # Basic training pipeline
+│   ├── train_model_with_monitoring.py # Enhanced training with monitoring
+│   ├── train_model_with_modes.py       # Multi-mode training (GBT, RF, Hybrid)
+│   ├── inference.py             # Basic inference pipeline
+│   ├── inference_with_monitoring.py   # Enhanced inference with monitoring
+│   ├── inference_batch.py       # Batch inference for 25 stocks (RF model)
+│   ├── create_predictions_table.py    # Create stock predictions Delta table
+│   └── load_testing_scenarios.py      # Automated performance testing
+├── config/                       # Configuration management
+│   └── config.yaml              # Centralized YAML configuration
+├── docs/                         # Comprehensive documentation
+│   ├── MONITORING_GUIDE.md      # Scalability monitoring guide
+│   ├── PERFORMANCE_BENCHMARKS.md # Performance analysis guide
+│   └── QUICK_REFERENCE.md       # Quick command reference
+├── PROJECT_OVERVIEW.md          # 📘 Master architecture & setup guide
+├── TRAINING_PIPELINE.md         # 🎓 3 training modes comparison (GBT, RF, Hybrid)
+├── INFERENCE_PIPELINE.md        # 🔮 Airflow-triggered daily predictions
+├── SCALABILITY_PERFORMANCE.md   # 📊 Volume tests (5/10/20/29 stocks)
+├── STREAMING_PIPELINE.md        # 📡 Kafka + GPT sentiment analysis
+├── AIRFLOW_SETUP.md            # ⚙️  4-stage DAG workflow & monitoring
+├── ASTRADB_CONFIG.md           # 🗄️  NoSQL sentiment storage setup
+├── data_csv/                     # Input data (5 stock symbols)
+├── delta_tables/                 # Delta Lake storage with ACID properties
+├── results/                      # Training, inference, and evaluation results
 ├── plots/                        # Generated visualizations
+├── mlflow_tracking/              # MLflow experiments and model registry
 ├── models/                       # Saved model artifacts
-└── logs/                         # Application logs
+└── logs/                         # Application and monitoring logs
 ```
 
 ## 🚀 Features
 
-### **Data Processing**
-- ✅ **Delta Lake Integration**: Efficient data storage and versioning
-- ✅ **CNN-Style Preprocessing**: Maintains the CNN data processing approach
-- ✅ **Time-Based Train/Test Split**: 85%/15% split following CNN methodology
-- ✅ **Data Validation**: Automatic data cleaning and outlier removal
-
-### **Feature Engineering**
-- ✅ **20 Optimal Features**: Carefully selected features for GBT performance
-- ✅ **Price Features**: Lag features, momentum indicators, moving averages
-- ✅ **Volume Features**: Volume patterns and relative strength indicators
-- ✅ **Sentiment Features**: News sentiment integration with momentum analysis
-- ✅ **Technical Indicators**: Volatility measures, RSI-like indicators
-- ✅ **Interaction Features**: Price-volume-sentiment combinations
-- ✅ **Normalization**: CNN-style relative normalization
-
-### **Model Training**
-- ✅ **Gradient Boosted Trees**: Native Spark MLlib implementation
-- ✅ **Hyperparameter Tuning**: Optuna and Spark CrossValidator support
-- ✅ **Cross-Validation**: K-fold validation for robust performance estimation
-- ✅ **Feature Importance**: Automatic feature importance analysis
-
-### **Experiment Tracking**
+### **Core ML Pipeline**
+- ✅ **Delta Lake Integration**: ACID transactions with efficient data storage
+- ✅ **Advanced Feature Engineering**: 20+ optimized features for financial time series
+- ✅ **Gradient Boosted Trees**: Native Spark MLlib with hyperparameter tuning
 - ✅ **MLflow Integration**: Complete experiment tracking and model registry
-- ✅ **Model Versioning**: Automatic model versioning and deployment
-- ✅ **Metrics Logging**: Comprehensive metrics logging (MAE, MSE, R², per-stock)
-- ✅ **Artifact Storage**: Model artifacts, plots, and results storage
+- ✅ **Cross-Validation**: Robust model evaluation with k-fold validation
+- ✅ **Comprehensive Visualization**: Feature importance, predictions, residuals analysis
 
-### **Visualization**
-- ✅ **Feature Importance Plots**: Static and interactive visualizations
-- ✅ **Prediction Analysis**: Predictions vs actual, residual analysis
-- ✅ **Per-Stock Performance**: Individual stock performance metrics
-- ✅ **Model Comparison**: Easy comparison between different runs
+### **Scalability Monitoring System** 🔧
+- ✅ **Real-time Performance Tracking**: CPU, memory, throughput metrics
+- ✅ **Data Volume Scalability**: Partition efficiency and data size analysis
+- ✅ **MLflow Monitoring Integration**: Automatic metrics logging
+- ✅ **Resource Utilization Analysis**: Spark executor and driver monitoring
 
-### **Scalability**
-- ✅ **Distributed Computing**: Leverages Spark's distributed processing
-- ✅ **Memory Optimization**: Configured for 32GB RAM systems
-- ✅ **Delta Lake**: Efficient storage with ACID transactions
-- ✅ **Batch Processing**: Efficient processing of large datasets
+### **Enhanced Training Features**
+- ✅ **Monitored Training**: `train_model_with_monitoring.py` with performance tracking
+- ✅ **Hyperparameter Optimization**: Optuna-based intelligent tuning
+- ✅ **Feature Selection**: Correlation-based feature filtering
+- ✅ **Model Validation**: Time-series aware train/test splitting
+- ✅ **Artifact Management**: Comprehensive model and plot storage
 
-## 📊 Model Performance
+### **Automated Testing & Benchmarking**
+- ✅ **Load Testing Scenarios**: Varying data volumes and concurrency
+- ✅ **Resource Profiling**: Memory and CPU usage analysis
 
-Following CNN evaluation methodology:
-- **Per-stock evaluation** with detailed metrics
-- **Overall performance** across all stocks
-- **Same evaluation metrics** as CNN (MAE, MSE, R²)
-- **Feature importance analysis** for interpretability
+## 📊 Monitoring Capabilities
 
-### Expected Performance Improvements over CNN:
-- 🚀 **Faster Training**: 10x faster than CNN training
-- 📈 **Better Interpretability**: Feature importance insights
-- 🎯 **Competitive Accuracy**: Comparable or better prediction accuracy
-- 📊 **Real-time Inference**: Sub-100ms prediction latency
+### **Scalability Metrics**
+- **Data Volume Metrics**: Rows processed, data size, partition efficiency
+- **Performance Metrics**: Processing time, throughput, latency percentiles
+- **Resource Metrics**: Memory usage, CPU utilization, executor efficiency
+- **Pipeline Metrics**: Feature engineering time, model inference time
+- **Quality Metrics**: Data consistency, missing values, outlier detection
+
+### **Real-time Tracking**
+- **MLflow Integration**: Automatic experiment tracking for all monitoring runs
+- **JSON Reports**: Structured performance reports with detailed metrics
+- **Log Analysis**: Comprehensive application and performance logging
+- **Trend Analysis**: Historical performance tracking and comparison
 
 ## 🛠️ Setup Instructions
 
@@ -93,236 +100,320 @@ cd /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline
 
 ### 2. Install Dependencies
 ```bash
-# Run the setup script
-python setup.py
+# Install all required packages
+pip install -r requirements.txt
 ```
 
-This will:
-- ✅ Install required Python packages
-- ✅ Copy CSV files to the data_csv directory
-- ✅ Create necessary directories
-- ✅ Setup MLflow configuration
-- ✅ Create environment variables
-
-### 3. Verify Setup
+### 3. Environment Setup
 ```bash
-# Run the demo script to verify setup
-python demo.py
+# Load environment variables and verify setup
+python -c "from src.utils import load_environment; load_environment(); print('✅ Environment loaded')"
+```
+
+### 4. Verify Installation
+```bash
+# Test basic functionality
+python -c "
+from src.utils import get_config
+from src.scalability_monitor import ScalabilityMonitor
+print('✅ All core modules imported successfully')
+"
 ```
 
 ## 🚂 Training Pipeline
 
-### 1. Run Training
+### 1. Basic Training
 ```bash
-# Execute the training pipeline
+# Run standard training pipeline
 python scripts/train_model.py
 ```
 
-The training pipeline will:
-1. **Load CSV data** into Delta tables
-2. **Engineer features** using the optimal feature set
-3. **Split data** into train/test sets (85%/15%)
-4. **Tune hyperparameters** using Optuna or Spark CV
-5. **Train the final model** with best parameters
-6. **Evaluate performance** on test set
-7. **Generate visualizations** and save results
-8. **Register model** in MLflow registry
-
-### 2. Monitor Training
+### 2. Enhanced Training with Monitoring
 ```bash
-# Start MLflow UI to monitor training
-mlflow ui --backend-store-uri file://../mlflow_tracking
+# Run training with comprehensive monitoring
+python scripts/train_model_with_monitoring.py
+
+# Train specific stocks with monitoring
+python scripts/train_model_with_monitoring.py --stocks AAPL,GOOG,NVDA
+
+# Disable monitoring for faster training
+python scripts/train_model_with_monitoring.py --no-monitoring
+
+# Run with load testing
+python scripts/train_model_with_monitoring.py --load-test
 ```
 
-Access the UI at: http://localhost:5000
+### 3. Monitor Training Progress
+```bash
+# Start MLflow UI
+mlflow ui --host 0.0.0.0 --port 5000
+
+# View logs
+tail -f logs/pipeline.log
+```
 
 ## 🔮 Inference Pipeline
 
-### 1. Run Inference
+### 1. Basic Inference
 ```bash
-# Execute inference on latest data
+# Run standard inference
 python scripts/inference.py
 ```
 
-The inference pipeline will:
-1. **Load the latest model** from MLflow registry
-2. **Prepare latest data** with feature engineering
-3. **Make predictions** for all stocks
-4. **Display results** in formatted output
-5. **Save predictions** to Delta table and CSV
+### 2. Enhanced Inference with Monitoring
+```bash
+# Run inference with performance monitoring
+python scripts/inference_with_monitoring.py
 
-### 2. Example Output
+# Inference for specific stocks
+python scripts/inference_with_monitoring.py --stocks AAPL,TSLA
+
+# Disable monitoring for faster inference
+python scripts/inference_with_monitoring.py --no-monitoring
+
+# Run concurrent load testing
+python scripts/inference_with_monitoring.py --load-test
 ```
-📈 STOCK PRICE PREDICTIONS
+
+### 3. Example Monitored Output
+```
+🚀 ENHANCED STOCK PRICE PREDICTIONS WITH MONITORING
 ================================================================================
+📊 Monitoring Configuration:
+   ✅ Scalability Monitoring: ENABLED
+   📈 Resource Tracking: ENABLED
+   🔧 Performance Analysis: ENABLED
+   📋 MLflow Integration: ENABLED
 
 📈 AAPL:
    Current Price: $150.25
-   Predicted Price: $152.30
-   Predicted Return: 0.0136 (1.36%)
-   Date: 2024-11-08
+   Predicted Price: $152.30 (+1.36%)
+   Confidence: 92.4%
 
-📉 TSLA:
-   Current Price: $248.50
-   Predicted Price: $245.20
-   Predicted Return: -0.0133 (-1.33%)
-   Date: 2024-11-08
+📊 PERFORMANCE METRICS:
+   Total Processing Time: 2.34s
+   Throughput: 8,245 records/sec
+   Peak Memory Usage: 1,247 MB
+   CPU Utilization: 67.3%
+   Scalability Score: 0.847
 
-📊 PREDICTION SUMMARY:
-   Average Predicted Return: 0.0045 (0.45%)
-   Highest Predicted Return: 0.0234 (2.34%)
-   Lowest Predicted Return: -0.0187 (-1.87%)
-   Bullish Stocks: 3
-   Bearish Stocks: 2
+🔧 MONITORING SUMMARY:
+   ✅ Experiment logged: stock_forecasting_gbt_exp_unified_monitoring
+   📊 Run ID: abc123def456
+   📁 Artifacts saved: results/inference/
 ```
+
+## 🎯 Batch Inference Pipeline
+
+### 1. Setup Predictions Table
+```bash
+# Create the stock predictions Delta table with proper schema
+python scripts/create_predictions_table.py
+```
+
+### 2. Run Batch Inference
+```bash
+# Execute batch inference for 25 stocks using Spark RF model
+python scripts/inference_batch.py
+```
+
+The batch inference pipeline will:
+1. **Load Spark RF model** and feature scaler from MLflow registry
+2. **Prepare data** for 25 stocks (last 50 rows from each Delta table)
+3. **Apply feature engineering** using the same pipeline as training
+4. **Scale features** using the trained scaler
+5. **Make predictions** using the loaded Spark RF model
+6. **Calculate predicted close prices** using close gain formula
+7. **Save predictions** to Delta table and optionally CSV
+
+### 3. Example Batch Output
+```
+🚀 Starting Batch Inference for Stock Price Prediction
+================================================================================
+🔧 Configuration loaded successfully
+📊 Inference stocks: 25
+🔧 Spark session created successfully
+🚀 Inference Batch Processor initialized
+🔮 Starting batch inference for 25 stocks
+📥 Loading model and scaler from MLflow...
+✅ Model loaded successfully: stock_predictor_spark_rf v3
+📊 Preparing inference data...
+✅ Prepared 25 records for prediction
+🔧 Applying feature engineering...
+⚖️ Applying feature scaling...
+✅ Feature scaling applied successfully
+🎯 Making predictions...
+✅ Predictions generated successfully
+💰 Calculating predicted close prices...
+✅ Predicted close prices calculated successfully
+💾 Saving predictions to Delta table...
+✅ Predictions saved to Delta table: delta_tables/stock_predictions
+
+🎯 BATCH INFERENCE PERFORMANCE SUMMARY
+================================================================================
+📊 Stocks Processed: 25
+⏱️  Total Time: 45.67 seconds (0.76 minutes)
+⚡ Average Time per Stock: 1.83 seconds
+🚀 Throughput: 0.55 predictions/second
+================================================================================
+
+🎉 Batch Inference Completed Successfully!
+================================================================================
+✅ Status: success
+📊 Predictions Generated: 25
+🏢 Stocks Processed: 25
+🤖 Model: stock_predictor_spark_rf v3
+⏱️  Total Time: 45.67 seconds
+🚀 Throughput: 0.55 predictions/second
+```
+
+### 4. Prediction Schema
+The batch inference saves predictions to `delta_tables/stock_predictions` with the following schema:
+```
+prediction_date         date      # Next business day
+prediction_timestamp    timestamp # Next business day at 9:30 AM
+predicted_close         double    # Calculated using: last_close * (1 + predicted_gain)
+model_confidence        double    # Fixed at 0.85
+model_version           string    # MLflow model version
+features_used           string    # Comma-separated feature names
+created_at              timestamp # When prediction was made
+days_ahead              integer   # Always 1
+stock_symbol            string    # Stock symbol
+```
+
+## 🧪 Load Testing & Benchmarking
+
+### 1. Run Load Testing Scenarios
+```bash
+# Baseline performance test
+python scripts/load_testing_scenarios.py --scenario baseline --duration 60
+
+# Stress testing
+python scripts/load_testing_scenarios.py --scenario stress --duration 300
+
+# Volume scaling test
+python scripts/load_testing_scenarios.py --scenario volume --duration 120
+
+# Comprehensive testing
+python scripts/load_testing_scenarios.py --scenario all --duration 600
+```
+
 
 ## ⚙️ Configuration
 
 ### Main Configuration (`config/config.yaml`)
 
 ```yaml
-# Key configurations
+# Data Configuration
 data:
-  sequence_length: 50           # Historical window size
-  train_split: 0.85            # Train/test split ratio
+  available_stocks: [AAPL, BABA, GOOG, NVDA, TSLA]
+  sequence_length: 50
+  train_split: 0.85
 
+# Feature Engineering
 features:
-  max_features: 25             # Maximum number of features
-  correlation_threshold: 0.95   # Feature correlation threshold
+  max_features: 25
+  correlation_threshold: 0.95
+  enable_interactions: true
+  enable_rsi: true
+  enable_volatility: true
 
+# Model Configuration
 model:
+  algorithm: GBTRegressor
   default_params:
-    maxIter: 150               # GBT iterations
-    maxDepth: 8                # Tree depth
-    stepSize: 0.05             # Learning rate
+    maxIter: 150
+    maxDepth: 8
+    stepSize: 0.05
 
-hyperparameter_tuning:
-  enabled: true                # Enable hyperparameter tuning
-  method: "optuna"             # Tuning method
-  n_trials: 50                 # Number of trials
+# Monitoring Configuration
+monitoring:
+  enabled: true
+  detailed_metrics: true
+  resource_monitoring_interval: 1.0
+  generate_reports: true
+  thresholds:
+    max_cpu_usage_percent: 80
+    max_memory_usage_percent: 85
+    min_throughput_records_per_second: 100
 
-spark:
-  driver_memory: "4g"          # Driver memory
-  executor_memory: "8g"        # Executor memory
+# MLflow Configuration
+mlflow:
+  experiment_name: stock_forecasting_gbt_exp
+  log_artifacts: true
+  log_metrics: true
+  log_models: true
 ```
 
-## 📈 Results and Analysis
+## 📊 Monitoring Results & Analysis
 
-### Output Files
-- **Training Results**: `results/training/run_YYYYMMDD_HHMMSS/`
-  - `feature_importance.csv` - Feature importance rankings
-  - `per_stock_metrics.csv` - Performance per stock
-  - `test_predictions.csv` - Detailed predictions
+### MLflow Integration
+- **Experiment Tracking**: `stock_forecasting_gbt_exp_unified_monitoring`
+- **Model Registry**: Automatic model versioning and stage management
+- **Metrics Logging**: Performance, scalability, and accuracy metrics
+- **Artifact Storage**: Models, plots, monitoring reports
 
-- **Visualizations**: `plots/`
-  - `feature_importance.png` - Feature importance plot
-  - `predictions_vs_actual.png` - Prediction analysis
-  - `per_stock_performance.png` - Per-stock metrics
-  - `residuals_analysis.png` - Residual analysis
 
-- **MLflow Artifacts**: Accessible via MLflow UI
-  - Model artifacts and metadata
-  - Experiment comparison
-  - Model registry
+### Visualization Outputs
+- **Feature Importance**: Interactive and static plots
+- **Performance Trends**: Time-series monitoring charts
+- **Resource Utilization**: CPU and memory usage over time
+- **Scalability Analysis**: Throughput vs data volume charts
 
-### Key Metrics
-- **MAE (Mean Absolute Error)**: Average prediction error
-- **MSE (Mean Squared Error)**: Squared prediction error
-- **R² Score**: Coefficient of determination
-- **Per-Stock Performance**: Individual stock accuracy
+## 📈 Performance Benchmarks
 
-## 🧪 Advanced Usage
+### Expected Performance (Local 32GB System)
+- **Training Time**: 10-20 minutes 
+- **Inference Latency**: <100ms per prediction
+- **Throughput**: 200 records/second
 
-### Custom Feature Engineering
-Modify `src/feature_engineering.py` to add custom features:
+### Monitoring Thresholds
+- **CPU Usage**: Alert at 85%, critical at 95%
+- **Memory Usage**: Alert at 85% of allocated memory
+- **Throughput**: Minimum 100 records/second
 
-```python
-# Add custom technical indicators
-def _create_custom_features(self, df, window_spec):
-    # Your custom feature logic here
-    return df
-```
 
-### Hyperparameter Tuning
-Customize hyperparameter ranges in `config/config.yaml`:
+## 🔍 Monitoring Results Access
 
-```yaml
-model:
-  hyperparameter_ranges:
-    maxDepth: [4, 6, 8, 10, 12]
-    stepSize: [0.01, 0.05, 0.1, 0.2]
-    # Add more parameters
-```
-
-### Model Deployment
+### MLflow UI
 ```bash
-# Promote model to production
-mlflow models serve -m "models:/stock_forecast_model/1" -p 1234
+# Start MLflow tracking server
+mlflow ui --host 0.0.0.0 --port 5000
+# Access: http://localhost:5000
 ```
 
-## 🔧 Troubleshooting
 
-### Common Issues
+## 📚 Documentation
 
-1. **Memory Issues**
-   - Reduce `executor_memory` in config
-   - Decrease `max_features` count
-   - Use smaller dataset for testing
+### **Academic Project Documentation** (Data Engineering at Scale)
+- **� [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)**: Master architecture & complete system overview
+- **🎓 [TRAINING_PIPELINE.md](TRAINING_PIPELINE.md)**: 3 training modes comparison (Spark GBT, Spark RF, Hybrid Sklearn)
+- **🔮 [INFERENCE_PIPELINE.md](INFERENCE_PIPELINE.md)**: Airflow-triggered daily predictions (4-stage DAG)
+- **�📊 [SCALABILITY_PERFORMANCE.md](SCALABILITY_PERFORMANCE.md)**: Volume tests (5/10/20/29 stocks) with metrics
+- **📡 [STREAMING_PIPELINE.md](STREAMING_PIPELINE.md)**: Kafka + GPT sentiment analysis + AstraDB
+- **⚙️  [AIRFLOW_SETUP.md](AIRFLOW_SETUP.md)**: 4-stage DAG workflow, scheduling, monitoring
+- **🗄️  [ASTRADB_CONFIG.md](ASTRADB_CONFIG.md)**: NoSQL sentiment storage setup & integration
 
-2. **Delta Table Issues**
-   - Delete `delta_tables/` directory to reset
-   - Ensure proper file permissions
+### **Developer Documentation**
+- **📊 [docs/MONITORING_GUIDE.md](docs/MONITORING_GUIDE.md)**: Comprehensive monitoring documentation
+- **🚀 [docs/PERFORMANCE_BENCHMARKS.md](docs/PERFORMANCE_BENCHMARKS.md)**: Performance analysis and optimization
+- **⚡ [docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)**: Quick command reference and troubleshooting
 
-3. **MLflow Issues**
-   - Check MLflow tracking URI in `.env`
-   - Ensure `mlflow_tracking` directory exists
 
-4. **Import Errors**
-   - Ensure you're in the `breaking_data` conda environment
-   - Run `python setup.py` to install dependencies
+### Monitoring Benefits
+- **🔍 Bottleneck Detection**: Automated performance constraint identification
+- **📊 Resource Optimization**: Intelligent resource allocation recommendations
+- **🚨 Early Warning**: Threshold-based alerting for performance degradation
+- **📈 Trend Analysis**: Historical performance tracking and comparison
+- **🎯 Quality Assurance**: Comprehensive data and model validation
 
-### Performance Optimization
+## 🚀 Future Enhancements
 
-1. **Spark Configuration**
-   - Adjust memory settings based on your system
-   - Tune number of executor cores
-   - Enable adaptive query execution
-
-2. **Feature Selection**
-   - Reduce number of features for faster training
-   - Use correlation analysis to remove redundant features
-   - Profile feature computation time
-
-## 📚 Comparison with CNN Approach
-
-| Aspect | CNN Approach | GBT Approach |
-|--------|--------------|--------------|
-| **Training Speed** | ~1-2 hours | ~10-20 minutes |
-| **Interpretability** | Low (black box) | High (feature importance) |
-| **Scalability** | Limited (single machine) | High (distributed) |
-| **Memory Usage** | High (GPU required) | Moderate (CPU only) |
-| **Feature Engineering** | Automatic | Manual but optimized |
-| **Deployment** | Complex | Simple (Spark native) |
-| **Accuracy** | High | Competitive |
-
-## 🎯 Future Enhancements
-
-- [ ] **Real-time Streaming**: Apache Kafka integration
-- [ ] **Automated Retraining**: Schedule-based model updates
-- [ ] **Model Ensemble**: Combine multiple models
-- [ ] **Advanced Features**: More sophisticated technical indicators
-- [ ] **A/B Testing**: Model performance comparison framework
-- [ ] **API Deployment**: REST API for predictions
-- [ ] **Monitoring**: Data drift and model performance monitoring
-
-## 📞 Support
-
-For issues or questions:
-1. Check the troubleshooting section
-2. Review MLflow logs for training issues
-3. Check Spark logs in `logs/` directory
-4. Verify configuration in `config/config.yaml`
+- [ ] **Model Retraining**: Drift based Model retraining Pipeline
+- [ ] **Automated Scaling**: Dynamic resource allocation based on monitoring
+- [ ] **Recursive Prediction**: currently prediction close gain, extend it to high, open, close, volume to enable recursive prediction
+- [ ] **Model Drift Detection**: Automated model performance degradation alerts
+- [ ] **Custom Dashboards**: Real-time monitoring dashboard interfaces
+- [ ] **Cloud Deployment**: Cloud Deployment of entire streaming, train and inference pipeline.
 
 ---
-
-**Note**: This pipeline is optimized for the provided 5-stock dataset but can scale to hundreds of stocks with appropriate Spark cluster configuration.

@@ -42,6 +42,15 @@ class DataConfig:
     train_split: float
     target_column: str
     sentiment_columns: List[str]
+    
+    # Stock selection for training and inference
+    available_stocks: List[str]
+    training_stocks: List[str]
+    inference_stocks: List[str]
+    
+    # Delta table configuration
+    stock_tables_prefix: str
+    inference_tables_prefix: str
 
 
 @dataclass
@@ -56,6 +65,68 @@ class FeatureConfig:
     enable_interactions: bool
     max_features: int
     correlation_threshold: float
+
+
+@dataclass
+class InferenceConfig:
+    """Inference configuration settings"""
+    lookback_days: int
+    model_name: str
+    model_stage: str
+    model_version: str
+    predict_next_trading_day: bool
+    skip_weekends_holidays: bool
+    save_predictions: bool
+    prediction_column_name: str
+    min_required_rows: int
+    validate_data_quality: bool
+    quality_checks: Dict[str, Any]
+
+
+@dataclass 
+class MonitoringThresholds:
+    """Monitoring thresholds configuration"""
+    min_throughput_records_per_second: float
+    max_processing_time_per_record_ms: float
+    min_partition_efficiency: float
+    min_scalability_score: float
+    max_memory_usage_percent: float
+    max_cpu_usage_percent: float
+
+
+@dataclass
+class MonitoringLoadTesting:
+    """Monitoring load testing configuration"""
+    data_volume_multipliers: List[int]
+    concurrent_users: List[int]
+    benchmark_duration_minutes: int
+
+
+@dataclass
+class MonitoringAlerts:
+    """Monitoring alerts configuration"""
+    enabled: bool
+    email_notifications: bool
+    slack_webhook: Optional[str]
+    performance_degradation_threshold: float
+
+
+@dataclass
+class MonitoringConfig:
+    """Scalability monitoring configuration"""
+    enabled: bool
+    detailed_metrics: bool
+    experiment_name: str
+    separate_experiment: bool
+    resource_monitoring_interval: float
+    memory_threshold_warning_mb: int
+    cpu_threshold_warning_percent: int
+    thresholds: MonitoringThresholds
+    generate_reports: bool
+    save_metrics_json: bool
+    console_output: bool
+    load_testing: MonitoringLoadTesting
+    alerts: MonitoringAlerts
 
 
 class Config:
@@ -75,6 +146,84 @@ class Config:
         self.hyperparameter_tuning = self._config['hyperparameter_tuning']
         self.logging = self._config['logging']
         self.visualization = self._config['visualization']
+        
+        # Initialize path manager
+        self.paths = PathManager()
+        
+        # Initialize inference configuration if available
+        if 'inference' in self._config:
+            self.inference = InferenceConfig(**self._config['inference'])
+        else:
+            # Provide default inference configuration
+            self.inference = InferenceConfig(
+                lookback_days=49,
+                model_name="unified_stock_model",
+                model_stage="None",
+                model_version="latest",
+                predict_next_trading_day=True,
+                skip_weekends_holidays=True,
+                save_predictions=False,
+                prediction_column_name="predicted_close",
+                min_required_rows=50,
+                validate_data_quality=True,
+                quality_checks={
+                    "check_missing_values": True,
+                    "check_data_continuity": True,
+                    "max_missing_ratio": 0.1
+                }
+            )
+        
+        # Initialize monitoring configuration if available
+        if 'monitoring' in self._config:
+            monitoring_data = self._config['monitoring']
+            self.monitoring = MonitoringConfig(
+                enabled=monitoring_data.get('enabled', True),
+                detailed_metrics=monitoring_data.get('detailed_metrics', True),
+                experiment_name=monitoring_data.get('experiment_name', 'pipeline_scalability_monitoring'),
+                separate_experiment=monitoring_data.get('separate_experiment', True),
+                resource_monitoring_interval=monitoring_data.get('resource_monitoring_interval', 1.0),
+                memory_threshold_warning_mb=monitoring_data.get('memory_threshold_warning_mb', 8192),
+                cpu_threshold_warning_percent=monitoring_data.get('cpu_threshold_warning_percent', 85),
+                thresholds=MonitoringThresholds(**monitoring_data.get('thresholds', {})),
+                generate_reports=monitoring_data.get('generate_reports', True),
+                save_metrics_json=monitoring_data.get('save_metrics_json', True),
+                console_output=monitoring_data.get('console_output', True),
+                load_testing=MonitoringLoadTesting(**monitoring_data.get('load_testing', {})),
+                alerts=MonitoringAlerts(**monitoring_data.get('alerts', {}))
+            )
+        else:
+            # Provide default monitoring configuration
+            self.monitoring = MonitoringConfig(
+                enabled=True,
+                detailed_metrics=True,
+                experiment_name='pipeline_scalability_monitoring',
+                separate_experiment=True,
+                resource_monitoring_interval=1.0,
+                memory_threshold_warning_mb=8192,
+                cpu_threshold_warning_percent=85,
+                thresholds=MonitoringThresholds(
+                    min_throughput_records_per_second=100,
+                    max_processing_time_per_record_ms=100,
+                    min_partition_efficiency=0.7,
+                    min_scalability_score=0.6,
+                    max_memory_usage_percent=85,
+                    max_cpu_usage_percent=80
+                ),
+                generate_reports=True,
+                save_metrics_json=True,
+                console_output=True,
+                load_testing=MonitoringLoadTesting(
+                    data_volume_multipliers=[1, 2, 5, 10],
+                    concurrent_users=[1, 5, 10, 20],
+                    benchmark_duration_minutes=5
+                ),
+                alerts=MonitoringAlerts(
+                    enabled=True,
+                    email_notifications=False,
+                    slack_webhook=None,
+                    performance_degradation_threshold=0.3
+                )
+            )
     
     def _load_config(self) -> Dict[str, Any]:
         """Load configuration from YAML file"""
@@ -217,7 +366,8 @@ class PathManager:
             "results/evaluation",
             "logs",
             "plots",
-            "checkpoints"
+            "checkpoints",
+            "mlflow_tracking"
         ]
         
         for directory in directories:
@@ -246,6 +396,10 @@ class PathManager:
     @property
     def logs_dir(self) -> Path:
         return self.base_dir / "logs"
+    
+    @property
+    def mlflow_tracking_dir(self) -> Path:
+        return self.base_dir / "mlflow_tracking"
     
     def get_csv_files(self) -> List[Path]:
         """Get list of CSV files"""

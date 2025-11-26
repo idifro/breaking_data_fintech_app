@@ -1,0 +1,6 @@
+artifact_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/330953399529657715
+creation_time: 1762790652363
+experiment_id: '330953399529657715'
+last_update_time: 1762790652363
+lifecycle_stage: active
+name: pipeline_scalability_monitoring_inference

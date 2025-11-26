@@ -1,0 +1,15 @@
+creation_timestamp: 1763155625425
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1763155625425
+model_id: null
+name: stock_predictor_unified_29stocks
+run_id: 7184de7c82e6417dabfd38789599c2a9
+run_link: null
+source: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/608535781630392078/7184de7c82e6417dabfd38789599c2a9/artifacts/model
+status: READY
+status_message: null
+storage_location: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/608535781630392078/7184de7c82e6417dabfd38789599c2a9/artifacts/model
+user_id: null
+version: 1

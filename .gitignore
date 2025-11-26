@@ -151,11 +151,11 @@ checkpoints/
 checkpoint/
 
 # Delta Lake
-delta-table/
-_delta_log/
+# delta-table/
+# _delta_log/
 
 # Parquet files
-*.parquet
+# *.parquet
 
 # ORC files  
 *.orc
@@ -168,10 +168,10 @@ _delta_log/
 # ==============================================================================
 
 # MLflow
-mlruns/
-mlflow_tracking/
-mlflow-runs/
-artifacts/
+# mlruns/
+# mlflow_tracking/
+# mlflow-runs/
+# artifacts/
 
 # Model files
 *.pkl
@@ -184,38 +184,38 @@ artifacts/
 *.onnx
 
 # Model registry
-models/*/
-model_registry/
+# models/*/
+# model_registry/
 
 # ==============================================================================
 # DATA FILES
 # ==============================================================================
 
 # Large data files
-*.csv
-*.json
+# *.csv
+# *.json
 *.parquet
-*.txt
+# *.txt
 *.tsv
 *.xlsx
 *.xls
 
 # Data directories
-data/
-dataset/
-datasets/
-raw_data/
-processed_data/
-temp_data/
+# data/
+# dataset/
+# datasets/
+# raw_data/
+# processed_data/
+# temp_data/
 
 # Delta tables
-delta_tables/
-delta-tables/
+# delta_tables/
+# delta-tables/
 
 # Results and outputs
-results/
-outputs/
-output/
+# results/
+# outputs/
+# output/
 
 # ==============================================================================
 # LOGS & TEMPORARY FILES
@@ -292,22 +292,22 @@ ipython_config.py
 # ==============================================================================
 
 # Generated plots
-plots/
-*.png
-*.jpg
-*.jpeg
-*.svg
-*.pdf
+# plots/
+# *.png
+# *.jpg
+# *.jpeg
+# *.svg
+# *.pdf
 
 # Feature importance files
-feature_importance/
-feature_*.csv
+# feature_importance/
+# feature_*.csv
 
 # Evaluation results
-evaluation/
-eval_results/
-predictions/
-*.evaluation
+# evaluation/
+# eval_results/
+# predictions/
+# *.evaluation
 
 # Hyperparameter tuning results
 hyperparameter_results/

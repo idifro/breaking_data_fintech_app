@@ -1,0 +1,15 @@
+creation_timestamp: 1762707081433
+current_stage: None
+deployment_job_state: null
+description: null
+last_updated_timestamp: 1762707081433
+model_id: null
+name: stock_predictor_unified_4stocks
+run_id: 9b10cde196b14943adcf9f7fa54ba279
+run_link: null
+source: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/934230335871642060/9b10cde196b14943adcf9f7fa54ba279/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/934230335871642060/9b10cde196b14943adcf9f7fa54ba279/artifacts/model
+user_id: null
+version: 2

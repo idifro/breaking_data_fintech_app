@@ -1,0 +1,14 @@
+artifact_uri: file:///home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/659928479284864024/2af4c1f8946744ecad9931f4f5caf8a3/artifacts
+end_time: 1763449887136
+entry_point_name: ''
+experiment_id: '659928479284864024'
+lifecycle_stage: active
+run_id: 2af4c1f8946744ecad9931f4f5caf8a3
+run_name: scalability_monitoring_20251118_124127
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763449887103
+status: 3
+tags: []
+user_id: mha2cob

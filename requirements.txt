@@ -32,3 +32,23 @@ tqdm==4.66.1
 
 # Statistical analysis
 scipy==1.11.4
+
+# ==========================================
+# SCALABILITY MONITORING DEPENDENCIES
+# ==========================================
+
+# System Monitoring
+psutil==5.9.6
+
+# HTTP Client (for testing)
+httpx==0.25.2
+requests==2.31.0
+
+# Testing and Benchmarking
+pytest==7.4.3
+pytest-asyncio==0.21.1
+locust==2.17.0  # For additional load testing capabilities
+
+# Data Export/Import
+openpyxl==3.1.2  # For Excel export
+xlsxwriter==3.1.9  # For advanced Excel features

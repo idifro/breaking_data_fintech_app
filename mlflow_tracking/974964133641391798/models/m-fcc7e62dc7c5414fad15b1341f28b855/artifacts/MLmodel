@@ -1,0 +1,22 @@
+artifact_path: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/974964133641391798/models/m-fcc7e62dc7c5414fad15b1341f28b855/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.12
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+mlflow_version: 3.6.0
+model_id: m-fcc7e62dc7c5414fad15b1341f28b855
+model_size_bytes: 1453541
+model_uuid: m-fcc7e62dc7c5414fad15b1341f28b855
+prompts: null
+run_id: fc2a25077172434fafee702f638d9f34
+utc_time_created: '2025-11-18 07:14:23.162576'

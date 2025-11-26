@@ -1,0 +1,14 @@
+artifact_uri: /home/mha2cob/Downloads/breaking_data/spark_ml_pipeline/mlflow_tracking/260892442739248592/b0df76b34957481dac87a625e2242e22/artifacts
+end_time: 1763538763795
+entry_point_name: ''
+experiment_id: '260892442739248592'
+lifecycle_stage: active
+run_id: b0df76b34957481dac87a625e2242e22
+run_name: spark_rf_distributed_monitoring_AAL-AAPL-ABBV-AMD-AMGN-BABA-BIIB-CMCSA-CMG-COP_20251119_132208
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763538728527
+status: 3
+tags: []
+user_id: mha2cob
