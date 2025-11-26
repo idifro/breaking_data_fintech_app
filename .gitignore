@@ -155,7 +155,7 @@ checkpoint/
 # _delta_log/
 
 # Parquet files
-*.parquet
+# *.parquet
 
 # ORC files  
 *.orc

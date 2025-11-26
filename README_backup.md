@@ -29,13 +29,6 @@ spark_ml_pipeline/
 │   ├── MONITORING_GUIDE.md      # Scalability monitoring guide
 │   ├── PERFORMANCE_BENCHMARKS.md # Performance analysis guide
 │   └── QUICK_REFERENCE.md       # Quick command reference
-├── PROJECT_OVERVIEW.md          # 📘 Master architecture & setup guide
-├── TRAINING_PIPELINE.md         # 🎓 3 training modes comparison (GBT, RF, Hybrid)
-├── INFERENCE_PIPELINE.md        # 🔮 Airflow-triggered daily predictions
-├── SCALABILITY_PERFORMANCE.md   # 📊 Volume tests (5/10/20/29 stocks)
-├── STREAMING_PIPELINE.md        # 📡 Kafka + GPT sentiment analysis
-├── AIRFLOW_SETUP.md            # ⚙️  4-stage DAG workflow & monitoring
-├── ASTRADB_CONFIG.md           # 🗄️  NoSQL sentiment storage setup
 ├── data_csv/                     # Input data (5 stock symbols)
 ├── delta_tables/                 # Delta Lake storage with ACID properties
 ├── results/                      # Training, inference, and evaluation results
@@ -483,19 +476,10 @@ python scripts/load_testing_scenarios.py --scenario regression --baseline result
 
 ## 📚 Documentation
 
-### **Academic Project Documentation** (Data Engineering at Scale)
-- **� [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)**: Master architecture & complete system overview
-- **🎓 [TRAINING_PIPELINE.md](TRAINING_PIPELINE.md)**: 3 training modes comparison (Spark GBT, Spark RF, Hybrid Sklearn)
-- **🔮 [INFERENCE_PIPELINE.md](INFERENCE_PIPELINE.md)**: Airflow-triggered daily predictions (4-stage DAG)
-- **�📊 [SCALABILITY_PERFORMANCE.md](SCALABILITY_PERFORMANCE.md)**: Volume tests (5/10/20/29 stocks) with metrics
-- **📡 [STREAMING_PIPELINE.md](STREAMING_PIPELINE.md)**: Kafka + GPT sentiment analysis + AstraDB
-- **⚙️  [AIRFLOW_SETUP.md](AIRFLOW_SETUP.md)**: 4-stage DAG workflow, scheduling, monitoring
-- **🗄️  [ASTRADB_CONFIG.md](ASTRADB_CONFIG.md)**: NoSQL sentiment storage setup & integration
-
-### **Developer Documentation**
-- **📊 [docs/MONITORING_GUIDE.md](docs/MONITORING_GUIDE.md)**: Comprehensive monitoring documentation
-- **🚀 [docs/PERFORMANCE_BENCHMARKS.md](docs/PERFORMANCE_BENCHMARKS.md)**: Performance analysis and optimization
-- **⚡ [docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)**: Quick command reference and troubleshooting
+- **📊 MONITORING_GUIDE.md**: Comprehensive monitoring documentation
+- **🚀 PERFORMANCE_BENCHMARKS.md**: Performance analysis and optimization
+- **⚡ QUICK_REFERENCE.md**: Quick command reference and troubleshooting
+- **📋 IMPLEMENTATION_SUMMARY.md**: Detailed implementation notes
 
 ## 🔧 Troubleshooting
 
