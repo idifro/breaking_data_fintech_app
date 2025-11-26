@@ -164,7 +164,7 @@ Configuration:
 | Large (20) | 14.7x ❌ | **9.3x** ✅ | 12.1x | 4.0x |
 
 **Interpretation**:
-- ✅ **Spark RF**: Best scalability (9.3x) - closest to linear
+- ✅ **Spark RF**: Best scalability (9.3x) 
 - ❌ **Spark GBT**: Worst scalability (14.7x) - super-linear degradation
 - ⚠️ **Hybrid**: Poor scalability (12.1x) - centralized bottleneck
 
@@ -209,15 +209,6 @@ Configuration:
 
 **Key Insight**: Spark RF **increases throughput** at medium scale before degrading at large scale.
 
-### **Linear Scalability Scores**
-
-| Mode | Score | Trend | Rating |
-|------|-------|-------|--------|
-| Spark GBT | 0.0057 | DEGRADING | ❌ Very Poor |
-| **Spark RF** | **0.0486** | DEGRADING | ⚠️ **Best** |
-| Hybrid Sklearn | 0.0164 | DEGRADING | ❌ Poor |
-
-**Note**: All scores < 0.5 indicate sub-linear scaling, but Spark RF is **8.5x better** than GBT.
 
 ---
 
@@ -363,14 +354,6 @@ Configuration:
 | Spark GBT | 369.1 | Good |
 | Hybrid | 381.1 | Acceptable |
 
-### **Garbage Collection Overhead**
-
-**Spark GBT (Large)**: 82,351 seconds GC time (**86% of training time**!) ❌  
-**Spark RF**: Minimal GC pressure ✅  
-**Hybrid**: Moderate GC pressure
-
-**Critical Issue**: Spark GBT spends **86% of time in garbage collection** - major bottleneck.
-
 ### **Disk I/O**
 
 #### **Resource Samples (Spark GBT - Large Volume)**
@@ -476,70 +459,6 @@ Sample 100: CPU 22%, Memory 20.2 GB, Disk Read 5.3 TB, Disk Write 698 GB
 - Only positive R² at scale
 - Best MAE (0.0143)
 - Consistent accuracy
-
-### **Scalability Projections**
-
-#### **Estimated Performance for 29 Stocks (Full Production)**
-
-Based on scaling trends:
-
-| Metric | Spark GBT (estimated) | Spark RF (estimated) | Hybrid (estimated) |
-|--------|----------------------|----------------------|-------------------|
-| **Training Time** | ~6.5 hours ❌ | **~25 minutes** ✅ | ~85 minutes |
-| **Peak Memory** | ~31 GB | **~30 GB** | ~33 GB |
-| **MAE** | ~0.015 | **~0.014** | ~0.35 ❌ |
-| **Throughput** | ~3.5 rec/sec | **~55 rec/sec** | ~16 rec/sec |
-
-**Recommendation**: **Deploy Spark RF for 29-stock production system.**
-
-### **Optimization Suggestions**
-
-#### **For Spark RF** (Already Optimal)
-✅ Current configuration is production-ready  
-✅ Consider minor tuning:
-- Increase `numTrees` to 150 (from 100) for +1% accuracy
-- Adjust `maxDepth` based on hyperparameter tuning
-- Monitor memory at 29 stocks (should be ~30 GB)
-
-#### **For Spark GBT** (If Required)
-⚠️ **Not recommended**, but if must use:
-- Reduce `maxIter` from 150 to 50 (3x faster, slight accuracy loss)
-- Increase driver memory to 16 GB
-- Reduce `maxDepth` to 8 (from 12)
-- Expect 2+ hour training times
-
-#### **For Hybrid Sklearn**
-❌ **Abandon for production** - accuracy failure at scale
-
-### **Production Readiness Assessment**
-
-| Criterion | Spark GBT | Spark RF ⭐ | Hybrid Sklearn |
-|-----------|-----------|-------------|----------------|
-| **Training Speed** | ❌ Poor (2.6h) | ✅ Excellent (18.5m) | ⚠️ Acceptable (55m) |
-| **Scalability** | ❌ Very Poor | ✅ Good | ❌ Poor |
-| **Accuracy** | ⚠️ Acceptable | ✅ Best | ❌ Catastrophic |
-| **Memory Efficiency** | ⚠️ Acceptable | ✅ Best | ⚠️ Acceptable |
-| **Cost Efficiency** | ❌ Very Poor | ✅ Best | ⚠️ Acceptable |
-| **Production Ready** | **NO** | **YES** ✅ | **NO** |
-
-### **Decision Matrix**
-
-```
-IF data_volume <= 5 stocks:
-    Use: Spark RF (fast prototyping)
-    
-ELIF data_volume <= 10 stocks:
-    Use: Spark RF (peak throughput: 146.5 rec/s)
-    
-ELIF data_volume <= 29 stocks:
-    Use: Spark RF (production deployment)
-    Alternative: NONE (other modes not suitable)
-    
-ELSE:
-    Use: Spark RF with distributed cluster
-    Scale: Add more workers for > 50 stocks
-```
-
 ---
 
 ## Performance Comparison Charts

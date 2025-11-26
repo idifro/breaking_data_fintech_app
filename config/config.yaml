@@ -1,3 +1,7 @@
+astradb:
+  endpoint: https://d1091311-1ba8-4970-bd74-937d6cda55b0-us-east-2.apps.astra.datastax.com
+  token: astra_token_goes_here
+  table_name: news_sentiment_1
 
 data:
   available_stocks:

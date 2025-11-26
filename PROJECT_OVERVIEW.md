@@ -74,9 +74,9 @@ This project implements a **production-grade stock price forecasting platform** 
 │  │ AstraDB (Cassandra) Storage          │  │                               
 │  │   Table: news_sentiment_1            │  │                               
 │  └──────────────────────────────────────┘  │                               
-└─────────────────────┬───────────────────────┘                               
-                      │                                                        
-┌─────────────────────▼───────────────────────┐                               
+└─────────────────────-───────────────────────┘                               
+                                                     
+┌─────────────────────-───────────────────────┐                               
 │   3. TRAINING PIPELINE (Distributed ML)      │                               
 │  ┌──────────────────────────────────────┐  │                               
 │  │ Data Ingestion                        │  │                               
@@ -297,7 +297,7 @@ CREATE TABLE stock_AAPL (
 ### 3. **Machine Learning at Scale**
 ✅ Compared 3 distributed training approaches:
    - **Spark GBT**: Sequential on driver
-   - **Spark RF**: Fully distributed training ⭐
+   - **Spark RF**: Fully distributed training (Best Performance)
    - **Hybrid Sklearn**: Distributed preprocessing, centralized training
 
 ✅ Hyperparameter tuning with cross-validation  
@@ -554,46 +554,3 @@ spark_ml_pipeline/
 ```
 
 ---
-
-## 🎓 Academic Context
-
-**Course**: Data Engineering at Scale  
-**Semester**: Fall 2025  
-**Project Type**: Complete platform implementation  
-
-**Evaluation Criteria Addressed**:
-1. ✅ **Scalability**: Demonstrated with volume testing (5/10/20/29 stocks)
-2. ✅ **Distributed Processing**: Spark RF fully distributed training
-3. ✅ **Real-Time Streaming**: Kafka + Spark Structured Streaming
-4. ✅ **Workflow Orchestration**: Apache Airflow 4-stage DAG
-5. ✅ **MLOps**: MLflow tracking, registry, versioning
-6. ✅ **Performance Analysis**: Comprehensive benchmarking
-7. ✅ **Production Readiness**: Automated daily inference pipeline
-
----
-
-## 🏆 Key Achievements
-
-1. **5.5x Training Speedup**: Spark RF vs Spark GBT on 20 stocks
-2. **Distributed Training**: True parallel processing with Spark RF
-3. **Daily Automation**: Airflow DAG running production inference
-4. **Real-Time Streaming**: Kafka + Spark Streaming for news sentiment
-5. **Scalability Validation**: Tested across 4 data volumes
-6. **MLflow Integration**: Complete experiment tracking & model registry
-7. **ACID Transactions**: Delta Lake for reliable data management
-
----
-
-## 📞 Contact & Support
-
-For questions about this academic project:
-- Review documentation in `docs/` folder
-- Check `TROUBLESHOOTING.md` for common issues
-- Refer to inline code comments
-
----
-
-**Last Updated**: November 26, 2025  
-**Version**: 1.0.0  
-**Status**: Production Ready ✅  
-**Course**: Data Engineering at Scale

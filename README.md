@@ -58,9 +58,7 @@ spark_ml_pipeline/
 ### **Scalability Monitoring System** 🔧
 - ✅ **Real-time Performance Tracking**: CPU, memory, throughput metrics
 - ✅ **Data Volume Scalability**: Partition efficiency and data size analysis
-- ✅ **Pipeline Bottleneck Detection**: Identify performance constraints
 - ✅ **MLflow Monitoring Integration**: Automatic metrics logging
-- ✅ **Load Testing Framework**: Automated stress testing scenarios
 - ✅ **Resource Utilization Analysis**: Spark executor and driver monitoring
 
 ### **Enhanced Training Features**
@@ -70,18 +68,8 @@ spark_ml_pipeline/
 - ✅ **Model Validation**: Time-series aware train/test splitting
 - ✅ **Artifact Management**: Comprehensive model and plot storage
 
-### **Production-Ready Inference**
-- ✅ **Monitored Inference**: `inference_with_monitoring.py` with scalability tracking
-- ✅ **Real-time Predictions**: Sub-100ms latency for individual predictions
-- ✅ **Batch Processing**: Efficient large-scale inference capability
-- ✅ **Quality Checks**: Data validation and consistency monitoring
-- ✅ **Performance Analytics**: Throughput and latency analysis
-
 ### **Automated Testing & Benchmarking**
 - ✅ **Load Testing Scenarios**: Varying data volumes and concurrency
-- ✅ **Stress Testing**: Performance under extreme conditions
-- ✅ **Regression Detection**: Automated performance baseline comparison
-- ✅ **Concurrent Testing**: Multi-threaded inference testing
 - ✅ **Resource Profiling**: Memory and CPU usage analysis
 
 ## 📊 Monitoring Capabilities
@@ -310,14 +298,6 @@ python scripts/load_testing_scenarios.py --scenario volume --duration 120
 python scripts/load_testing_scenarios.py --scenario all --duration 600
 ```
 
-### 2. Performance Benchmarking
-```bash
-# Quick benchmark
-python scripts/load_testing_scenarios.py --scenario quick
-
-# Production simulation
-python scripts/load_testing_scenarios.py --scenario production --users 50 --duration 1800
-```
 
 ## ⚙️ Configuration
 
@@ -373,11 +353,6 @@ mlflow:
 - **Metrics Logging**: Performance, scalability, and accuracy metrics
 - **Artifact Storage**: Models, plots, monitoring reports
 
-### Performance Analysis
-- **Scalability Reports**: JSON and CSV format in `results/`
-- **Resource Utilization**: Memory, CPU, and executor efficiency
-- **Throughput Analysis**: Records/second with confidence intervals
-- **Bottleneck Detection**: Automated performance constraint identification
 
 ### Visualization Outputs
 - **Feature Importance**: Interactive and static plots
@@ -388,57 +363,15 @@ mlflow:
 ## 📈 Performance Benchmarks
 
 ### Expected Performance (Local 32GB System)
-- **Training Time**: 10-20 minutes (vs 1-2 hours for CNN)
+- **Training Time**: 10-20 minutes 
 - **Inference Latency**: <100ms per prediction
-- **Throughput**: 5,000-10,000 records/second
-- **Memory Usage**: 2-4GB peak (configurable)
-- **Scalability Score**: >0.8 for well-tuned systems
+- **Throughput**: 200 records/second
 
 ### Monitoring Thresholds
 - **CPU Usage**: Alert at 85%, critical at 95%
 - **Memory Usage**: Alert at 85% of allocated memory
 - **Throughput**: Minimum 100 records/second
-- **Scalability Score**: Minimum 0.6 for production
 
-## 🔧 Advanced Usage
-
-### Custom Monitoring Configuration
-```python
-# Custom monitoring setup
-monitoring_config = {
-    'enabled': True,
-    'detailed_metrics': True,
-    'experiment_name': 'custom_monitoring_experiment',
-    'resource_monitoring_interval': 0.5
-}
-
-monitor = ScalabilityMonitor(config, spark, monitoring_config)
-```
-
-### Performance Optimization
-```bash
-# Optimize for high throughput
-export SPARK_DRIVER_MEMORY=8g
-export SPARK_EXECUTOR_MEMORY=16g
-export SPARK_EXECUTOR_CORES=4
-
-# Run with optimized settings
-python scripts/train_model_with_monitoring.py --stocks all
-```
-
-### Custom Load Testing
-```python
-# Create custom load test scenario
-from scripts.load_testing_scenarios import CustomLoadTest
-
-test = CustomLoadTest(
-    name="custom_scenario",
-    concurrent_users=20,
-    data_multiplier=5,
-    duration=300
-)
-test.run()
-```
 
 ## 🔍 Monitoring Results Access
 
@@ -449,37 +382,6 @@ mlflow ui --host 0.0.0.0 --port 5000
 # Access: http://localhost:5000
 ```
 
-### Log Analysis
-```bash
-# View application logs
-tail -f logs/pipeline.log
-
-# View monitoring logs
-grep -E "(MONITOR|PERFORMANCE)" logs/pipeline.log
-
-# View scalability metrics
-find results/ -name "*scalability*" -type f
-```
-
-## 🧪 Testing & Validation
-
-### Unit Testing
-```bash
-# Run basic functionality tests
-python -m pytest tests/ -v
-
-# Test monitoring components
-python -c "
-from src.scalability_monitor import ScalabilityMonitor
-print('✅ Monitoring components validated')
-"
-```
-
-### Performance Regression Testing
-```bash
-# Run regression detection
-python scripts/load_testing_scenarios.py --scenario regression --baseline results/baseline_metrics.json
-```
 
 ## 📚 Documentation
 
@@ -497,42 +399,6 @@ python scripts/load_testing_scenarios.py --scenario regression --baseline result
 - **🚀 [docs/PERFORMANCE_BENCHMARKS.md](docs/PERFORMANCE_BENCHMARKS.md)**: Performance analysis and optimization
 - **⚡ [docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)**: Quick command reference and troubleshooting
 
-## 🔧 Troubleshooting
-
-### Common Issues
-
-1. **Memory Issues**
-   ```bash
-   # Reduce memory allocation
-   export SPARK_DRIVER_MEMORY=2g
-   export SPARK_EXECUTOR_MEMORY=4g
-   ```
-
-2. **Monitoring Not Working**
-   ```bash
-   # Verify monitoring configuration
-   python -c "
-   from src.monitoring_config_manager import get_monitoring_config_manager
-   cm = get_monitoring_config_manager()
-   print('Configs:', list(cm.get_all_monitoring_configs().keys()))
-   "
-   ```
-
-3. **MLflow Tracking Issues**
-   ```bash
-   # Check MLflow setup
-   mlflow doctor
-   echo $MLFLOW_TRACKING_URI
-   ```
-
-## 🎯 Key Advantages
-
-### Over Traditional ML Pipelines
-- **🚀 10x Faster Training**: Optimized feature engineering and GBT efficiency
-- **📊 Real-time Monitoring**: Live performance and scalability tracking
-- **🔧 Production-Ready**: Enterprise-level monitoring and error handling
-- **📈 Interpretable**: Feature importance and performance analytics
-- **⚡ Scalable**: Distributed Spark processing with monitoring
 
 ### Monitoring Benefits
 - **🔍 Bottleneck Detection**: Automated performance constraint identification
@@ -543,13 +409,11 @@ python scripts/load_testing_scenarios.py --scenario regression --baseline result
 
 ## 🚀 Future Enhancements
 
-- [ ] **Real-time Streaming**: Apache Kafka integration with monitoring
+- [ ] **Model Retraining**: Drift based Model retraining Pipeline
 - [ ] **Automated Scaling**: Dynamic resource allocation based on monitoring
-- [ ] **Advanced Alerting**: Email/Slack notifications for performance issues
+- [ ] **Recursive Prediction**: currently prediction close gain, extend it to high, open, close, volume to enable recursive prediction
 - [ ] **Model Drift Detection**: Automated model performance degradation alerts
-- [ ] **Distributed Monitoring**: Multi-cluster monitoring aggregation
 - [ ] **Custom Dashboards**: Real-time monitoring dashboard interfaces
+- [ ] **Cloud Deployment**: Cloud Deployment of entire streaming, train and inference pipeline.
 
 ---
-
-**Note**: This pipeline demonstrates enterprise-level monitoring capabilities for Data Engineering at Scale projects, providing comprehensive performance tracking, scalability analysis, and production-ready monitoring infrastructure.
