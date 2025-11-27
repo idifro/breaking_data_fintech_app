@@ -5,7 +5,11 @@
 
 ---
 
+<<<<<<< HEAD
 ## 📋 Table of Contents
+=======
+##  Table of Contents
+>>>>>>> d3e5d7a (added streaming and backend)
 
 - [Executive Summary](#executive-summary)
 - [Test Methodology](#test-methodology)
@@ -25,7 +29,11 @@ This document presents comprehensive scalability and performance analysis of **t
 
 ### **Key Findings**
 
+<<<<<<< HEAD
 🏆 **Winner: Spark RF** (Random Forest)
+=======
+ **Winner: Spark RF** (Random Forest)
+>>>>>>> d3e5d7a (added streaming and backend)
 - **5.5x faster** than Spark GBT at large scale
 - **Best accuracy** (R² = 0.014, MAE = 0.0143)
 - **Most cost-efficient** (9x better than Spark GBT)
@@ -35,9 +43,15 @@ This document presents comprehensive scalability and performance analysis of **t
 
 | Mode | Small (5 stocks) | Medium (10 stocks) | Large (20 stocks) | Coverage |
 |------|------------------|--------------------|--------------------|----------|
+<<<<<<< HEAD
 | **Spark GBT** | ✅ SUCCESS | ✅ SUCCESS | ✅ SUCCESS | 100% |
 | **Spark RF** | ✅ SUCCESS | ✅ SUCCESS | ✅ SUCCESS | 100% |
 | **Hybrid Sklearn** | ✅ SUCCESS | ✅ SUCCESS | ✅ SUCCESS | 100% |
+=======
+| **Spark GBT** |  SUCCESS |  SUCCESS |  SUCCESS | 100% |
+| **Spark RF** |  SUCCESS |  SUCCESS |  SUCCESS | 100% |
+| **Hybrid Sklearn** |  SUCCESS |  SUCCESS |  SUCCESS | 100% |
+>>>>>>> d3e5d7a (added streaming and backend)
 | **Total** | 3/3 | 3/3 | 3/3 | **75%** (9/12) |
 
 **Note**: Full volume (29 stocks) tests marked as NOT_RUN (planned for future evaluation).
@@ -81,10 +95,17 @@ Configuration:
 ### **Metrics Collected**
 
 #### **Performance Metrics**
+<<<<<<< HEAD
 - ⏱️ **Training Time**: Total time (seconds) from data load to model save
 - 🚀 **Throughput**: Records processed per second
 - 📊 **Memory Usage**: Peak memory consumption (MB)
 - 💰 **Cost Efficiency**: Combined time + memory cost score
+=======
+- ⏱ **Training Time**: Total time (seconds) from data load to model save
+-  **Throughput**: Records processed per second
+-  **Memory Usage**: Peak memory consumption (MB)
+-  **Cost Efficiency**: Combined time + memory cost score
+>>>>>>> d3e5d7a (added streaming and backend)
 
 #### **Accuracy Metrics**
 - **MAE** (Mean Absolute Error): Average prediction error
@@ -106,29 +127,51 @@ Configuration:
 
 | Mode | Time (s) | Time/1K (ms) | Throughput | Memory (GB) | MAE | RMSE | R² |
 |------|----------|--------------|------------|-------------|-----|------|----|
+<<<<<<< HEAD
 | **Spark RF** ⭐ | **119.0** | **1,466** | **99.5** | **21.2** | **0.0151** | **0.0222** | **-0.0003** |
+=======
+| **Spark RF**  | **119.0** | **1,466** | **99.5** | **21.2** | **0.0151** | **0.0222** | **-0.0003** |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Hybrid Sklearn | 273.2 | 3,367 | 43.3 | 24.8 | 0.0360 | 0.0445 | -3.014 |
 | Spark GBT | 648.9 | 7,999 | 18.2 | 29.2 | 0.0166 | 0.0253 | -0.299 |
 
 **Winners**:
+<<<<<<< HEAD
 - ⚡ **Fastest**: Spark RF (119.0s) - 2.3x faster than Hybrid, 5.5x faster than GBT
 - 💾 **Memory**: Spark RF (21.2 GB) - 17% less than Hybrid, 27% less than GBT
 - 🎯 **Accuracy**: Spark RF (MAE 0.0151) - 58% better than Hybrid, 9% better than GBT
 - 🚀 **Throughput**: Spark RF (99.5 rec/s) - 2.3x higher than Hybrid, 5.5x higher than GBT
+=======
+-  **Fastest**: Spark RF (119.0s) - 2.3x faster than Hybrid, 5.5x faster than GBT
+-  **Memory**: Spark RF (21.2 GB) - 17% less than Hybrid, 27% less than GBT
+-  **Accuracy**: Spark RF (MAE 0.0151) - 58% better than Hybrid, 9% better than GBT
+-  **Throughput**: Spark RF (99.5 rec/s) - 2.3x higher than Hybrid, 5.5x higher than GBT
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Medium Volume (10 Stocks)**
 
 | Mode | Time (s) | Time/1K (ms) | Throughput | Memory (GB) | MAE | RMSE | R² |
 |------|----------|--------------|------------|-------------|-----|------|----|
+<<<<<<< HEAD
 | **Spark RF** ⭐ | **192.8** | **2,377** | **146.5** | **24.3** | **0.0154** | **0.0227** | **0.0008** |
+=======
+| **Spark RF**  | **192.8** | **2,377** | **146.5** | **24.3** | **0.0154** | **0.0227** | **0.0008** |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Hybrid Sklearn | 679.9 | 8,381 | 41.5 | 24.7 | 0.0253 | 0.0331 | -1.156 |
 | Spark GBT | 1,441.3 | 17,766 | 19.6 | 30.1 | 0.0165 | 0.0259 | -0.303 |
 
 **Winners**:
+<<<<<<< HEAD
 - ⚡ **Fastest**: Spark RF (192.8s) - 3.5x faster than Hybrid, 7.5x faster than GBT
 - 💾 **Memory**: Spark RF (24.3 GB) - 1.6% less than Hybrid, 19% less than GBT
 - 🎯 **Accuracy**: Spark RF (MAE 0.0154) - 39% better than Hybrid, 7% better than GBT
 - 🚀 **Throughput**: Spark RF (146.5 rec/s) - **HIGHEST** across all tests
+=======
+-  **Fastest**: Spark RF (192.8s) - 3.5x faster than Hybrid, 7.5x faster than GBT
+-  **Memory**: Spark RF (24.3 GB) - 1.6% less than Hybrid, 19% less than GBT
+-  **Accuracy**: Spark RF (MAE 0.0154) - 39% better than Hybrid, 7% better than GBT
+-  **Throughput**: Spark RF (146.5 rec/s) - **HIGHEST** across all tests
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Observation**: Spark RF **improves throughput** at medium scale (146.5 vs 99.5 rec/s).
 
@@ -136,16 +179,28 @@ Configuration:
 
 | Mode | Time (s) | Time/1K (ms) | Throughput | Memory (GB) | MAE | RMSE | R² |
 |------|----------|--------------|------------|-------------|-----|------|----|
+<<<<<<< HEAD
 | **Spark RF** ⭐ | **1,110.0** | **13,682** | **73.0** | **28.0** | **0.0143** | **0.0206** | **0.0140** |
+=======
+| **Spark RF**  | **1,110.0** | **13,682** | **73.0** | **28.0** | **0.0143** | **0.0206** | **0.0140** |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Hybrid Sklearn | 3,293.5 | 40,597 | 24.6 | 30.9 | 0.3014 | 0.3787 | -0.040 |
 | Spark GBT | 9,537.6 | 117,564 | 8.5 | 29.9 | 0.0152 | 0.0229 | -0.229 |
 
 **Winners**:
+<<<<<<< HEAD
 - ⚡ **Fastest**: Spark RF (1,110s = 18.5 min) - 3.0x faster than Hybrid, **8.6x faster than GBT**
 - 💾 **Memory**: Spark RF (28.0 GB) - 9% less than Hybrid, 6% less than GBT
 - 🎯 **Accuracy**: Spark RF (MAE 0.0143) - **21x better than Hybrid**, 6% better than GBT
 - 🚀 **Throughput**: Spark RF (73.0 rec/s) - 3.0x higher than Hybrid, 8.6x higher than GBT
 - 🏆 **Only Positive R²**: Spark RF (0.0140) vs negative for others
+=======
+-  **Fastest**: Spark RF (1,110s = 18.5 min) - 3.0x faster than Hybrid, **8.6x faster than GBT**
+-  **Memory**: Spark RF (28.0 GB) - 9% less than Hybrid, 6% less than GBT
+-  **Accuracy**: Spark RF (MAE 0.0143) - **21x better than Hybrid**, 6% better than GBT
+-  **Throughput**: Spark RF (73.0 rec/s) - 3.0x higher than Hybrid, 8.6x higher than GBT
+-  **Only Positive R²**: Spark RF (0.0140) vs negative for others
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Critical**: Spark GBT takes **2.6 hours** at this scale - **unacceptable for production**.
 
@@ -157,6 +212,7 @@ Configuration:
 
 #### **Time Scale Factors** (Relative to Small Volume)
 
+<<<<<<< HEAD
 | Volume | Spark GBT | Spark RF ⭐ | Hybrid Sklearn | Ideal Linear |
 |--------|-----------|-------------|----------------|--------------|
 | Small (5) | 1.0x | 1.0x | 1.0x | 1.0x |
@@ -174,6 +230,25 @@ Configuration:
 |--------|-----------|-------------|----------------|
 | Small → Medium | 45.0% | **61.7%** ✅ | 40.2% |
 | Small → Large | 6.8% ❌ | **10.7%** ✅ | 8.3% |
+=======
+| Volume | Spark GBT | Spark RF  | Hybrid Sklearn | Ideal Linear |
+|--------|-----------|-------------|----------------|--------------|
+| Small (5) | 1.0x | 1.0x | 1.0x | 1.0x |
+| Medium (10) | 2.2x | **1.6x**  | 2.5x | 2.0x |
+| Large (20) | 14.7x  | **9.3x**  | 12.1x | 4.0x |
+
+**Interpretation**:
+-  **Spark RF**: Best scalability (9.3x) 
+-  **Spark GBT**: Worst scalability (14.7x) - super-linear degradation
+-  **Hybrid**: Poor scalability (12.1x) - centralized bottleneck
+
+#### **Scaling Efficiency** (How Close to Linear)
+
+| Volume | Spark GBT | Spark RF  | Hybrid Sklearn |
+|--------|-----------|-------------|----------------|
+| Small → Medium | 45.0% | **61.7%**  | 40.2% |
+| Small → Large | 6.8%  | **10.7%**  | 8.3% |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Formula**: `Scaling Efficiency = (Data Scale Factor / Time Scale Factor) × 100%`
 
@@ -183,17 +258,28 @@ Configuration:
 
 #### **Memory Scale Factors** (Relative to Small Volume)
 
+<<<<<<< HEAD
 | Volume | Spark GBT | Spark RF ⭐ | Hybrid Sklearn | Ideal Linear |
+=======
+| Volume | Spark GBT | Spark RF  | Hybrid Sklearn | Ideal Linear |
+>>>>>>> d3e5d7a (added streaming and backend)
 |--------|-----------|-------------|----------------|--------------|
 | Small (5) | 1.0x | 1.0x | 1.0x | 1.0x |
 | Medium (10) | 1.03x | 1.14x | 1.00x | 2.0x |
 | Large (20) | 1.03x | **1.32x** | 1.25x | 4.0x |
 
 **Interpretation**:
+<<<<<<< HEAD
 - ✅ **All modes**: Excellent memory scaling (near-constant)
 - ✅ **Spark RF**: 32% increase for 4x data (highly efficient)
 - ✅ **Spark GBT**: Only 3% increase (but high baseline)
 - ✅ **Hybrid**: 25% increase (good, but high absolute values)
+=======
+-  **All modes**: Excellent memory scaling (near-constant)
+-  **Spark RF**: 32% increase for 4x data (highly efficient)
+-  **Spark GBT**: Only 3% increase (but high baseline)
+-  **Hybrid**: 25% increase (good, but high absolute values)
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Conclusion**: Memory is **NOT a bottleneck** - all modes scale memory efficiently.
 
@@ -201,11 +287,19 @@ Configuration:
 
 #### **Records Processed per Second**
 
+<<<<<<< HEAD
 | Volume | Spark GBT | Spark RF ⭐ | Hybrid Sklearn |
 |--------|-----------|-------------|----------------|
 | Small | 18.2 | 99.5 | 43.3 |
 | Medium | 19.6 (+7.4%) | **146.5 (+47%)** ⚡ | 41.5 (-4.2%) |
 | Large | 8.5 (-56.6%) ❌ | **73.0 (-26.6%)** | 24.6 (-43.2%) |
+=======
+| Volume | Spark GBT | Spark RF  | Hybrid Sklearn |
+|--------|-----------|-------------|----------------|
+| Small | 18.2 | 99.5 | 43.3 |
+| Medium | 19.6 (+7.4%) | **146.5 (+47%)**  | 41.5 (-4.2%) |
+| Large | 8.5 (-56.6%)  | **73.0 (-26.6%)** | 24.6 (-43.2%) |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Key Insight**: Spark RF **increases throughput** at medium scale before degrading at large scale.
 
@@ -217,11 +311,16 @@ Configuration:
 ### **1. Fastest Training (by Volume)**
 
 #### **Small Volume (5 Stocks)**
+<<<<<<< HEAD
 🏆 **Winner: Spark RF** (118.97s)
+=======
+ **Winner: Spark RF** (118.97s)
+>>>>>>> d3e5d7a (added streaming and backend)
 - 2.3x faster than Hybrid Sklearn (273.15s)
 - 5.5x faster than Spark GBT (648.92s)
 
 #### **Medium Volume (10 Stocks)**
+<<<<<<< HEAD
 🏆 **Winner: Spark RF** (192.81s)
 - 3.5x faster than Hybrid Sklearn (679.90s)
 - 7.5x faster than Spark GBT (1,441.33s)
@@ -230,6 +329,16 @@ Configuration:
 🏆 **Winner: Spark RF** (1,110.0s = **18.5 minutes**)
 - 3.0x faster than Hybrid Sklearn (3,293.5s = 54.9 min)
 - **8.6x faster** than Spark GBT (9,537.6s = **2.6 hours**) ⚡
+=======
+ **Winner: Spark RF** (192.81s)
+- 3.5x faster than Hybrid Sklearn (679.90s)
+- 7.5x faster than Spark GBT (1,441.33s)
+
+#### **Large Volume (20 Stocks)**  **PRODUCTION SCALE**
+ **Winner: Spark RF** (1,110.0s = **18.5 minutes**)
+- 3.0x faster than Hybrid Sklearn (3,293.5s = 54.9 min)
+- **8.6x faster** than Spark GBT (9,537.6s = **2.6 hours**) 
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **2. Most Memory Efficient**
 
@@ -245,21 +354,37 @@ Configuration:
 
 #### **R² Score (Higher is Better)**
 
+<<<<<<< HEAD
 | Volume | Spark GBT | Spark RF ⭐ | Hybrid Sklearn |
 |--------|-----------|-------------|----------------|
 | Small | -0.299 | **-0.0003** ✅ | -3.014 ❌ |
 | Medium | -0.303 | **+0.0008** ✅ | -1.156 |
 | Large | -0.229 | **+0.0140** ✅ | -0.040 |
+=======
+| Volume | Spark GBT | Spark RF  | Hybrid Sklearn |
+|--------|-----------|-------------|----------------|
+| Small | -0.299 | **-0.0003**  | -3.014  |
+| Medium | -0.303 | **+0.0008**  | -1.156 |
+| Large | -0.229 | **+0.0140**  | -0.040 |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Key Finding**: **Only Spark RF achieves positive R²** at medium and large scales!
 
 #### **MAE (Lower is Better)**
 
+<<<<<<< HEAD
 | Volume | Spark GBT | Spark RF ⭐ | Hybrid Sklearn |
 |--------|-----------|-------------|----------------|
 | Small | 0.0166 | **0.0151** ✅ | 0.0360 |
 | Medium | 0.0165 | **0.0154** ✅ | 0.0253 |
 | Large | 0.0152 | **0.0143** ✅ | **0.3014** ❌ |
+=======
+| Volume | Spark GBT | Spark RF  | Hybrid Sklearn |
+|--------|-----------|-------------|----------------|
+| Small | 0.0166 | **0.0151**  | 0.0360 |
+| Medium | 0.0165 | **0.0154**  | 0.0253 |
+| Large | 0.0152 | **0.0143**  | **0.3014**  |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Critical**: Hybrid Sklearn **catastrophic failure** at large scale (MAE = 0.3014, **21x worse**).
 
@@ -268,7 +393,11 @@ Configuration:
 | Volume | Winner | Throughput (rec/sec) | vs 2nd Place | vs 3rd Place |
 |--------|--------|----------------------|--------------|--------------|
 | Small | **Spark RF** | 99.5 | +130% (vs Hybrid) | +445% (vs GBT) |
+<<<<<<< HEAD
 | Medium | **Spark RF** | **146.5** ⚡ | +253% (vs Hybrid) | +647% (vs GBT) |
+=======
+| Medium | **Spark RF** | **146.5**  | +253% (vs Hybrid) | +647% (vs GBT) |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Large | **Spark RF** | 73.0 | +197% (vs Hybrid) | +760% (vs GBT) |
 
 **Observation**: Spark RF throughput **peaks at medium volume** (146.5 rec/s).
@@ -277,11 +406,19 @@ Configuration:
 
 #### **Cost per 1K Rows** (Lower is Better)
 
+<<<<<<< HEAD
 | Volume | Spark GBT | Spark RF ⭐ | Hybrid Sklearn |
 |--------|-----------|-------------|----------------|
 | Small | 233,349 | **31,115** ✅ | 83,344 |
 | Medium | 535,064 | **57,691** ✅ | 206,971 |
 | Large | 3,520,533 | **383,608** ✅ | 1,255,038 |
+=======
+| Volume | Spark GBT | Spark RF  | Hybrid Sklearn |
+|--------|-----------|-------------|----------------|
+| Small | 233,349 | **31,115**  | 83,344 |
+| Medium | 535,064 | **57,691**  | 206,971 |
+| Large | 3,520,533 | **383,608**  | 1,255,038 |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Winner**: **Spark RF is 9.2x more cost-efficient** than Spark GBT at large scale!
 
@@ -297,7 +434,11 @@ Configuration:
 
 | Mode | Total Cost | Cost/1K Rows | Ranking |
 |------|------------|--------------|---------|
+<<<<<<< HEAD
 | **Spark RF** ⭐ | 2,524,270 | **31,115** | 1st (7.5x cheaper than GBT) |
+=======
+| **Spark RF**  | 2,524,270 | **31,115** | 1st (7.5x cheaper than GBT) |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Hybrid Sklearn | 6,761,474 | 83,344 | 2nd |
 | Spark GBT | 18,930,926 | 233,349 | 3rd |
 
@@ -305,7 +446,11 @@ Configuration:
 
 | Mode | Total Cost | Cost/1K Rows | Ranking |
 |------|------------|--------------|---------|
+<<<<<<< HEAD
 | **Spark RF** ⭐ | 4,680,279 | **57,691** | 1st (9.3x cheaper than GBT) |
+=======
+| **Spark RF**  | 4,680,279 | **57,691** | 1st (9.3x cheaper than GBT) |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Hybrid Sklearn | 16,790,939 | 206,971 | 2nd |
 | Spark GBT | 43,408,147 | 535,064 | 3rd |
 
@@ -313,17 +458,29 @@ Configuration:
 
 | Mode | Total Cost | Cost/1K Rows | Ranking |
 |------|------------|--------------|---------|
+<<<<<<< HEAD
 | **Spark RF** ⭐ | 31,120,967 | **383,608** | 1st (**9.2x cheaper** than GBT) |
 | Hybrid Sklearn | 101,817,445 | 1,255,038 | 2nd (3.3x more expensive) |
 | Spark GBT | 285,610,318 | 3,520,533 | 3rd (9.2x more expensive) ❌ |
+=======
+| **Spark RF**  | 31,120,967 | **383,608** | 1st (**9.2x cheaper** than GBT) |
+| Hybrid Sklearn | 101,817,445 | 1,255,038 | 2nd (3.3x more expensive) |
+| Spark GBT | 285,610,318 | 3,520,533 | 3rd (9.2x more expensive)  |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Cost Scaling**
 
 | Mode | Small → Large | Cost Increase |
 |------|---------------|---------------|
+<<<<<<< HEAD
 | **Spark RF** | 31M → 31M | **12.3x** ✅ |
 | Hybrid Sklearn | 6.8M → 102M | 15.1x |
 | Spark GBT | 18.9M → 286M | **15.1x** ❌ |
+=======
+| **Spark RF** | 31M → 31M | **12.3x**  |
+| Hybrid Sklearn | 6.8M → 102M | 15.1x |
+| Spark GBT | 18.9M → 286M | **15.1x**  |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Insight**: Spark RF has **best cost scalability** - costs increase slowest with data growth.
 
@@ -336,7 +493,11 @@ Configuration:
 | Mode | CPU % | Efficiency Rating |
 |------|-------|-------------------|
 | Spark GBT | 54.9% | Medium (driver-bound) |
+<<<<<<< HEAD
 | **Spark RF** | **27.4%** | **High** (distributed) ✅ |
+=======
+| **Spark RF** | **27.4%** | **High** (distributed)  |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Hybrid Sklearn | 58.9% | Medium (single-node) |
 
 **Interpretation**:
@@ -350,7 +511,11 @@ Configuration:
 
 | Mode | Memory/1K (MB) | Efficiency |
 |------|----------------|------------|
+<<<<<<< HEAD
 | **Spark RF** | **345.6** | Best ✅ |
+=======
+| **Spark RF** | **345.6** | Best  |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Spark GBT | 369.1 | Good |
 | Hybrid | 381.1 | Acceptable |
 
@@ -375,17 +540,29 @@ Sample 100: CPU 22%, Memory 20.2 GB, Disk Read 5.3 TB, Disk Write 698 GB
 
 ### **Spark GBT Bottlenecks**
 
+<<<<<<< HEAD
 1. **Sequential Tree Building** ❌
+=======
+1. **Sequential Tree Building** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - Trees built one at a time on driver
    - No parallelization of training
    - 14.7x time degradation at large scale
 
+<<<<<<< HEAD
 2. **Garbage Collection Overhead** ❌
+=======
+2. **Garbage Collection Overhead** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - 82,351 seconds GC time (86% of total)
    - Memory churn from sequential processing
    - Driver memory pressure
 
+<<<<<<< HEAD
 3. **Poor Scalability** ❌
+=======
+3. **Poor Scalability** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - Linear scalability score: 0.0057
    - 2.6 hours for 20 stocks (unacceptable)
    - Super-linear time degradation
@@ -394,36 +571,64 @@ Sample 100: CPU 22%, Memory 20.2 GB, Disk Read 5.3 TB, Disk Write 698 GB
 
 ### **Spark RF Strengths**
 
+<<<<<<< HEAD
 1. **Distributed Training** ✅
+=======
+1. **Distributed Training** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - Trees trained in parallel across workers
    - 9.3x time scaling (best among modes)
    - Efficient cluster utilization
 
+<<<<<<< HEAD
 2. **Memory Efficiency** ✅
+=======
+2. **Memory Efficiency** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - Lowest memory per 1K rows
    - Minimal GC overhead
    - 32% memory increase for 4x data
 
+<<<<<<< HEAD
 3. **Best Accuracy** ✅
+=======
+3. **Best Accuracy** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - Only mode with positive R² at scale
    - Best MAE across all volumes
    - Consistent performance
 
+<<<<<<< HEAD
 **Verdict**: **Production-ready** ⭐
 
 ### **Hybrid Sklearn Bottlenecks**
 
 1. **Centralized Training** ❌
+=======
+**Verdict**: **Production-ready** 
+
+### **Hybrid Sklearn Bottlenecks**
+
+1. **Centralized Training** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - All training on single driver node
    - Spark → Pandas conversion overhead
    - 12.1x time scaling (poor)
 
+<<<<<<< HEAD
 2. **Catastrophic Accuracy Failure** ❌
+=======
+2. **Catastrophic Accuracy Failure** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - MAE = 0.3014 at large scale (21x worse)
    - R² = -0.040 (negative)
    - Unusable for production
 
+<<<<<<< HEAD
 3. **Data Collection Overhead** ❌
+=======
+3. **Data Collection Overhead** 
+>>>>>>> d3e5d7a (added streaming and backend)
    - Collect all Spark data to driver
    - Pandas memory limitations
    - Not truly scalable
@@ -443,7 +648,11 @@ Sample 100: CPU 22%, Memory 20.2 GB, Disk Read 5.3 TB, Disk Write 698 GB
 - Easy to iterate
 
 #### **2. Production High-Throughput** (10-29 stocks)
+<<<<<<< HEAD
 **Recommended**: **Spark RF** ⭐
+=======
+**Recommended**: **Spark RF** 
+>>>>>>> d3e5d7a (added streaming and backend)
 - 146.5 rec/sec throughput (medium)
 - 73.0 rec/sec throughput (large)
 - Fully distributed
@@ -467,6 +676,7 @@ Sample 100: CPU 22%, Memory 20.2 GB, Disk Read 5.3 TB, Disk Write 698 GB
 
 ```
 Small (5 stocks):
+<<<<<<< HEAD
 Spark RF:    ████ 119s
 Hybrid:      ██████████ 273s (2.3x slower)
 Spark GBT:   ███████████████████████ 649s (5.5x slower)
@@ -480,6 +690,21 @@ Large (20 stocks):
 Spark RF:    ████████████████████ 1,110s (18.5 min)
 Hybrid:      ████████████████████████████████████████████████████████ 3,294s (55 min)
 Spark GBT:   ████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████ 9,538s (2.6 hours!)
+=======
+Spark RF:     119s
+Hybrid:       273s (2.3x slower)
+Spark GBT:    649s (5.5x slower)
+
+Medium (10 stocks):
+Spark RF:     193s
+Hybrid:       680s (3.5x slower)
+Spark GBT:    1,441s (7.5x slower)
+
+Large (20 stocks):
+Spark RF:     1,110s (18.5 min)
+Hybrid:       3,294s (55 min)
+Spark GBT:    9,538s (2.6 hours!)
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ### **Accuracy Comparison (R²)**
@@ -505,9 +730,15 @@ Hybrid:        |-0.040| (negative)
 
 ```
 Large Volume:
+<<<<<<< HEAD
 Spark RF:     ████ 383K (BEST)
 Hybrid:       ██████████ 1.26M (3.3x more)
 Spark GBT:    ██████████████████████████████ 3.52M (9.2x more!)
+=======
+Spark RF:      383K (BEST)
+Hybrid:        1.26M (3.3x more)
+Spark GBT:     3.52M (9.2x more!)
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ---
@@ -558,9 +789,15 @@ Spark GBT:    ██████████████████████
 
 ### **Detailed Reports**
 
+<<<<<<< HEAD
 📊 **Complete Analysis**: `Final_Report/complete_evaluation_analysis_20251125_230100.json`  
 📈 **HTML Report**: `Final_Report/validation_scalability_analysis_report_20251125_230054.html`  
 📁 **Mode-Specific Results**:
+=======
+ **Complete Analysis**: `Final_Report/complete_evaluation_analysis_20251125_230100.json`  
+ **HTML Report**: `Final_Report/validation_scalability_analysis_report_20251125_230054.html`  
+ **Mode-Specific Results**:
+>>>>>>> d3e5d7a (added streaming and backend)
 - `Final_Report/spark_rf/` - Random Forest results
 - `Final_Report/spark_gbt/` - GBT results  
 - `Final_Report/hybrid_sklearn/` - Hybrid results
@@ -595,4 +832,8 @@ Spark GBT:    ██████████████████████
 **Evaluation Date**: November 25, 2025  
 **Version**: 1.0.0  
 **Total Experiments**: 9 (75% coverage)  
+<<<<<<< HEAD
 **Production Recommendation**: **Spark RF** ⭐
+=======
+**Production Recommendation**: **Spark RF** 
+>>>>>>> d3e5d7a (added streaming and backend)

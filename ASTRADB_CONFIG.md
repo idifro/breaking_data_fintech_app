@@ -5,7 +5,11 @@
 
 ---
 
+<<<<<<< HEAD
 ## 📋 Table of Contents
+=======
+##  Table of Contents
+>>>>>>> d3e5d7a (added streaming and backend)
 
 - [Overview](#overview)
 - [Architecture](#architecture)
@@ -24,11 +28,19 @@
 
 **AstraDB** (powered by Apache Cassandra) stores **financial news sentiment data** for 29 stocks. It serves as the **sentiment data layer** for the ML pipeline, providing:
 
+<<<<<<< HEAD
 - ✅ **Scalable NoSQL Storage**: Handle millions of sentiment records
 - ✅ **Low-Latency Queries**: < 100ms response time for stock queries
 - ✅ **Multi-Region Support**: Global availability
 - ✅ **Cloud-Native**: Fully managed by DataStax
 - ✅ **Python Integration**: astrapy SDK for seamless access
+=======
+-  **Scalable NoSQL Storage**: Handle millions of sentiment records
+-  **Low-Latency Queries**: < 100ms response time for stock queries
+-  **Multi-Region Support**: Global availability
+-  **Cloud-Native**: Fully managed by DataStax
+-  **Python Integration**: astrapy SDK for seamless access
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Use Cases**
 
@@ -42,6 +54,7 @@
 ## Architecture
 
 ```
+<<<<<<< HEAD
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                      ASTRADB ARCHITECTURE                                │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -185,6 +198,151 @@ Delta Lake
 ML Training/Inference
    │
    └─ Use Scaled_sentiment as feature for stock price prediction
+=======
+
+                      ASTRADB ARCHITECTURE                                
+
+
+
+                        DATA INGESTION                                 
+
+                                                                       
+   NewsAPI → GPT-3.5 Sentiment → AstraDB                             
+                                                                       
+   1. Fetch financial news (NewsAPI)                                  
+   2. Score sentiment with GPT-3.5 (1-5 scale)                        
+   3. Write to AstraDB (news_sentiment_1 table)                       
+                                                                       
+   Script: FNSPID_Financial_News_Dataset/data_processor/              
+           score_by_gpt.py                                            
+                                                                       
+
+                            
+                            
+
+                         ASTRADB (Cassandra)                             
+                    Cloud-Hosted NoSQL Database                          
+
+                                                                         
+   Endpoint: https://YOUR-DB-ID-REGION.apps.astra.datastax.com         
+   Region: us-east-1 (or configured region)                             
+   Keyspace: default_keyspace                                           
+                                                                         
+              
+     Table: news_sentiment_1                                         
+                                                                      
+     Partition Key: stock_symbol (TEXT)                              
+     Clustering Key: published_at (TIMESTAMP) DESC                   
+                                                                      
+     Columns:                                                        
+       • stock_symbol (TEXT)                                         
+       • published_at (TIMESTAMP)                                    
+       • title (TEXT)                                                
+       • description (TEXT)                                          
+       • url (TEXT)                                                  
+       • source (TEXT)                                               
+       • sentiment_score (DOUBLE)                                    
+       • scaled_sentiment (DOUBLE)                                   
+       • created_at (TIMESTAMP)                                      
+                                                                      
+     Indexes:                                                        
+       • Primary: (stock_symbol, published_at)                       
+                                                                      
+     Typical Rows: ~500,000 (growing)                                
+     Storage: ~50-100 MB                                             
+              
+                                                                         
+   Data Distribution:                                                   
+   • Partitioned by stock_symbol (29 partitions)                        
+   • Clustered by published_at (time-series ordering)                   
+   • Each stock partition: ~17,000 rows (500k / 29)                     
+                                                                         
+
+                             
+                             
+
+                        DATA CONSUMPTION                                 
+
+                                                                         
+   Daily Airflow Pipeline (23:00 UTC)                                   
+                                                                         
+   1. Query AstraDB for 29 stocks (per-stock partition queries)         
+   2. Filter to relevant dates (event_date = YYYY-MM-DD)                
+   3. Group by (stock_symbol, date) and calculate mean sentiment        
+   4. Join with YFinance price data                                     
+   5. Add features: Sentiment_gpt, News_flag, Scaled_sentiment          
+   6. Save to Delta Lake                                                 
+                                                                         
+   Script: src/compute_sentiment_columns.py                             
+                                                                         
+   Query Pattern (Efficient):                                           
+   SELECT * FROM news_sentiment_1                                       
+   WHERE stock_symbol = 'AAPL'                                          
+   AND published_at >= '2025-11-01'                                     
+                                                                         
+   Performance:                                                          
+   • Per-stock query: ~50-100ms                                          
+   • 29 stocks sequential: ~3-5 seconds                                 
+   • Result: ~500-1000 rows (filtered)                                  
+                                                                         
+
+
+
+                        DATA FLOW DIAGRAM                                
+
+
+NewsAPI
+   
+    Fetch news for AAPL, GOOG, TSLA, etc.
+   
+   
+GPT-3.5 Turbo
+   
+    Score sentiment: 1 (negative) to 5 (positive)
+   
+   
+AstraDB Write
+   
+    INSERT INTO news_sentiment_1 (stock_symbol, published_at, ...)
+   
+   
+AstraDB Storage (Cassandra)
+   
+    Partition by stock_symbol
+    Cluster by published_at DESC
+   
+   
+Airflow DAG (Daily)
+   
+    Query per stock: WHERE stock_symbol = ?
+    Filter by date: AND published_at >= ?
+   
+   
+Pandas DataFrame
+   
+    Extract event_date (YYYY-MM-DD)
+    Group by (stock, date)
+    Calculate mean(sentiment_score)
+   
+   
+YFinance Join
+   
+    Left join on (stock_symbol, date)
+    Add Sentiment_gpt (1-5 or 0)
+    Add News_flag (1 if news exists, 0 otherwise)
+    Add Scaled_sentiment: (Sentiment_gpt - 0.9999) / 4
+   
+   
+Delta Lake
+   
+    Append to delta_tables/stock_AAPL/
+    11 columns including sentiment features
+   
+   
+ML Training/Inference
+   
+    Use Scaled_sentiment as feature for stock price prediction
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ---
@@ -218,7 +376,11 @@ https://YOUR-DB-ID-us-east-1.apps.astra.datastax.com
 Token: AstraCS:AbCdEfGhIjKlMnOpQrStUvWxYz1234567890...
 ```
 
+<<<<<<< HEAD
 ⚠️ **Important**: Store token securely (never commit to git)
+=======
+ **Important**: Store token securely (never commit to git)
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **3. Install Python SDK**
 
@@ -245,7 +407,11 @@ db = client.get_database(endpoint, token=token)
 
 # Test
 collections = list(db.list_collection_names())
+<<<<<<< HEAD
 print(f"✅ Connected to AstraDB")
+=======
+print(f" Connected to AstraDB")
+>>>>>>> d3e5d7a (added streaming and backend)
 print(f"Available collections: {collections}")
 ```
 
@@ -295,9 +461,15 @@ PRIMARY KEY (stock_symbol, published_at)
 - **Clustering Key** (`published_at`): Orders data within partition by time (DESC = newest first)
 
 **Query Efficiency**:
+<<<<<<< HEAD
 ✅ **Fast**: `WHERE stock_symbol = 'AAPL'` (partition key)  
 ✅ **Fast**: `WHERE stock_symbol = 'AAPL' AND published_at >= '2025-11-01'` (partition + range)  
 ❌ **Slow**: `WHERE published_at >= '2025-11-01'` (full table scan)  
+=======
+ **Fast**: `WHERE stock_symbol = 'AAPL'` (partition key)  
+ **Fast**: `WHERE stock_symbol = 'AAPL' AND published_at >= '2025-11-01'` (partition + range)  
+ **Slow**: `WHERE published_at >= '2025-11-01'` (full table scan)  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Sample Data**
 
@@ -452,7 +624,11 @@ table = db.get_table("news_sentiment_1")
 rows = list(table.find({"stock_symbol": "AAPL"}))
 df = pd.DataFrame(rows)
 
+<<<<<<< HEAD
 print(f"✅ Loaded {len(df)} rows for AAPL")
+=======
+print(f" Loaded {len(df)} rows for AAPL")
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ### **Query Patterns**
@@ -673,7 +849,11 @@ def run_sentiment_enrichment(yfinance_path: str, output_path: str):
     
     # Save
     enriched_df.to_parquet(output_path)
+<<<<<<< HEAD
     print(f"✅ [ENRICH] Saved {len(enriched_df)} rows to {output_path}")
+=======
+    print(f" [ENRICH] Saved {len(enriched_df)} rows to {output_path}")
+>>>>>>> d3e5d7a (added streaming and backend)
     
     return output_path
 ```
@@ -711,27 +891,45 @@ enrich_task = PythonOperator(
 
 | Query Type | Rows Returned | Latency | Notes |
 |------------|---------------|---------|-------|
+<<<<<<< HEAD
 | Single stock (partition key) | ~17,000 | 50-100ms | ✅ Efficient |
 | Single stock + date range | ~500 | 30-50ms | ✅ Very efficient |
 | 29 stocks (sequential) | ~500,000 | 3-5 sec | ✅ Good (parallelizable) |
 | Full table scan | ~500,000 | 10-20 sec | ❌ Avoid |
+=======
+| Single stock (partition key) | ~17,000 | 50-100ms |  Efficient |
+| Single stock + date range | ~500 | 30-50ms |  Very efficient |
+| 29 stocks (sequential) | ~500,000 | 3-5 sec |  Good (parallelizable) |
+| Full table scan | ~500,000 | 10-20 sec |  Avoid |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Optimization Tips**
 
 **1. Always Filter by Partition Key**
 
 ```python
+<<<<<<< HEAD
 # ✅ Good: Uses partition key
 table.find({"stock_symbol": "AAPL"})
 
 # ❌ Bad: Full table scan
+=======
+#  Good: Uses partition key
+table.find({"stock_symbol": "AAPL"})
+
+#  Bad: Full table scan
+>>>>>>> d3e5d7a (added streaming and backend)
 table.find({"published_at": {"$gte": "2025-11-01"}})
 ```
 
 **2. Batch Per-Stock Queries**
 
 ```python
+<<<<<<< HEAD
 # ✅ Good: Parallel per-stock queries
+=======
+#  Good: Parallel per-stock queries
+>>>>>>> d3e5d7a (added streaming and backend)
 from concurrent.futures import ThreadPoolExecutor
 
 def query_stock(stock):
@@ -745,7 +943,11 @@ with ThreadPoolExecutor(max_workers=10) as executor:
 **3. Use Date Range Filters**
 
 ```python
+<<<<<<< HEAD
 # ✅ Good: Limits clustering key range
+=======
+#  Good: Limits clustering key range
+>>>>>>> d3e5d7a (added streaming and backend)
 table.find({
     "stock_symbol": "AAPL",
     "published_at": {"$gte": datetime(2025, 11, 1)}
@@ -784,12 +986,21 @@ astrapy.exceptions.DataAPIException: Connection timeout
 **Solutions**:
 ```python
 # 1. Check endpoint URL (include https://)
+<<<<<<< HEAD
 endpoint = "https://YOUR-DB-ID.apps.astra.datastax.com"  # ✅ Correct
 endpoint = "YOUR-DB-ID.apps.astra.datastax.com"          # ❌ Wrong
 
 # 2. Verify token (starts with AstraCS:)
 token = "AstraCS:..."  # ✅ Correct
 token = "eyJhbGc..."    # ❌ Wrong (JWT token, not application token)
+=======
+endpoint = "https://YOUR-DB-ID.apps.astra.datastax.com"  #  Correct
+endpoint = "YOUR-DB-ID.apps.astra.datastax.com"          #  Wrong
+
+# 2. Verify token (starts with AstraCS:)
+token = "AstraCS:..."  #  Correct
+token = "eyJhbGc..."    #  Wrong (JWT token, not application token)
+>>>>>>> d3e5d7a (added streaming and backend)
 
 # 3. Check network/firewall
 curl https://YOUR-DB-ID.apps.astra.datastax.com
@@ -878,8 +1089,13 @@ table.find(
 **Common Causes**:
 ```python
 # 1. Case sensitivity
+<<<<<<< HEAD
 table.find({"stock_symbol": "aapl"})  # ❌ Wrong case
 table.find({"stock_symbol": "AAPL"})  # ✅ Correct
+=======
+table.find({"stock_symbol": "aapl"})  #  Wrong case
+table.find({"stock_symbol": "AAPL"})  #  Correct
+>>>>>>> d3e5d7a (added streaming and backend)
 
 # 2. Prefix mismatch
 astra_df['stock_symbol'] = astra_df['stock_symbol'].str.replace('stock_', '')
@@ -895,6 +1111,7 @@ astra_df['stock_symbol'] = astra_df['stock_symbol'].str.replace('stock_', '')
 ### **1. Security**
 
 ```bash
+<<<<<<< HEAD
 # ✅ Use environment variables for credentials
 export ASTRA_DB_TOKEN="AstraCS:..."
 
@@ -905,28 +1122,55 @@ echo "config/config.yaml" >> .gitignore
 airflow variables set ASTRA_DB_TOKEN "AstraCS:..."
 
 # ❌ Don't hardcode credentials
+=======
+#  Use environment variables for credentials
+export ASTRA_DB_TOKEN="AstraCS:..."
+
+#  Never commit credentials to git
+echo "config/config.yaml" >> .gitignore
+
+#  Use Airflow Variables for DAGs
+airflow variables set ASTRA_DB_TOKEN "AstraCS:..."
+
+#  Don't hardcode credentials
+>>>>>>> d3e5d7a (added streaming and backend)
 token = "AstraCS:..."  # Bad
 ```
 
 ### **2. Query Optimization**
 
 ```python
+<<<<<<< HEAD
 # ✅ Always filter by partition key
 table.find({"stock_symbol": "AAPL"})
 
 # ✅ Add date range for time-series data
+=======
+#  Always filter by partition key
+table.find({"stock_symbol": "AAPL"})
+
+#  Add date range for time-series data
+>>>>>>> d3e5d7a (added streaming and backend)
 table.find({
     "stock_symbol": "AAPL",
     "published_at": {"$gte": datetime(2025, 11, 1)}
 })
 
+<<<<<<< HEAD
 # ✅ Use projection to reduce data transfer
+=======
+#  Use projection to reduce data transfer
+>>>>>>> d3e5d7a (added streaming and backend)
 table.find(
     {"stock_symbol": "AAPL"},
     projection={"sentiment_score": 1, "published_at": 1}
 )
 
+<<<<<<< HEAD
 # ❌ Avoid full table scans
+=======
+#  Avoid full table scans
+>>>>>>> d3e5d7a (added streaming and backend)
 table.find({})  # Bad for large tables
 ```
 
@@ -947,13 +1191,21 @@ def load_astra_rows_safe(stocks):
             try:
                 rows.extend(list(table.find({"stock_symbol": stock})))
             except DataAPIException as e:
+<<<<<<< HEAD
                 print(f"⚠️ Failed to query {stock}: {e}")
+=======
+                print(f" Failed to query {stock}: {e}")
+>>>>>>> d3e5d7a (added streaming and backend)
                 continue
         
         return pd.DataFrame(rows)
     
     except DataAPIException as e:
+<<<<<<< HEAD
         print(f"❌ AstraDB connection failed: {e}")
+=======
+        print(f" AstraDB connection failed: {e}")
+>>>>>>> d3e5d7a (added streaming and backend)
         return pd.DataFrame()  # Return empty DataFrame
 ```
 
@@ -979,7 +1231,11 @@ def validate_sentiment_data(df):
         issues.append("Null values in required columns")
     
     if issues:
+<<<<<<< HEAD
         print(f"⚠️ Data quality issues: {issues}")
+=======
+        print(f" Data quality issues: {issues}")
+>>>>>>> d3e5d7a (added streaming and backend)
     
     return len(issues) == 0
 ```
@@ -1009,7 +1265,11 @@ def load_astra_rows(stocks):
                    f"{len(stock_rows)} rows in {stock_time:.2f}s")
     
     total_time = time.time() - start
+<<<<<<< HEAD
     logger.info(f"[ASTRA] ✅ Loaded {len(rows)} rows in {total_time:.2f}s")
+=======
+    logger.info(f"[ASTRA]  Loaded {len(rows)} rows in {total_time:.2f}s")
+>>>>>>> d3e5d7a (added streaming and backend)
     
     return pd.DataFrame(rows)
 ```
@@ -1020,12 +1280,21 @@ def load_astra_rows(stocks):
 
 ### **Key Points**
 
+<<<<<<< HEAD
 ✅ **AstraDB**: Cloud-native Cassandra NoSQL database  
 ✅ **Table**: `news_sentiment_1` (stock_symbol, published_at, sentiment_score)  
 ✅ **Partition Key**: `stock_symbol` (enables efficient per-stock queries)  
 ✅ **Integration**: Airflow DAG Task 2 (Sentiment Enrichment)  
 ✅ **Performance**: < 100ms per-stock queries, 3-5 sec for 29 stocks  
 ✅ **Free Tier**: 25GB storage, 5M reads/month, 1M writes/month  
+=======
+ **AstraDB**: Cloud-native Cassandra NoSQL database  
+ **Table**: `news_sentiment_1` (stock_symbol, published_at, sentiment_score)  
+ **Partition Key**: `stock_symbol` (enables efficient per-stock queries)  
+ **Integration**: Airflow DAG Task 2 (Sentiment Enrichment)  
+ **Performance**: < 100ms per-stock queries, 3-5 sec for 29 stocks  
+ **Free Tier**: 25GB storage, 5M reads/month, 1M writes/month  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Quick Reference**
 

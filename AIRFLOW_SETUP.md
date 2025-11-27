@@ -5,7 +5,11 @@
 
 ---
 
+<<<<<<< HEAD
 ## 📋 Table of Contents
+=======
+##  Table of Contents
+>>>>>>> d3e5d7a (added streaming and backend)
 
 - [Overview](#overview)
 - [Architecture](#architecture)
@@ -26,10 +30,17 @@ Apache Airflow orchestrates the **daily stock prediction pipeline**, executing a
 
 ### **Pipeline Purpose**
 
+<<<<<<< HEAD
 ✅ **Automated Data Collection**: Fetch daily stock prices from YFinance  
 ✅ **Sentiment Enrichment**: Integrate news sentiment from AstraDB  
 ✅ **Delta Lake Storage**: Append to ACID-compliant tables  
 ✅ **Batch Inference**: Generate next-day predictions using production model  
+=======
+ **Automated Data Collection**: Fetch daily stock prices from YFinance  
+ **Sentiment Enrichment**: Integrate news sentiment from AstraDB  
+ **Delta Lake Storage**: Append to ACID-compliant tables  
+ **Batch Inference**: Generate next-day predictions using production model  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Key Metrics**
 
@@ -46,6 +57,7 @@ Apache Airflow orchestrates the **daily stock prediction pipeline**, executing a
 ## Architecture
 
 ```
+<<<<<<< HEAD
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                     AIRFLOW DAG ARCHITECTURE                             │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -265,6 +277,227 @@ Apache Airflow orchestrates the **daily stock prediction pipeline**, executing a
                     │   ✅ Delta tables updated │
                     │   ✅ Predictions saved    │
                     └──────────────────────────┘
+=======
+
+                     AIRFLOW DAG ARCHITECTURE                             
+
+
+                         
+                           Airflow Scheduler
+                           (Background)     
+                                            
+                           Triggers DAG at  
+                           23:00 UTC daily  
+                         
+                                  
+                                  
+                    
+                      DAG: daily_stock_pipeline   
+                      (4 Tasks in Sequence)       
+                    
+                                   
+                
+                                                                      
+                                                                      
+              
+          TASK 1           TASK 2           TASK 3           TASK 4      
+          Extract      →   Enrich       →   Load         →   Inference   
+                                                                         
+          extract_         enrich_with_     load_into_       inference_  
+          yfinance         sentiment        delta            batch       
+              
+                                                                      
+                                                                      
+
+
+                          TASK 1: Extract YFinance Data                          
+
+                                                                                 
+  Script: src/extract_yfinance.py                                               
+  Function: run_extract_yfinance(output_path, stocks)                           
+                                                                                 
+  Input:                                                                         
+    • stocks: List of 29 stock symbols (AAPL, GOOG, TSLA, etc.)                
+                                                                                 
+  Process:                                                                       
+    1. Query YFinance API for yesterday's data (T-1)                            
+    2. Fetch OHLCV data: Open, High, Low, Close, Volume, Adj_close             
+    3. Combine all 29 stocks into single DataFrame                              
+    4. Save to Parquet: tmp/yfinance_raw_{{ ds }}.parquet                       
+                                                                                 
+  Output:                                                                        
+    • File: tmp/yfinance_raw_2025-11-26.parquet                                 
+    • Schema: stock_symbol, Date, Open, High, Low, Close, Volume, Adj_close    
+    • Rows: 29 (1 per stock)                                                    
+                                                                                 
+  Duration: ~30 seconds                                                          
+                                                                                 
+  Example Log:                                                                   
+    [2025-11-26 23:00:15] INFO - [EXTRACT]  Fetched AAPL: Close=180.25        
+    [2025-11-26 23:00:18] INFO - [EXTRACT]  Fetched GOOG: Close=142.50        
+    ...                                                                          
+    [2025-11-26 23:00:45] INFO - [EXTRACT]  Saved 29 rows to                  
+                                  tmp/yfinance_raw_2025-11-26.parquet           
+
+
+
+                       TASK 2: Enrich with Sentiment                             
+
+                                                                                 
+  Script: src/compute_sentiment_columns.py                                      
+  Function: run_sentiment_enrichment(yfinance_path, output_path)                
+                                                                                 
+  Input:                                                                         
+    • yfinance_path: tmp/yfinance_raw_2025-11-26.parquet                        
+    • 29 rows with price data                                                   
+                                                                                 
+  Process:                                                                       
+    1. Load YFinance data from Parquet                                          
+    2. Query AstraDB for sentiment (news_sentiment_1 table)                     
+    3. Extract event_date from published_at column (YYYY-MM-DD)                 
+    4. Filter AstraDB rows to match (stock, date) pairs in YFinance             
+    5. Group by (stock_symbol, date) and calculate mean sentiment_score         
+    6. Left join YFinance + Sentiment (preserves rows with no news)             
+    7. Add 3 columns:                                                            
+       • Sentiment_gpt: Raw score (1-5) or 0 if no news                         
+       • News_flag: Binary (1 if news exists, 0 otherwise)                      
+       • Scaled_sentiment: (Sentiment_gpt - 0.9999) / 4 if score != 0, else 0  
+    8. Save to Parquet: tmp/yfinance_enriched_{{ ds }}.parquet                  
+                                                                                 
+  Output:                                                                        
+    • File: tmp/yfinance_enriched_2025-11-26.parquet                            
+    • Schema: stock_symbol, Date, Open, High, Low, Close, Volume, Adj_close,   
+              Sentiment_gpt, News_flag, Scaled_sentiment                        
+    • Rows: 29 (1 per stock)                                                    
+                                                                                 
+  Duration: ~1-2 minutes                                                         
+                                                                                 
+  Example Log:                                                                   
+    [2025-11-26 23:01:00] INFO - [ENRICH] Loaded 29 rows from YFinance          
+    [2025-11-26 23:01:05] INFO - [ENRICH] Querying AstraDB for 29 stocks        
+    [2025-11-26 23:01:15] INFO - [ENRICH] Found 450 sentiment records           
+    [2025-11-26 23:01:20] INFO - [ENRICH] Computing daily aggregates            
+    [2025-11-26 23:01:25] INFO - [ENRICH]  Added sentiment to 22/29 stocks    
+    [2025-11-26 23:01:30] INFO - [ENRICH]  Saved to                            
+                                  tmp/yfinance_enriched_2025-11-26.parquet      
+                                                                                 
+  Credential Loading (Fallback Chain):                                          
+    1. Try: config/config.yaml (astradb section)                                
+    2. If missing, try: Airflow Variables (ASTRA_DB_ENDPOINT, ASTRA_DB_TOKEN)  
+    3. If missing, try: Environment Variables                                   
+
+
+
+                        TASK 3: Load into Delta Lake                             
+
+                                                                                 
+  Script: src/load_delta.py                                                     
+  Function: load_to_delta(input_path, delta_base_path)                          
+                                                                                 
+  Input:                                                                         
+    • input_path: tmp/yfinance_enriched_2025-11-26.parquet                      
+    • delta_base_path: delta_tables/                                            
+    • 29 rows (1 per stock) with 11 columns                                     
+                                                                                 
+  Process:                                                                       
+    1. Initialize Spark session (local[8], 12g driver memory)                   
+    2. Load enriched Parquet file into Spark DataFrame                          
+    3. For each stock (29 iterations):                                          
+       a. Filter row for stock (1 row)                                          
+       b. Cast columns to Delta schema types (double, bigint, string, date)     
+       c. Append to delta_tables/stock_<SYMBOL>/ using Delta merge              
+       d. Auto-create table if first run                                        
+    4. Log success/failure for each stock                                       
+                                                                                 
+  Output:                                                                        
+    • 29 Delta tables: delta_tables/stock_AAPL/, delta_tables/stock_GOOG/, ...  
+    • Schema (11 columns):                                                       
+        stock_symbol (STRING), Date (DATE), Open (DOUBLE), High (DOUBLE),       
+        Low (DOUBLE), Close (DOUBLE), Volume (BIGINT), Adj_close (DOUBLE),      
+        Sentiment_gpt (DOUBLE), News_flag (INT), Scaled_sentiment (DOUBLE)      
+    • Each table appended with 1 new row                                        
+                                                                                 
+  Duration: ~2-3 minutes                                                         
+                                                                                 
+  Example Log:                                                                   
+    [2025-11-26 23:02:00] INFO - [LOAD] Starting Spark session                  
+    [2025-11-26 23:02:10] INFO - [LOAD] Loaded 29 rows from Parquet             
+    [2025-11-26 23:02:15] INFO - [DELTA]  Appended 1 row to stock_AAPL        
+    [2025-11-26 23:02:20] INFO - [DELTA]  Appended 1 row to stock_GOOG        
+    ...                                                                          
+    [2025-11-26 23:04:50] INFO - [DELTA]  All 29 tables updated successfully   
+                                                                                 
+  ACID Guarantees:                                                               
+    • Atomic appends (all-or-nothing per stock)                                 
+    • Time travel support (query historical versions)                           
+    • Schema evolution (auto-add columns if needed)                             
+
+
+
+                         TASK 4: Batch Inference                                 
+
+                                                                                 
+  Script: scripts/inference_batch.py                                            
+  Function: run_inference_batch()                                               
+                                                                                 
+  Input:                                                                         
+    • Delta tables: delta_tables/stock_AAPL/, delta_tables/stock_GOOG/, ...    
+    • MLflow model: stock_predictor_unified_29stocks (latest version)          
+                                                                                 
+  Process:                                                                       
+    1. Load production model from MLflow (Spark RandomForest)                   
+    2. For each stock (29 iterations):                                          
+       a. Read last 50 rows from Delta table (sequence_length=50)              
+       b. Validate data quality (continuity, missing values)                    
+       c. Engineer features (MA_5, MA_10, RSI, Volatility, Price_change%, etc.)
+       d. Create lag features (price_lag_1, sentiment_lag_1, volume_lag_1)     
+       e. Scale features using StandardScaler                                   
+       f. Make prediction for next trading day (T+1)                            
+       g. Calculate predicted_close_price from predicted_gain%                  
+    3. Combine all 29 predictions into single DataFrame                         
+    4. Save to delta_tables/predictions/daily_predictions_{{ ds }}/             
+    5. Log metrics to MLflow (inference_time, throughput, data_quality)         
+                                                                                 
+  Output:                                                                        
+    • File: delta_tables/predictions/daily_predictions_2025-11-26/              
+    • Schema (9 columns):                                                        
+        stock_symbol (STRING), prediction_date (DATE), input_close (DOUBLE),    
+        predicted_gain_percent (DOUBLE), predicted_close_price (DOUBLE),        
+        lower_bound (DOUBLE), upper_bound (DOUBLE),                             
+        confidence_score (DOUBLE), last_updated (TIMESTAMP)                     
+    • Rows: 29 (1 per stock)                                                    
+                                                                                 
+  Duration: ~2-3 minutes                                                         
+                                                                                 
+  Example Log:                                                                   
+    [2025-11-26 23:05:00] INFO - [INFERENCE] Loading model from MLflow          
+    [2025-11-26 23:05:10] INFO - [INFERENCE] Model: stock_predictor_unified_v3  
+    [2025-11-26 23:05:15] INFO - [INFERENCE]  AAPL: Predicted +2.3%           
+                                             (182.25 → 186.44)                  
+    [2025-11-26 23:05:20] INFO - [INFERENCE]  GOOG: Predicted +1.1%           
+                                             (142.50 → 144.07)                  
+    ...                                                                          
+    [2025-11-26 23:07:45] INFO - [INFERENCE]  29 predictions saved             
+    [2025-11-26 23:07:50] INFO - [INFERENCE] Throughput: 14.2 stocks/min        
+    [2025-11-26 23:07:55] INFO - [INFERENCE] Logged to MLflow run abc123        
+                                                                                 
+  Quality Checks:                                                                
+    • Data continuity: Ensure no gaps in last 50 days                           
+    • Missing values: Max 10% allowed per feature                               
+    • Skip weekends/holidays: Only predict for trading days                     
+
+
+                                  
+                                  
+                    
+                       Pipeline Complete      
+                       (Total: 5-10 minutes)  
+                                              
+                        29 stocks processed  
+                        Delta tables updated 
+                        Predictions saved    
+                    
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ---
@@ -832,7 +1065,11 @@ python -c "
 from astrapy import DataAPIClient
 client = DataAPIClient()
 db = client.get_database('YOUR_ENDPOINT', token='YOUR_TOKEN')
+<<<<<<< HEAD
 print('✅ Connected')
+=======
+print(' Connected')
+>>>>>>> d3e5d7a (added streaming and backend)
 "
 ```
 
@@ -1017,12 +1254,21 @@ sudo systemctl status airflow-scheduler
 
 ### **Key Points**
 
+<<<<<<< HEAD
 ✅ **4-Stage Pipeline**: Extract → Enrich → Load → Inference  
 ✅ **Daily Schedule**: 23:00 UTC (11 PM)  
 ✅ **29 Stocks**: Processed in 5-10 minutes  
 ✅ **Auto-Retry**: 2 retries with 5-minute delay  
 ✅ **Delta Lake**: ACID-compliant storage  
 ✅ **MLflow**: Integrated monitoring  
+=======
+ **4-Stage Pipeline**: Extract → Enrich → Load → Inference  
+ **Daily Schedule**: 23:00 UTC (11 PM)  
+ **29 Stocks**: Processed in 5-10 minutes  
+ **Auto-Retry**: 2 retries with 5-minute delay  
+ **Delta Lake**: ACID-compliant storage  
+ **MLflow**: Integrated monitoring  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Critical Paths**
 

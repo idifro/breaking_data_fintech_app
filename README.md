@@ -1,11 +1,12 @@
-# 🚀 Spark ML Stock Price Prediction Pipeline with Scalability Monitoring
+#  Spark ML Stock Price Prediction Pipeline with Scalability Monitoring
 
 A comprehensive, production-ready stock price prediction pipeline using Apache Spark MLlib, Delta Lake, and MLflow with integrated scalability monitoring and performance tracking. This implementation provides enterprise-level monitoring capabilities for Data Engineering at Scale projects.
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 spark_ml_pipeline/
+<<<<<<< HEAD
 ├── src/                          # Core source modules
 │   ├── utils.py                  # Configuration management and data models
 │   ├── data_processing.py        # Delta Lake integration and preprocessing
@@ -43,18 +44,58 @@ spark_ml_pipeline/
 ├── mlflow_tracking/              # MLflow experiments and model registry
 ├── models/                       # Saved model artifacts
 └── logs/                         # Application and monitoring logs
+=======
+ src/                          # Core source modules
+    utils.py                  # Configuration management and data models
+    data_processing.py        # Delta Lake integration and preprocessing
+    feature_engineering.py   # 20+ optimized features for GBT
+    model_training.py         # GBT training with hyperparameter tuning
+    visualization.py          # Comprehensive plotting and analysis
+    scalability_monitor.py   # Real-time performance monitoring
+    monitoring_config_manager.py # MLflow monitoring integration
+ scripts/                      # Execution scripts
+    train_model.py           # Basic training pipeline
+    train_model_with_monitoring.py # Enhanced training with monitoring
+    train_model_with_modes.py       # Multi-mode training (GBT, RF, Hybrid)
+    inference.py             # Basic inference pipeline
+    inference_with_monitoring.py   # Enhanced inference with monitoring
+    inference_batch.py       # Batch inference for 25 stocks (RF model)
+    create_predictions_table.py    # Create stock predictions Delta table
+    load_testing_scenarios.py      # Automated performance testing
+ config/                       # Configuration management
+    config.yaml              # Centralized YAML configuration
+ docs/                         # Comprehensive documentation
+    MONITORING_GUIDE.md      # Scalability monitoring guide
+    PERFORMANCE_BENCHMARKS.md # Performance analysis guide
+    QUICK_REFERENCE.md       # Quick command reference
+ PROJECT_OVERVIEW.md          #  Master architecture & setup guide
+ TRAINING_PIPELINE.md         #  3 training modes comparison (GBT, RF, Hybrid)
+ INFERENCE_PIPELINE.md        #  Airflow-triggered daily predictions
+ SCALABILITY_PERFORMANCE.md   #  Volume tests (5/10/20/29 stocks)
+ STREAMING_PIPELINE.md        #  Kafka + GPT sentiment analysis
+ AIRFLOW_SETUP.md            #   4-stage DAG workflow & monitoring
+ ASTRADB_CONFIG.md           #   NoSQL sentiment storage setup
+ data_csv/                     # Input data (5 stock symbols)
+ delta_tables/                 # Delta Lake storage with ACID properties
+ results/                      # Training, inference, and evaluation results
+ plots/                        # Generated visualizations
+ mlflow_tracking/              # MLflow experiments and model registry
+ models/                       # Saved model artifacts
+ logs/                         # Application and monitoring logs
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
-## 🚀 Features
+##  Features
 
 ### **Core ML Pipeline**
-- ✅ **Delta Lake Integration**: ACID transactions with efficient data storage
-- ✅ **Advanced Feature Engineering**: 20+ optimized features for financial time series
-- ✅ **Gradient Boosted Trees**: Native Spark MLlib with hyperparameter tuning
-- ✅ **MLflow Integration**: Complete experiment tracking and model registry
-- ✅ **Cross-Validation**: Robust model evaluation with k-fold validation
-- ✅ **Comprehensive Visualization**: Feature importance, predictions, residuals analysis
+-  **Delta Lake Integration**: ACID transactions with efficient data storage
+-  **Advanced Feature Engineering**: 20+ optimized features for financial time series
+-  **Gradient Boosted Trees**: Native Spark MLlib with hyperparameter tuning
+-  **MLflow Integration**: Complete experiment tracking and model registry
+-  **Cross-Validation**: Robust model evaluation with k-fold validation
+-  **Comprehensive Visualization**: Feature importance, predictions, residuals analysis
 
+<<<<<<< HEAD
 ### **Scalability Monitoring System** 🔧
 - ✅ **Real-time Performance Tracking**: CPU, memory, throughput metrics
 - ✅ **Data Volume Scalability**: Partition efficiency and data size analysis
@@ -71,8 +112,26 @@ spark_ml_pipeline/
 ### **Automated Testing & Benchmarking**
 - ✅ **Load Testing Scenarios**: Varying data volumes and concurrency
 - ✅ **Resource Profiling**: Memory and CPU usage analysis
+=======
+### **Scalability Monitoring System** 
+-  **Real-time Performance Tracking**: CPU, memory, throughput metrics
+-  **Data Volume Scalability**: Partition efficiency and data size analysis
+-  **MLflow Monitoring Integration**: Automatic metrics logging
+-  **Resource Utilization Analysis**: Spark executor and driver monitoring
 
-## 📊 Monitoring Capabilities
+### **Enhanced Training Features**
+-  **Monitored Training**: `train_model_with_monitoring.py` with performance tracking
+-  **Hyperparameter Optimization**: Optuna-based intelligent tuning
+-  **Feature Selection**: Correlation-based feature filtering
+-  **Model Validation**: Time-series aware train/test splitting
+-  **Artifact Management**: Comprehensive model and plot storage
+
+### **Automated Testing & Benchmarking**
+-  **Load Testing Scenarios**: Varying data volumes and concurrency
+-  **Resource Profiling**: Memory and CPU usage analysis
+>>>>>>> d3e5d7a (added streaming and backend)
+
+##  Monitoring Capabilities
 
 ### **Scalability Metrics**
 - **Data Volume Metrics**: Rows processed, data size, partition efficiency
@@ -87,7 +146,7 @@ spark_ml_pipeline/
 - **Log Analysis**: Comprehensive application and performance logging
 - **Trend Analysis**: Historical performance tracking and comparison
 
-## 🛠️ Setup Instructions
+##  Setup Instructions
 
 ### 1. Prerequisites
 ```bash
@@ -107,7 +166,7 @@ pip install -r requirements.txt
 ### 3. Environment Setup
 ```bash
 # Load environment variables and verify setup
-python -c "from src.utils import load_environment; load_environment(); print('✅ Environment loaded')"
+python -c "from src.utils import load_environment; load_environment(); print(' Environment loaded')"
 ```
 
 ### 4. Verify Installation
@@ -116,11 +175,11 @@ python -c "from src.utils import load_environment; load_environment(); print('�
 python -c "
 from src.utils import get_config
 from src.scalability_monitor import ScalabilityMonitor
-print('✅ All core modules imported successfully')
+print(' All core modules imported successfully')
 "
 ```
 
-## 🚂 Training Pipeline
+##  Training Pipeline
 
 ### 1. Basic Training
 ```bash
@@ -152,7 +211,7 @@ mlflow ui --host 0.0.0.0 --port 5000
 tail -f logs/pipeline.log
 ```
 
-## 🔮 Inference Pipeline
+##  Inference Pipeline
 
 ### 1. Basic Inference
 ```bash
@@ -177,33 +236,33 @@ python scripts/inference_with_monitoring.py --load-test
 
 ### 3. Example Monitored Output
 ```
-🚀 ENHANCED STOCK PRICE PREDICTIONS WITH MONITORING
+ ENHANCED STOCK PRICE PREDICTIONS WITH MONITORING
 ================================================================================
-📊 Monitoring Configuration:
-   ✅ Scalability Monitoring: ENABLED
-   📈 Resource Tracking: ENABLED
-   🔧 Performance Analysis: ENABLED
-   📋 MLflow Integration: ENABLED
+ Monitoring Configuration:
+    Scalability Monitoring: ENABLED
+    Resource Tracking: ENABLED
+    Performance Analysis: ENABLED
+    MLflow Integration: ENABLED
 
-📈 AAPL:
+ AAPL:
    Current Price: $150.25
    Predicted Price: $152.30 (+1.36%)
    Confidence: 92.4%
 
-📊 PERFORMANCE METRICS:
+ PERFORMANCE METRICS:
    Total Processing Time: 2.34s
    Throughput: 8,245 records/sec
    Peak Memory Usage: 1,247 MB
    CPU Utilization: 67.3%
    Scalability Score: 0.847
 
-🔧 MONITORING SUMMARY:
-   ✅ Experiment logged: stock_forecasting_gbt_exp_unified_monitoring
-   📊 Run ID: abc123def456
-   📁 Artifacts saved: results/inference/
+ MONITORING SUMMARY:
+    Experiment logged: stock_forecasting_gbt_exp_unified_monitoring
+    Run ID: abc123def456
+    Artifacts saved: results/inference/
 ```
 
-## 🎯 Batch Inference Pipeline
+##  Batch Inference Pipeline
 
 ### 1. Setup Predictions Table
 ```bash
@@ -228,43 +287,43 @@ The batch inference pipeline will:
 
 ### 3. Example Batch Output
 ```
-🚀 Starting Batch Inference for Stock Price Prediction
+ Starting Batch Inference for Stock Price Prediction
 ================================================================================
-🔧 Configuration loaded successfully
-📊 Inference stocks: 25
-🔧 Spark session created successfully
-🚀 Inference Batch Processor initialized
-🔮 Starting batch inference for 25 stocks
-📥 Loading model and scaler from MLflow...
-✅ Model loaded successfully: stock_predictor_spark_rf v3
-📊 Preparing inference data...
-✅ Prepared 25 records for prediction
-🔧 Applying feature engineering...
-⚖️ Applying feature scaling...
-✅ Feature scaling applied successfully
-🎯 Making predictions...
-✅ Predictions generated successfully
-💰 Calculating predicted close prices...
-✅ Predicted close prices calculated successfully
-💾 Saving predictions to Delta table...
-✅ Predictions saved to Delta table: delta_tables/stock_predictions
+ Configuration loaded successfully
+ Inference stocks: 25
+ Spark session created successfully
+ Inference Batch Processor initialized
+ Starting batch inference for 25 stocks
+ Loading model and scaler from MLflow...
+ Model loaded successfully: stock_predictor_spark_rf v3
+ Preparing inference data...
+ Prepared 25 records for prediction
+ Applying feature engineering...
+ Applying feature scaling...
+ Feature scaling applied successfully
+ Making predictions...
+ Predictions generated successfully
+ Calculating predicted close prices...
+ Predicted close prices calculated successfully
+ Saving predictions to Delta table...
+ Predictions saved to Delta table: delta_tables/stock_predictions
 
-🎯 BATCH INFERENCE PERFORMANCE SUMMARY
+ BATCH INFERENCE PERFORMANCE SUMMARY
 ================================================================================
-📊 Stocks Processed: 25
-⏱️  Total Time: 45.67 seconds (0.76 minutes)
-⚡ Average Time per Stock: 1.83 seconds
-🚀 Throughput: 0.55 predictions/second
+ Stocks Processed: 25
+⏱  Total Time: 45.67 seconds (0.76 minutes)
+ Average Time per Stock: 1.83 seconds
+ Throughput: 0.55 predictions/second
 ================================================================================
 
-🎉 Batch Inference Completed Successfully!
+ Batch Inference Completed Successfully!
 ================================================================================
-✅ Status: success
-📊 Predictions Generated: 25
-🏢 Stocks Processed: 25
-🤖 Model: stock_predictor_spark_rf v3
-⏱️  Total Time: 45.67 seconds
-🚀 Throughput: 0.55 predictions/second
+ Status: success
+ Predictions Generated: 25
+ Stocks Processed: 25
+ Model: stock_predictor_spark_rf v3
+⏱  Total Time: 45.67 seconds
+ Throughput: 0.55 predictions/second
 ```
 
 ### 4. Prediction Schema
@@ -281,7 +340,7 @@ days_ahead              integer   # Always 1
 stock_symbol            string    # Stock symbol
 ```
 
-## 🧪 Load Testing & Benchmarking
+##  Load Testing & Benchmarking
 
 ### 1. Run Load Testing Scenarios
 ```bash
@@ -299,7 +358,11 @@ python scripts/load_testing_scenarios.py --scenario all --duration 600
 ```
 
 
+<<<<<<< HEAD
 ## ⚙️ Configuration
+=======
+##  Configuration
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### Main Configuration (`config/config.yaml`)
 
@@ -345,7 +408,7 @@ mlflow:
   log_models: true
 ```
 
-## 📊 Monitoring Results & Analysis
+##  Monitoring Results & Analysis
 
 ### MLflow Integration
 - **Experiment Tracking**: `stock_forecasting_gbt_exp_unified_monitoring`
@@ -360,7 +423,7 @@ mlflow:
 - **Resource Utilization**: CPU and memory usage over time
 - **Scalability Analysis**: Throughput vs data volume charts
 
-## 📈 Performance Benchmarks
+##  Performance Benchmarks
 
 ### Expected Performance (Local 32GB System)
 - **Training Time**: 10-20 minutes 
@@ -373,7 +436,11 @@ mlflow:
 - **Throughput**: Minimum 100 records/second
 
 
+<<<<<<< HEAD
 ## 🔍 Monitoring Results Access
+=======
+##  Monitoring Results Access
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### MLflow UI
 ```bash
@@ -383,6 +450,7 @@ mlflow ui --host 0.0.0.0 --port 5000
 ```
 
 
+<<<<<<< HEAD
 ## 📚 Documentation
 
 ### **Academic Project Documentation** (Data Engineering at Scale)
@@ -398,16 +466,33 @@ mlflow ui --host 0.0.0.0 --port 5000
 - **📊 [docs/MONITORING_GUIDE.md](docs/MONITORING_GUIDE.md)**: Comprehensive monitoring documentation
 - **🚀 [docs/PERFORMANCE_BENCHMARKS.md](docs/PERFORMANCE_BENCHMARKS.md)**: Performance analysis and optimization
 - **⚡ [docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)**: Quick command reference and troubleshooting
+=======
+##  Documentation
+
+### **Academic Project Documentation** (Data Engineering at Scale)
+- ** [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)**: Master architecture & complete system overview
+- ** [TRAINING_PIPELINE.md](TRAINING_PIPELINE.md)**: 3 training modes comparison (Spark GBT, Spark RF, Hybrid Sklearn)
+- ** [INFERENCE_PIPELINE.md](INFERENCE_PIPELINE.md)**: Airflow-triggered daily predictions (4-stage DAG)
+- ** [SCALABILITY_PERFORMANCE.md](SCALABILITY_PERFORMANCE.md)**: Volume tests (5/10/20/29 stocks) with metrics
+- ** [STREAMING_PIPELINE.md](STREAMING_PIPELINE.md)**: Kafka + GPT sentiment analysis + AstraDB
+- **  [AIRFLOW_SETUP.md](AIRFLOW_SETUP.md)**: 4-stage DAG workflow, scheduling, monitoring
+- **  [ASTRADB_CONFIG.md](ASTRADB_CONFIG.md)**: NoSQL sentiment storage setup & integration
+
+### **Developer Documentation**
+- ** [docs/MONITORING_GUIDE.md](docs/MONITORING_GUIDE.md)**: Comprehensive monitoring documentation
+- ** [docs/PERFORMANCE_BENCHMARKS.md](docs/PERFORMANCE_BENCHMARKS.md)**: Performance analysis and optimization
+- ** [docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)**: Quick command reference and troubleshooting
+>>>>>>> d3e5d7a (added streaming and backend)
 
 
 ### Monitoring Benefits
-- **🔍 Bottleneck Detection**: Automated performance constraint identification
-- **📊 Resource Optimization**: Intelligent resource allocation recommendations
-- **🚨 Early Warning**: Threshold-based alerting for performance degradation
-- **📈 Trend Analysis**: Historical performance tracking and comparison
-- **🎯 Quality Assurance**: Comprehensive data and model validation
+- ** Bottleneck Detection**: Automated performance constraint identification
+- ** Resource Optimization**: Intelligent resource allocation recommendations
+- ** Early Warning**: Threshold-based alerting for performance degradation
+- ** Trend Analysis**: Historical performance tracking and comparison
+- ** Quality Assurance**: Comprehensive data and model validation
 
-## 🚀 Future Enhancements
+##  Future Enhancements
 
 - [ ] **Model Retraining**: Drift based Model retraining Pipeline
 - [ ] **Automated Scaling**: Dynamic resource allocation based on monitoring

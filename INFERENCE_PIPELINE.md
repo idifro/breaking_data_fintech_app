@@ -5,7 +5,11 @@
 
 ---
 
+<<<<<<< HEAD
 ## 📋 Table of Contents
+=======
+##  Table of Contents
+>>>>>>> d3e5d7a (added streaming and backend)
 
 - [Overview](#overview)
 - [Pipeline Architecture](#pipeline-architecture)
@@ -24,12 +28,21 @@
 The **Inference Pipeline** is a production-grade system that generates daily stock price predictions for **29 stocks** using the trained Spark RF model. It runs as part of a **4-stage Apache Airflow DAG** scheduled to execute daily at **23:00 UTC**.
 
 ### **Key Features**
+<<<<<<< HEAD
 ✅ **Automated Daily Predictions**: Scheduled Airflow workflow  
 ✅ **Batch Processing**: 29 stocks predicted in ~120 seconds  
 ✅ **MLflow Integration**: Loads versioned production model (v1)  
 ✅ **Delta Lake Storage**: ACID-compliant prediction storage  
 ✅ **Feature Consistency**: Same feature engineering as training  
 ✅ **Scalable Architecture**: Distributed Spark processing  
+=======
+ **Automated Daily Predictions**: Scheduled Airflow workflow  
+ **Batch Processing**: 29 stocks predicted in ~120 seconds  
+ **MLflow Integration**: Loads versioned production model (v1)  
+ **Delta Lake Storage**: ACID-compliant prediction storage  
+ **Feature Consistency**: Same feature engineering as training  
+ **Scalable Architecture**: Distributed Spark processing  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Business Impact**
 - **Next-day close price forecasts** for portfolio optimization
@@ -42,6 +55,7 @@ The **Inference Pipeline** is a production-grade system that generates daily sto
 ## Pipeline Architecture
 
 ```
+<<<<<<< HEAD
 ┌──────────────────────────────────────────────────────────────────────┐
 │                   DAILY AIRFLOW DAG WORKFLOW                          │
 │                   Schedule: 23:00 UTC (Daily)                         │
@@ -126,6 +140,92 @@ The **Inference Pipeline** is a production-grade system that generates daily sto
 │                                                               │
 │  ⏱️  Performance: ~120 seconds for 29 stocks                 │
 └───────────────────────────────────────────────────────────────┘
+=======
+
+                   DAILY AIRFLOW DAG WORKFLOW                          
+                   Schedule: 23:00 UTC (Daily)                         
+
+
+
+  STAGE 1        
+  Extract          Extract latest stock prices (OHLCV)
+  YFinance         for 29 stocks from Yahoo Finance
+                 
+   Source:     
+  • Yahoo API    
+  • 29 stocks    
+  • Auto_adjust  
+                 
+   Output:     
+  tmp/yfinance_  
+  raw_*.parquet  
+
+         
+          1-3 minutes (API calls)
+         
+
+  STAGE 2                        
+  Enrich with Sentiment            Add sentiment scores from AstraDB
+                                   (pre-computed by Streaming Pipeline)
+   Input:                      
+  • yfinance_raw.parquet         
+  • AstraDB (news_sentiment_1)   
+                                 
+   Process:                    
+  • Join stock data + sentiment  
+  • Calculate scaled_sentiment   
+  • Add news_flag indicator      
+                                 
+   Output:                     
+  tmp/yfinance_enriched.parquet  
+  (11 columns with sentiment)    
+
+         
+          ~30 seconds (DB query + join)
+         
+
+  STAGE 3                          
+  Load into Delta                    Append to stock-specific tables
+                                   
+   Input:                        
+  • yfinance_enriched.parquet      
+                                   
+   Process:                      
+  • Validate schema (11 columns)   
+  • Type casting to match Delta    
+  • Per-stock table append         
+                                   
+   Output:                       
+  delta_tables/stock_<SYMBOL>/    
+  (29 separate Delta tables)       
+
+         
+          ~15 seconds (Delta append)
+         
+
+  STAGE 4  INFERENCE BATCH                                  
+  Predict Next-Day Close Prices                               
+                                                               
+   Input:                                                    
+  • delta_tables/stock_<SYMBOL>/ (29 tables)                  
+  • MLflow Model: stock_predictor_spark_rf_unified_29stocks  
+                                                               
+   Process:                                                  
+  1⃣  Load Model & Scaler from MLflow                         
+  2⃣  Prepare Data (last 50 rows/stock)                       
+  3⃣  Feature Engineering (20+ features)                      
+  4⃣  Feature Scaling (StandardScaler)                        
+  5⃣  Make Predictions (Spark RF)                             
+  6⃣  Calculate Predicted Close Prices                        
+  7⃣  Save to Delta + CSV                                     
+                                                               
+   Output:                                                   
+  • delta_tables/stock_predictions/ (Delta table)             
+  • results/batch_predictions_*.csv (optional)                
+                                                               
+  ⏱  Performance: ~120 seconds for 29 stocks                 
+
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ---
@@ -440,6 +540,7 @@ spark.ml.cache.enabled: true
 
 ```
 delta_tables/
+<<<<<<< HEAD
 └── stock_predictions/
     ├── _delta_log/
     │   ├── 00000000000000000000.json
@@ -448,6 +549,16 @@ delta_tables/
     ├── part-00000-*.parquet
     ├── part-00001-*.parquet
     └── ...
+=======
+ stock_predictions/
+     _delta_log/
+        00000000000000000000.json
+        00000000000000000001.json
+        ...
+     part-00000-*.parquet
+     part-00001-*.parquet
+     ...
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ### **CSV Output** (Optional)
@@ -501,6 +612,7 @@ conda activate breaking_data
 python scripts/inference_batch.py
 
 # Expected output:
+<<<<<<< HEAD
 # 🚀 Starting Batch Inference for Stock Price Prediction
 # 🔧 Configuration loaded successfully
 # 📊 Inference stocks: 29
@@ -513,6 +625,20 @@ python scripts/inference_batch.py
 # ✅ Predictions generated successfully
 # ✅ Predictions saved to Delta table: delta_tables/stock_predictions/
 # 🎉 Batch Inference Completed Successfully!
+=======
+#  Starting Batch Inference for Stock Price Prediction
+#  Configuration loaded successfully
+#  Inference stocks: 29
+#  Spark session created successfully
+#  Loading model: models:/stock_predictor_spark_rf_unified_29stocks/1
+#  Model loaded successfully: stock_predictor_spark_rf_unified_29stocks v1
+#  Preparing data for 29 stocks, lookback: 50 days
+#  Prepared 29 records for prediction
+#  Making predictions...
+#  Predictions generated successfully
+#  Predictions saved to Delta table: delta_tables/stock_predictions/
+#  Batch Inference Completed Successfully!
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ### **Airflow Execution**

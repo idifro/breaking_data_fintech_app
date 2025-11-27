@@ -5,7 +5,11 @@
 
 ---
 
+<<<<<<< HEAD
 ## 📋 Table of Contents
+=======
+##  Table of Contents
+>>>>>>> d3e5d7a (added streaming and backend)
 
 - [Overview](#overview)
 - [Architecture](#architecture)
@@ -33,11 +37,19 @@ The **Streaming Pipeline** processes real-time financial news to generate sentim
 
 ### **Key Features**
 
+<<<<<<< HEAD
 ✅ **Real-time Processing**: Stream financial news as it's published  
 ✅ **LLM-Powered Sentiment**: GPT-3.5 Turbo analyzes news sentiment  
 ✅ **Scalable Storage**: AstraDB with multi-region support  
 ✅ **Batch Integration**: Sentiment data enriches training/inference pipelines  
 ✅ **Multi-Stock Support**: 29 stocks monitored simultaneously  
+=======
+ **Real-time Processing**: Stream financial news as it's published  
+ **LLM-Powered Sentiment**: GPT-3.5 Turbo analyzes news sentiment  
+ **Scalable Storage**: AstraDB with multi-region support  
+ **Batch Integration**: Sentiment data enriches training/inference pipelines  
+ **Multi-Stock Support**: 29 stocks monitored simultaneously  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Business Value**
 
@@ -51,6 +63,7 @@ The **Streaming Pipeline** processes real-time financial news to generate sentim
 ## Architecture
 
 ```
+<<<<<<< HEAD
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                      STREAMING PIPELINE ARCHITECTURE                     │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -171,6 +184,128 @@ The **Streaming Pipeline** processes real-time financial news to generate sentim
 │                                                    │
 │   File: src/compute_sentiment_columns.py         │
 └───────────────────────────────────────────────────┘
+=======
+
+                      STREAMING PIPELINE ARCHITECTURE                     
+
+
+
+   NewsAPI          Financial news source
+   (REST API)       • Stock-specific queries
+                    • Real-time updates
+   29 stocks:       • Article metadata
+   AAPL, GOOG,      • Content extraction
+   TSLA, etc.     
+
+          HTTP GET
+          Polling (every N minutes)
+         
+
+   News Producer                    
+   (Python Script)                  
+                                    
+   • Fetch news per stock           
+   • Extract metadata               
+   • Format JSON messages           
+   • Publish to Kafka topic         
+
+          Kafka Publish
+          Topic: financial_news
+         
+
+   Apache Kafka 3.3+                              
+   (Message Broker)                               
+                                                   
+   Topic: financial_news                          
+   Partitions: 3                                  
+   Replication: 1 (local dev)                     
+                                                   
+   Message Schema:                                
+   {                                              
+     "stock_symbol": "AAPL",                      
+     "title": "...",                              
+     "description": "...",                        
+     "content": "...",                            
+     "url": "...",                                
+     "published_at": "2025-11-26T10:30:00Z",     
+     "source": "Bloomberg"                        
+   }                                              
+
+          Kafka Consume
+          Subscribe: financial_news
+         
+
+   Spark Structured Streaming                        
+   (Consumer + Processor)                            
+                                                      
+   1⃣  Read Kafka Stream                              
+   2⃣  Parse JSON Messages                            
+   3⃣  Batch News (4 articles/batch)                  
+   4⃣  Call GPT Sentiment API                         
+   5⃣  Process Sentiment Scores                       
+   6⃣  Write to AstraDB                                
+                                                      
+   Processing Mode: Micro-batch (10 sec interval)   
+   Parallelism: 8 cores (local[8])                  
+
+         
+          
+            GPT-3.5 Turbo API     
+           (OpenAI)              
+                                  
+            Input: 4 news texts   
+            Output: 5,3,4,5       
+            (1-5 scale)           
+                                  
+            Formula:              
+            • 1 = Negative        
+            • 2 = Somewhat -      
+            • 3 = Neutral         
+            • 4 = Somewhat +      
+            • 5 = Positive        
+          
+         
+          Write to AstraDB
+
+   AstraDB (Cassandra)                             
+   (NoSQL Storage)                                 
+                                                    
+   Table: news_sentiment_1                         
+                                                    
+   Schema:                                         
+   • stock_symbol (TEXT, Partition Key)           
+   • published_at (TIMESTAMP, Clustering Key)     
+   • title (TEXT)                                 
+   • description (TEXT)                           
+   • url (TEXT)                                   
+   • source (TEXT)                                
+   • sentiment_score (DOUBLE)                     
+   • scaled_sentiment (DOUBLE)                    
+   • created_at (TIMESTAMP)                       
+                                                    
+   Query Pattern:                                  
+   SELECT * FROM news_sentiment_1                 
+   WHERE stock_symbol = 'AAPL'                    
+   AND published_at >= '2025-11-01'               
+
+         
+          Daily Read (Airflow DAG)
+         
+
+   Sentiment Enrichment                            
+   (Daily Batch Process)                           
+                                                    
+   • Read YFinance daily data                      
+   • Query AstraDB for sentiment (per stock/date) 
+   • Join price + sentiment                        
+   • Calculate Scaled_sentiment: (score-0.9999)/4 
+   • Add News_flag (binary indicator)             
+   • Save to tmp/yfinance_enriched.parquet        
+   • Load into Delta tables                        
+                                                    
+   File: src/compute_sentiment_columns.py         
+
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ---
@@ -1316,9 +1451,15 @@ def check_sentiment_pipeline():
 
 ### **Production Readiness**
 
+<<<<<<< HEAD
 ✅ **Working**: Sentiment enrichment integrated in daily DAG  
 ⚠️ **Planned**: Full Kafka+Spark streaming deployment  
 📊 **Operational**: AstraDB storage and querying functional  
+=======
+ **Working**: Sentiment enrichment integrated in daily DAG  
+ **Planned**: Full Kafka+Spark streaming deployment  
+ **Operational**: AstraDB storage and querying functional  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ---
 

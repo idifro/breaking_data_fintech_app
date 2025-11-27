@@ -5,7 +5,11 @@
 
 ---
 
+<<<<<<< HEAD
 ## 📋 Table of Contents
+=======
+##  Table of Contents
+>>>>>>> d3e5d7a (added streaming and backend)
 
 - [Overview](#overview)
 - [Training Architecture](#training-architecture)
@@ -50,6 +54,7 @@ Evaluation: 85/15 train-test split with cross-validation
 ## Training Architecture
 
 ```
+<<<<<<< HEAD
 ┌──────────────────────────────────────────────────────────────────────┐
 │                        TRAINING PIPELINE FLOW                           │
 └──────────────────────────────────────────────────────────────────────┘
@@ -135,6 +140,93 @@ Evaluation: 85/15 train-test split with cross-validation
 │    • Artifacts (model file, feature scaler)               │
 │    • Tags (mode, stocks, volume)                          │
 └───────────────────────────────────────────────────────────┘
+=======
+
+                        TRAINING PIPELINE FLOW                           
+
+
+
+  1. DATA LOAD   
+  Delta Tables   
+  • 29 stocks    
+  • 81K+ records 
+
+         
+         
+
+  2. FEATURE ENGINEERING             
+                                     
+  Price-based Features:              
+    • Close Lags (1,2,3,5)          
+    • Open Lags (1,2,3,5)           
+    • MA_5, MA_10, MA_20            
+    • Price Range (High-Low)        
+    • Daily Return                   
+                                     
+  Volume Features:                   
+    • Volume Lags (1,2,3,5)         
+    • Volume MA (5,10,20)           
+    • Volume Change                  
+                                     
+  Technical Indicators:              
+    • RSI (Relative Strength Index) 
+    • Volatility (20-day std)       
+    • Bollinger Bands               
+                                     
+  Sentiment Features:                
+    • Sentiment Lags (1,3,5)        
+    • Scaled Sentiment              
+    • News Flag                      
+                                     
+  Interaction Features:              
+    • Close × Volume                 
+    • Sentiment × Close              
+    • MA_5 × Volume                  
+                                     
+  Result: 20+ features per record   
+
+         
+         
+
+  3. MULTI-MODE TRAINING (Select One)                    
+                                                          
+       
+    SPARK GBT       SPARK RF       HYBRID        
+                                   SKLEARN       
+       
+   Sequential      Distributed     Spark prep +  
+   on Driver       Training        Sklearn train 
+                                                 
+   GBT Regressor   RF Regressor    RandomForest  
+   Spark MLlib     Spark MLlib     Scikit-learn  
+                                                 
+   ⏱ Slow           Fast         ⏱ Medium      
+    Medium        Best          Poor       
+       
+                                                      
+                  
+                                                         
+                                        
+                     Best Model                         
+                     Selection                          
+                                        
+
+                            
+
+  4. MODEL REGISTRATION (MLflow)                           
+                                                            
+  Experiment: stock_forecasting_*                          
+  Model Name: stock_predictor_spark_rf_unified_29stocks   
+  Version: 1                                                
+  Stage: Production                                         
+                                                            
+  Logged:                                                   
+    • Parameters (maxDepth, numTrees, etc.)                
+    • Metrics (MAE, RMSE, R², training time)               
+    • Artifacts (model file, feature scaler)               
+    • Tags (mode, stocks, volume)                          
+
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 ---
@@ -146,6 +238,7 @@ Evaluation: 85/15 train-test split with cross-validation
 #### **Architecture**
 ```
 Driver Node:
+<<<<<<< HEAD
   ├─ Data Loading (distributed via Spark)
   ├─ Feature Engineering (distributed)
   ├─ GBT Training (sequential on driver)
@@ -154,6 +247,16 @@ Driver Node:
 
 Workers:
   └─ Data processing only (no training)
+=======
+   Data Loading (distributed via Spark)
+   Feature Engineering (distributed)
+   GBT Training (sequential on driver)
+      Tree building (one at a time)
+   Model Evaluation
+
+Workers:
+   Data processing only (no training)
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 #### **Implementation Details**
@@ -177,6 +280,7 @@ spark_gbt_mode:
 ```
 
 #### **Pros**
+<<<<<<< HEAD
 ✅ Native Spark implementation  
 ✅ Good for small-medium datasets  
 ✅ Well-tested algorithm  
@@ -187,6 +291,18 @@ spark_gbt_mode:
 ❌ Sequential tree building bottleneck  
 ❌ Poor scalability (14.7x time increase from 5→20 stocks)  
 ❌ High GC overhead (82+ GB GC time)  
+=======
+ Native Spark implementation  
+ Good for small-medium datasets  
+ Well-tested algorithm  
+ Easy to debug  
+
+#### **Cons**
+ **Very slow** (2.6 hours for 20 stocks)  
+ Sequential tree building bottleneck  
+ Poor scalability (14.7x time increase from 5→20 stocks)  
+ High GC overhead (82+ GB GC time)  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 #### **Performance (20 stocks - Large Volume)**
 | Metric | Value |
@@ -201,11 +317,16 @@ spark_gbt_mode:
 
 ---
 
+<<<<<<< HEAD
 ### **Mode 2: Spark RF (Random Forest)** ⭐ **SELECTED FOR PRODUCTION**
+=======
+### **Mode 2: Spark RF (Random Forest)**  **SELECTED FOR PRODUCTION**
+>>>>>>> d3e5d7a (added streaming and backend)
 
 #### **Architecture**
 ```
 Driver Node:
+<<<<<<< HEAD
   ├─ Orchestration
   ├─ Model aggregation
   └─ Evaluation
@@ -217,6 +338,19 @@ Worker Nodes (Distributed):
   │   ├─ Worker 2: Trees 26-50
   │   └─ Worker N: Trees 51-100
   └─ Local aggregation
+=======
+   Orchestration
+   Model aggregation
+   Evaluation
+
+Worker Nodes (Distributed):
+   Data partitions
+   Tree training (parallel)
+      Worker 1: Trees 1-25
+      Worker 2: Trees 26-50
+      Worker N: Trees 51-100
+   Local aggregation
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 #### **Implementation Details**
@@ -240,6 +374,7 @@ spark_rf_mode:
 ```
 
 #### **Pros**
+<<<<<<< HEAD
 ✅ **5.5x faster** than Spark GBT  
 ✅ **Fully distributed** training  
 ✅ **Best accuracy** (R² = 0.0140)  
@@ -250,16 +385,36 @@ spark_rf_mode:
 #### **Cons**
 ⚠️ Requires proper cluster configuration  
 ⚠️ More complex debugging  
+=======
+ **5.5x faster** than Spark GBT  
+ **Fully distributed** training  
+ **Best accuracy** (R² = 0.0140)  
+ Excellent scalability  
+ Lower memory per record  
+ Production-ready  
+
+#### **Cons**
+ Requires proper cluster configuration  
+ More complex debugging  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 #### **Performance (20 stocks - Large Volume)**
 | Metric | Value | vs Spark GBT |
 |--------|-------|--------------|
+<<<<<<< HEAD
 | **Training Time** | 1,110 seconds (18.5 min) | **5.5x faster** ⚡ |
+=======
+| **Training Time** | 1,110 seconds (18.5 min) | **5.5x faster**  |
+>>>>>>> d3e5d7a (added streaming and backend)
 | **Throughput** | 73.0 records/sec | **8.6x higher** |
 | **Peak Memory** | 28.0 GB | 6.3% lower |
 | **MAE** | **0.0143** | **6.3% better** |
 | **RMSE** | **0.0206** | **10% better** |
+<<<<<<< HEAD
 | **R² Score** | **0.0140** | **✅ Positive!** |
+=======
+| **R² Score** | **0.0140** | ** Positive!** |
+>>>>>>> d3e5d7a (added streaming and backend)
 | **CPU Utilization** | 27.4% | More efficient |
 | **Cost Efficiency** | 31M | **9x better** |
 
@@ -278,6 +433,7 @@ spark_rf_mode:
 #### **Architecture**
 ```
 Spark (Distributed):
+<<<<<<< HEAD
   ├─ Data Loading
   ├─ Feature Engineering
   └─ Data Collection to Driver
@@ -290,6 +446,20 @@ Driver Node (Centralized):
 Inference:
   ├─ Spark (distributed preprocessing)
   └─ UDF-wrapped sklearn model (broadcast)
+=======
+   Data Loading
+   Feature Engineering
+   Data Collection to Driver
+
+Driver Node (Centralized):
+   Convert to Pandas
+   Scikit-learn RandomForest Training
+   Model Evaluation
+
+Inference:
+   Spark (distributed preprocessing)
+   UDF-wrapped sklearn model (broadcast)
+>>>>>>> d3e5d7a (added streaming and backend)
 ```
 
 #### **Implementation Details**
@@ -312,6 +482,7 @@ hybrid_sklearn_mode:
 ```
 
 #### **Pros**
+<<<<<<< HEAD
 ✅ Familiar sklearn API  
 ✅ Rich ecosystem (matplotlib, pandas)  
 ✅ Good for prototyping  
@@ -323,6 +494,19 @@ hybrid_sklearn_mode:
 ❌ Data collection overhead (Spark → Pandas)  
 ❌ Memory limitations on driver  
 ❌ Not truly scalable  
+=======
+ Familiar sklearn API  
+ Rich ecosystem (matplotlib, pandas)  
+ Good for prototyping  
+ Easier debugging  
+
+#### **Cons**
+ **Poor accuracy** (R² = -0.040, MAE = 0.301)  
+ Centralized training bottleneck  
+ Data collection overhead (Spark → Pandas)  
+ Memory limitations on driver  
+ Not truly scalable  
+>>>>>>> d3e5d7a (added streaming and backend)
 
 #### **Performance (20 stocks - Large Volume)**
 | Metric | Value |
@@ -330,8 +514,13 @@ hybrid_sklearn_mode:
 | **Training Time** | 3,294 seconds (54.9 min) |
 | **Throughput** | 24.6 records/sec |
 | **Peak Memory** | 30.9 GB |
+<<<<<<< HEAD
 | **MAE** | 0.3014 (❌ **21x worse**) |
 | **RMSE** | 0.3787 (❌ **18x worse**) |
+=======
+| **MAE** | 0.3014 ( **21x worse**) |
+| **RMSE** | 0.3787 ( **18x worse**) |
+>>>>>>> d3e5d7a (added streaming and backend)
 | **R² Score** | -0.040 |
 | **CPU Utilization** | 58.9% |
 
@@ -341,18 +530,31 @@ hybrid_sklearn_mode:
 
 ### **Quick Comparison Table**
 
+<<<<<<< HEAD
 | Metric | Spark GBT | Spark RF ⭐ | Hybrid Sklearn |
+=======
+| Metric | Spark GBT | Spark RF  | Hybrid Sklearn |
+>>>>>>> d3e5d7a (added streaming and backend)
 |--------|-----------|------------|----------------|
 | **Training Time (20 stocks)** | 2.6 hours | **18.5 min** | 54.9 min |
 | **Speed vs GBT** | 1.0x | **5.5x faster** | 2.9x faster |
 | **Throughput (rec/sec)** | 8.49 | **73.0** | 24.6 |
 | **Peak Memory** | 29.9 GB | **28.0 GB** | 30.9 GB |
+<<<<<<< HEAD
 | **MAE** | 0.0152 | **0.0143** ✅ | 0.3014 ❌ |
 | **RMSE** | 0.0229 | **0.0206** ✅ | 0.3787 ❌ |
 | **R² Score** | -0.229 | **0.0140** ✅ | -0.040 |
 | **Training Strategy** | Sequential | **Distributed** | Centralized |
 | **Scalability** | Poor | **Excellent** | Medium |
 | **Production Ready** | ❌ | **✅** | ❌ |
+=======
+| **MAE** | 0.0152 | **0.0143**  | 0.3014  |
+| **RMSE** | 0.0229 | **0.0206**  | 0.3787  |
+| **R² Score** | -0.229 | **0.0140**  | -0.040 |
+| **Training Strategy** | Sequential | **Distributed** | Centralized |
+| **Scalability** | Poor | **Excellent** | Medium |
+| **Production Ready** |  | **** |  |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Volume Scaling Comparison**
 
@@ -382,16 +584,27 @@ hybrid_sklearn_mode:
 #### **Time Scaling (from 5 → 20 stocks)**
 | Mode | Time Increase | Scaling Efficiency |
 |------|---------------|-------------------|
+<<<<<<< HEAD
 | Spark GBT | **14.7x** ❌ | 6.8% (very poor) |
 | **Spark RF** | **9.3x** ✅ | **10.7%** (acceptable) |
+=======
+| Spark GBT | **14.7x**  | 6.8% (very poor) |
+| **Spark RF** | **9.3x**  | **10.7%** (acceptable) |
+>>>>>>> d3e5d7a (added streaming and backend)
 | Hybrid | 12.1x | 8.3% (poor) |
 
 #### **Memory Scaling (from 5 → 20 stocks)**
 | Mode | Memory Increase | Efficiency |
 |------|----------------|------------|
+<<<<<<< HEAD
 | Spark GBT | 1.03x | 97% ✅ |
 | **Spark RF** | **1.32x** | **76%** ✅ |
 | Hybrid | 1.25x | 80% ✅ |
+=======
+| Spark GBT | 1.03x | 97%  |
+| **Spark RF** | **1.32x** | **76%**  |
+| Hybrid | 1.25x | 80%  |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Observation**: All modes scale memory efficiently (near-linear), but **only Spark RF scales time acceptably** for production use.
 
@@ -462,9 +675,15 @@ hybrid_sklearn_mode:
 | **R²** | 0.8945 | 0.0084 |
 
 **Observations**:
+<<<<<<< HEAD
 - ✅ Low test MAE (0.0176) indicates good generalization
 - ⚠️ Large R² gap (train: 0.89, test: 0.01) suggests some overfitting
 - ✅ Best params: deeper trees (12), more estimators (150), conservative learning (0.01)
+=======
+-  Low test MAE (0.0176) indicates good generalization
+-  Large R² gap (train: 0.89, test: 0.01) suggests some overfitting
+-  Best params: deeper trees (12), more estimators (150), conservative learning (0.01)
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ---
 
@@ -529,9 +748,15 @@ Memory per 1K rows = Peak Memory (MB) / (Total Rows / 1000)
 
 | Mode | Score | Rating |
 |------|-------|--------|
+<<<<<<< HEAD
 | Spark GBT | 0.0057 | ❌ Very Poor |
 | **Spark RF** | **0.0486** | ⚠️ Acceptable |
 | Hybrid | 0.0164 | ❌ Poor |
+=======
+| Spark GBT | 0.0057 |  Very Poor |
+| **Spark RF** | **0.0486** |  Acceptable |
+| Hybrid | 0.0164 |  Poor |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 ### **Performance Degradation Analysis**
 
@@ -540,8 +765,13 @@ Memory per 1K rows = Peak Memory (MB) / (Total Rows / 1000)
 | Volume | Spark GBT | Spark RF | Hybrid |
 |--------|-----------|----------|---------|
 | 5 stocks | 1.0x | 1.0x | 1.0x |
+<<<<<<< HEAD
 | 10 stocks | 2.2x | **1.6x** ✅ | 2.5x |
 | 20 stocks | 14.7x | **9.3x** ✅ | 12.1x |
+=======
+| 10 stocks | 2.2x | **1.6x**  | 2.5x |
+| 20 stocks | 14.7x | **9.3x**  | 12.1x |
+>>>>>>> d3e5d7a (added streaming and backend)
 
 **Spark RF degrades slower** as data volume increases.
 
